@@ -2,7 +2,7 @@
 <html lang="ru" data-theme="classic">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Лекарь Абу Мухаммад — Анкета → анализ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,14 +44,19 @@
       --ui-muted: #a89880;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-text-size-adjust: 100%; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      overflow-x: hidden;
+    }
     body {
       font-family: var(--font-sans);
       background: var(--ui-bg);
       color: var(--ui-text);
       min-height: 100vh;
+      min-height: 100dvh;
       line-height: 1.5;
       padding-bottom: env(safe-area-inset-bottom, 0px);
+      overflow-x: hidden;
     }
     a { color: var(--gold-light); }
     .toolbar {
@@ -175,6 +180,11 @@
       gap: 20px;
       align-items: start;
     }
+    /* Колонка grid иначе не сужается под экран — длинный текст анкеты даёт горизонтальный скролл. */
+    .layout > .card {
+      min-width: 0;
+      max-width: 100%;
+    }
     @media (max-width: 900px) {
       .layout { grid-template-columns: 1fr; }
     }
@@ -222,28 +232,58 @@
       margin: 16px 0 8px;
     }
     .flabel:first-child { margin-top: 0; }
+    #questionnaireRoot {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
     .q-block {
       background: var(--ui-surface2);
       border-radius: 12px;
       padding: 10px 12px;
       margin-bottom: 10px;
+      max-width: 100%;
+      overflow-x: hidden;
     }
     .q-block h3 {
       font-size: 12px;
       color: var(--gold-light);
       margin-bottom: 8px;
       font-weight: 600;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      hyphens: auto;
+      -webkit-hyphens: auto;
     }
     .cbx {
       display: flex;
       align-items: flex-start;
-      gap: 8px;
-      margin: 6px 0;
+      gap: 10px;
+      margin: 0;
+      padding: 10px 4px 10px 2px;
+      min-height: 44px;
       font-size: 15px;
       color: var(--ui-text);
       cursor: pointer;
+      -webkit-tap-highlight-color: rgba(215, 164, 73, 0.15);
+      box-sizing: border-box;
     }
-    .cbx input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--gold-deep); flex-shrink: 0; }
+    .cbx input {
+      width: 22px;
+      height: 22px;
+      min-width: 22px;
+      margin-top: 1px;
+      accent-color: var(--gold-deep);
+      flex-shrink: 0;
+    }
+    .cbx span {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+      line-height: 1.45;
+    }
     .mod-row {
       display: flex;
       align-items: center;
@@ -509,7 +549,24 @@
         min-height: 44px;
       }
       .placeholder { padding: 20px 12px; }
-      body { overflow-x: hidden; }
+      #questionnaireRoot .flabel {
+        overflow-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+        -webkit-hyphens: auto;
+      }
+      .q-block {
+        padding: 12px 10px;
+      }
+      .q-block h3 {
+        font-size: 11px;
+        line-height: 1.35;
+      }
+      .cbx {
+        font-size: 16px;
+        padding-left: 0;
+        padding-right: 0;
+      }
     }
 
     @media (max-width: 400px) {
@@ -716,7 +773,7 @@
       toast_png_p: 'Готовлю PNG…', toast_png_ok: 'PNG сохранён', toast_png_bad: 'Не удалось сохранить PNG',
       toast_pdf_p: 'Готовлю PDF…', toast_pdf_ok: 'PDF сохранён', toast_pdf_bad: 'Не удалось сохранить PDF',
       toast_empty: 'Пустой отчёт.', toast_copy_ok: 'Текст скопирован', toast_copy_bad: 'Ошибка копирования',
-      toast_doctor_hint: 'Сейчас ваши данные будут загружён в ваш телефон в виде JSON-файл. Затем Откроется бот в Telegram — прикрепите этот файл json в чате, чтобы передать данные лекарю.',
+      toast_doctor_hint: 'Сейчас ваши данные будут загружаться в ваш телефон в виде JSON-файл. Затем Откроется бот в Telegram — прикрепите этот json файл в чате, чтобы передать данные лекарю.',
       doctor_modal_title: 'Отправка лекарю',
       doctor_modal_ok: 'Понял',
       toast_doctor_bad: 'Не удалось подготовить JSON.',
@@ -784,7 +841,7 @@
       toast_png_p: 'PNG tayyorlanmoqda…', toast_png_ok: 'PNG saqlandi', toast_png_bad: 'PNG saqlab bo‘lmadi',
       toast_pdf_p: 'PDF tayyorlanmoqda…', toast_pdf_ok: 'PDF saqlandi', toast_pdf_bad: 'PDF saqlab bo‘lmadi',
       toast_empty: 'Bo‘sh hisobot.', toast_copy_ok: 'Matn nusxalandi', toast_copy_bad: 'Nusxalash xatosi',
-      toast_doctor_hint: 'Hozir sizning ma'lumotlaringiz JSON-fayl ko'rinishida yuklab olinadi. Telegram-bot ochiladi — ushbu json faylni tabibga uzatish uchun bot chatiga biriktiring.',
+      toast_doctor_hint: 'Hozir sizning ma'lumotlaringiz JSON-fayl ko'rinishida yuklab olinadi. SO'ng Telegram-bot ochiladi — ushbu json faylni tabibga uzatish uchun bot chatiga biriktiring.',
       doctor_modal_title: 'Tabibga yuborish',
       doctor_modal_ok: 'Tushundim',
       toast_doctor_bad: 'JSON tayyorlab bo‘lmadi.',
