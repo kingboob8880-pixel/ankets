@@ -481,6 +481,12 @@
 
     @media (max-width: 600px) {
       .toolbar { gap: 8px; padding-top: max(8px, env(safe-area-inset-top, 0px)); }
+      .toolbar .lang-segment {
+        order: -2;
+        width: 100%;
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
       .toolbar-brand {
         flex: 1 1 100%;
         margin-right: 0;
@@ -666,7 +672,7 @@
       <h2 id="h2Report"><i class="fas fa-book-quran"></i> Результат анализа</h2>
       <div class="report-page" id="reportOut">
         <div class="report-brand">Лекарь Абу Мухаммад</div>
-        <p class="placeholder" id="reportPlaceholder">Отметьте симптомы слева — анализ обновится автоматически.</p>
+        <p class="placeholder" id="reportPlaceholder">Отметьте пункты анкеты в форме выше — анализ обновится автоматически.</p>
         <div class="report-contact">Связь с лекарем Абу Мухаммад: <a class="report-contact-link" href="https://t.me/Lechenya_bot" target="_blank" rel="noopener noreferrer">Открыть бота в Telegram</a></div>
       </div>
       <div class="report-actions" role="group" aria-label="Сохранить отчёт">
@@ -740,7 +746,7 @@
       practice0: 'Практики слабые/нерегулярные', practice1: 'Ниже среднего', practice2: 'Средние/стабильные', practice3: 'Сильные/регулярные',
       practice_tail: 'корректирует отображаемые доли в «Распределении»: слабые практики — выше, сильные — ниже (к весам отмеченных пунктов).',
       symptoms_intro: 'Симптомы и обстоятельства (поставьте по релевантности)',
-      report_ph: 'Отметьте симптомы слева — анализ обновится автоматически.',
+      report_ph: 'Отметьте пункты анкеты в форме выше — анализ обновится автоматически.',
       report_empty: 'Отметьте хотя бы один пункт анкеты.',
       report_h1: 'Анализ по анкете',
       report_sub: 'Предварительная духовно-нравственная ориентация, не духовного «таинства»',
@@ -808,7 +814,7 @@
       practice0: 'Amallar sust / tartibsiz', practice1: 'O‘rtacha dan past', practice2: 'O‘rtacha / barqaror', practice3: 'Kuchli / muntazam',
       practice_tail: '«Taqsimot»dagi ko‘rinadigan ulushlarni tuzatadi: sust amallar — yuqori, kuchli amallar — pastroq (belgilangan bandlar vazniga nisbatan).',
       symptoms_intro: 'Alomatlar va sharoitlar (mos keladiganlarini belgilang)',
-      report_ph: 'Chapdan alomalarni belgilang — tahlil avtomatik yangilanadi.',
+      report_ph: 'Yuqoridagi so‘rovnomada mos bandlarni belgilang — tahlil avtomatik yangilanadi.',
       report_empty: 'Kamida bitta bandni belgilang.',
       report_h1: 'So‘rovnoma bo‘yicha tahlil',
       report_sub: 'Diniy-axloqiy yo‘naltirish, maxfiy «sir» emas',
@@ -841,7 +847,7 @@
       toast_png_p: 'PNG tayyorlanmoqda…', toast_png_ok: 'PNG saqlandi', toast_png_bad: 'PNG saqlab bo‘lmadi',
       toast_pdf_p: 'PDF tayyorlanmoqda…', toast_pdf_ok: 'PDF saqlandi', toast_pdf_bad: 'PDF saqlab bo‘lmadi',
       toast_empty: 'Bo‘sh hisobot.', toast_copy_ok: 'Matn nusxalandi', toast_copy_bad: 'Nusxalash xatosi',
-      toast_doctor_hint: 'Hozir sizning ma'lumotlaringiz JSON-fayl ko'rinishida yuklab olinadi. SO'ng Telegram-bot ochiladi — ushbu json faylni tabibga uzatish uchun bot chatiga biriktiring.',
+      toast_doctor_hint: "Hozir sizning ma'lumotlaringiz JSON-fayl ko'rinishida yuklab olinadi. So'ng Telegram-bot ochiladi — ushbu json faylni tabibga uzatish uchun bot chatiga biriktiring.",
       doctor_modal_title: 'Tabibga yuborish',
       doctor_modal_ok: 'Tushundim',
       toast_doctor_bad: 'JSON tayyorlab bo‘lmadi.',
@@ -1340,8 +1346,8 @@
     var nChecked = Object.keys(s.checked).length;
     if (nChecked === 0) {
       return {
-        html: '<div class="report-brand">' + esc(brand()) + '</div><p class="placeholder" id="reportPlaceholder">' + esc(t('report_empty')) + '</p>' + contactFooterHtml(),
-        text: brand() + '\n\n' + t('report_empty') + '\n\n' + t('contact_plain') + ' ' + TELEGRAM_BOT_URL
+        html: '<div class="report-brand">' + esc(brand()) + '</div><p class="placeholder" id="reportPlaceholder">' + esc(t('report_ph')) + '</p>' + contactFooterHtml(),
+        text: brand() + '\n\n' + t('report_ph') + '\n\n' + t('contact_plain') + ' ' + TELEGRAM_BOT_URL
       };
     }
 
