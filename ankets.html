@@ -1668,6 +1668,28 @@
     openLaunchHintModal();
   }
 
+  function isLikelyIOS() {
+    var ua = navigator.userAgent || '';
+    if (/iP(hone|ad|od)/i.test(ua)) return true;
+    if (typeof navigator.maxTouchPoints === 'number' && navigator.maxTouchPoints > 1 && /MacIntel/.test(navigator.platform)) return true;
+    return false;
+  }
+
+  /** В том же синхронном клике, без setTimeout — иначе iOS Safari блокирует вкладку с ботом. */
+  function openTelegramBotFromUserGesture() {
+    try {
+      var a = document.createElement('a');
+      a.href = TELEGRAM_BOT_URL;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (e) {
+      try { window.open(TELEGRAM_BOT_URL, '_blank', 'noopener,noreferrer'); } catch (e2) {}
+    }
+  }
+
   function performDoctorSend() {
     techReport.breadcrumb('doctorSend:start');
     var popup = isRestrictedInAppBrowser() ? openExportPopup() : null;
@@ -1676,44 +1698,45 @@
       var json = JSON.stringify(payload, null, 2);
       var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
       var fname = doctorJsonFilename();
-
-      function openBotSoon() {
-        setTimeout(function () {
-          try { window.open(TELEGRAM_BOT_URL, '_blank', 'noopener,noreferrer'); } catch (e) {}
-        }, 400);
-      }
+      openTelegramBotFromUserGesture();
 
       function doLocalDoctorExport() {
         if (!isRestrictedInAppBrowser()) {
+          if (isLikelyIOS() && navigator.share) {
+            tryShareBlob(blob, fname, 'application/json').then(function (shared) {
+              if (shared) return;
+              tryShareJsonAsText(json, fname).then(function (shared2) {
+                if (shared2) return;
+                var url0 = URL.createObjectURL(blob);
+                downloadBlobUrl(url0, fname);
+              });
+            });
+            return;
+          }
           var url0 = URL.createObjectURL(blob);
           downloadBlobUrl(url0, fname);
-          openBotSoon();
           return;
         }
 
         tryShareBlob(blob, fname, 'application/json').then(function (shared) {
           if (shared) {
             closeExportPopup(popup);
-            openBotSoon();
             return;
           }
           var url = URL.createObjectURL(blob);
           if (tryNavigateExportPopup(popup, url)) {
             showToast(t('toast_download_fallback'));
             setTimeout(function () { try { URL.revokeObjectURL(url); } catch (e) {} }, 120000);
-            openBotSoon();
             return;
           }
           try { URL.revokeObjectURL(url); } catch (e) {}
           var jsonUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
           if (tryNavigateExportPopup(popup, jsonUrl)) {
             showToast(t('toast_download_fallback'));
-            openBotSoon();
             return;
           }
           var url2 = URL.createObjectURL(blob);
           downloadBlobUrl(url2, fname);
-          openBotSoon();
         });
       }
 
@@ -1734,7 +1757,6 @@
               if (res.ok && data && data.ok) {
                 closeExportPopup(popup);
                 showToast(t('toast_doctor_upload_ok'));
-                openBotSoon();
                 return;
               }
               techReport.recordError(
@@ -1948,6 +1970,31 @@
       } catch (e) {
         resolve(false);
       }
+    });
+  }
+
+  /** iOS Safari часто не шарит application/json как файл — запасной вариант с текстом. */
+  function tryShareJsonAsText(jsonString, titleHint) {
+    return new Promise(function (resolve) {
+      if (!navigator.share) {
+        resolve(false);
+        return;
+      }
+      function attempt(data) {
+        try {
+          if (navigator.canShare && !navigator.canShare(data)) return Promise.resolve(false);
+          return navigator.share(data).then(function () { return true; }).catch(function () { return false; });
+        } catch (e) {
+          return Promise.resolve(false);
+        }
+      }
+      attempt({ title: titleHint || '', text: jsonString }).then(function (ok) {
+        if (ok) {
+          resolve(true);
+          return;
+        }
+        attempt({ text: jsonString }).then(function (ok2) { resolve(ok2); });
+      });
     });
   }
 
@@ -2389,8 +2436,8 @@
       document.getElementById('btnSendDoctorFooter').addEventListener('click', sendToDoctor);
       document.getElementById('doctorModalBackdrop').addEventListener('click', closeDoctorModal);
       document.getElementById('doctorModalOk').addEventListener('click', function () {
-        closeDoctorModal();
         performDoctorSend();
+        closeDoctorModal();
       });
       document.getElementById('launchHintBackdrop').addEventListener('click', closeLaunchHintModal);
       document.getElementById('launchHintOk').addEventListener('click', closeLaunchHintModal);
