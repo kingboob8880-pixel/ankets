@@ -989,6 +989,8 @@
       toast_doctor_upload_ok: 'Анкета загружена в репозиторий.',
       toast_doctor_upload_fallback: 'Загрузка на сервер не удалась — сохраняю файл как раньше.',
       toast_doctor_upload_misconfigured: 'Worker без токена GitHub: выполните npx wrangler secret put GITHUB_TOKEN в папке workers.',
+      toast_ios_json_tab: 'Открыта вкладка с JSON. В Safari: кнопка «Поделиться» → «Сохранить в Файлы» или отправьте файл в Telegram.',
+      toast_ios_json_clipboard: 'JSON скопирован в буфер — вставьте в «Заметки» или в чат Telegram.',
       copy_line_analysis: 'Анализ по анкете', copy_line_summary: 'Сводка:', copy_line_dist: 'Распределение:',
       copy_line_obs: 'Наблюдения:', copy_line_recs: 'Духовные рекомендации:',
       group_tech: 'Диагностика',
@@ -1069,6 +1071,8 @@
       toast_doctor_upload_ok: 'So‘rovnoma repozitoriyga yuklandi.',
       toast_doctor_upload_fallback: 'Serverga yuklash muvaffaqiyatsiz — avvalgidek fayl sifatida saqlanmoqda.',
       toast_doctor_upload_misconfigured: 'Worker sozlanmagan: workers papkasida npx wrangler secret put GITHUB_TOKEN bajaring.',
+      toast_ios_json_tab: 'JSON yangi varaqda ochildi. Safari: «Ulashish» → «Fayllarga saqlash» yoki Telegram orqali yuboring.',
+      toast_ios_json_clipboard: 'JSON buferga nusxalandi — «Eslatmalar» yoki Telegram chatiga qo‘ying.',
       copy_line_analysis: 'So‘rovnoma bo‘yicha tahlil', copy_line_summary: 'Xulosa:', copy_line_dist: 'Taqsimot:',
       copy_line_obs: 'Kuzatuvlar:', copy_line_recs: 'Ruhiy tavsiyalar:',
       group_tech: 'Diagnostika',
@@ -1690,25 +1694,71 @@
     }
   }
 
+  /** iOS Safari игнорирует a[download] для blob; в том же жесте открываем вкладку с JSON — «Поделиться» → Файлы. */
+  function tryOpenIosJsonBlobInNewTab(blob) {
+    var url;
+    try {
+      url = URL.createObjectURL(blob);
+    } catch (e) {
+      return false;
+    }
+    var win = null;
+    try {
+      win = window.open(url, '_blank');
+    } catch (e) {}
+    if (win) {
+      showToast(t('toast_ios_json_tab'));
+      setTimeout(function () {
+        try { URL.revokeObjectURL(url); } catch (e) {}
+      }, 600000);
+      return true;
+    }
+    try { URL.revokeObjectURL(url); } catch (e) {}
+    return false;
+  }
+
   function performDoctorSend() {
     techReport.breadcrumb('doctorSend:start');
     var popup = isRestrictedInAppBrowser() ? openExportPopup() : null;
+    var iosDoctorJsonTabOpened = false;
     try {
       var payload = buildAnalysisPayload();
       var json = JSON.stringify(payload, null, 2);
       var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
       var fname = doctorJsonFilename();
+      var uploadUrlEarly = getQuestionnaireUploadUrl();
+      if (!uploadUrlEarly && !isRestrictedInAppBrowser() && isLikelyIOS()) {
+        iosDoctorJsonTabOpened = tryOpenIosJsonBlobInNewTab(blob);
+      }
       openTelegramBotFromUserGesture();
 
       function doLocalDoctorExport() {
         if (!isRestrictedInAppBrowser()) {
           if (isLikelyIOS() && navigator.share) {
+            if (iosDoctorJsonTabOpened) {
+              return;
+            }
             tryShareBlob(blob, fname, 'application/json').then(function (shared) {
               if (shared) return;
-              tryShareJsonAsText(json, fname).then(function (shared2) {
-                if (shared2) return;
-                var url0 = URL.createObjectURL(blob);
-                downloadBlobUrl(url0, fname);
+              tryShareBlob(blob, fname, 'text/plain').then(function (sharedTp) {
+                if (sharedTp) return;
+                tryShareBlob(blob, fname, 'application/octet-stream').then(function (sharedOs) {
+                  if (sharedOs) return;
+                  tryShareJsonAsText(json, fname).then(function (shared2) {
+                    if (shared2) return;
+                    if (isLikelyIOS() && window.isSecureContext && navigator.clipboard && navigator.clipboard.writeText) {
+                      navigator.clipboard.writeText(json).then(function () {
+                        showToast(t('toast_ios_json_clipboard'));
+                      }).catch(function () {
+                        var url0 = URL.createObjectURL(blob);
+                        downloadBlobUrl(url0, fname);
+                      });
+                      return;
+                    }
+                    var url0 = URL.createObjectURL(blob);
+                    downloadBlobUrl(url0, fname);
+                  });
+                });
               });
             });
             return;
@@ -1740,7 +1790,7 @@
         });
       }
 
-      var uploadUrl = getQuestionnaireUploadUrl();
+      var uploadUrl = uploadUrlEarly;
       if (uploadUrl) {
         var headers = { 'Content-Type': 'application/json', 'X-Filename': fname };
         var upSec = getQuestionnaireUploadSecret();
