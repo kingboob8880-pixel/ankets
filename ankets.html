@@ -100,6 +100,21 @@
       justify-content: center;
     }
     .tb.tb-icon i { pointer-events: none; }
+    .tb.tb-doctor {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: unset;
+      min-height: 40px;
+      padding: 8px 14px;
+      justify-content: center;
+      white-space: nowrap;
+    }
+    .tb.tb-doctor i { pointer-events: none; }
+    .tb-doctor-caption {
+      font-weight: 600;
+      font-size: 12px;
+    }
     .tb-group {
       display: inline-flex;
       flex-wrap: wrap;
@@ -623,10 +638,11 @@
     </div>
     <div class="sep" aria-hidden="true"></div>
     <div class="tb-group" role="group" aria-label="Отправка лекарю">
-      <button type="button" class="tb tb-icon" id="btnSendDoctor"
+      <button type="button" class="tb tb-doctor" id="btnSendDoctor"
         title="Скачать JSON и открыть бота в Telegram"
         aria-label="Скачать JSON и открыть бота в Telegram">
         <i class="fab fa-telegram" aria-hidden="true"></i>
+        <span class="tb-doctor-caption">Отправить к лекарю</span>
       </button>
     </div>
     <div class="sep" aria-hidden="true"></div>
@@ -694,10 +710,11 @@
           aria-label="Сохранить результат анализа как файл PDF">
           <i class="fas fa-file-pdf" aria-hidden="true"></i> PDF
         </button>
-        <button type="button" class="tb tb-icon" id="btnSendDoctorFooter"
+        <button type="button" class="tb tb-doctor" id="btnSendDoctorFooter"
           title="Скачать JSON и открыть бота в Telegram"
           aria-label="Скачать JSON и открыть бота в Telegram">
           <i class="fab fa-telegram" aria-hidden="true"></i>
+          <span class="tb-doctor-caption">Отправить к лекарю</span>
         </button>
       </div>
     </div>
@@ -715,6 +732,17 @@
     </div>
   </div>
 
+  <div class="doctor-modal" id="launchHintModal" role="dialog" aria-modal="true" aria-labelledby="launchHintTitle">
+    <div class="doctor-modal-backdrop" id="launchHintBackdrop" aria-hidden="true"></div>
+    <div class="doctor-modal-panel">
+      <h2 class="doctor-modal-title" id="launchHintTitle"></h2>
+      <p class="doctor-modal-body" id="launchHintBody"></p>
+      <div class="doctor-modal-actions">
+        <button type="button" class="tb primary" id="launchHintOk"></button>
+      </div>
+    </div>
+  </div>
+
   <script>
 (function(){
   'use strict';
@@ -725,6 +753,38 @@
 
   var BRAND_BY_LANG = { ru: 'Лекарь Абу Мухаммад', uz: 'Tabib Abu Muhammad' };
   var TELEGRAM_BOT_URL = 'https://t.me/Lechenya_bot';
+  /**
+   * URL Worker после wrangler deploy. Пусто — только скачивание JSON.
+   * Либо задайте в консоли (без правки файла): localStorage.setItem('qa_questionnaire_upload_url','https://....workers.dev')
+   */
+  var QUESTIONNAIRE_UPLOAD_URL = '';
+  /** Опционально: wrangler secret put UPLOAD_SECRET; или localStorage qa_questionnaire_upload_secret */
+  var QUESTIONNAIRE_UPLOAD_SECRET = '';
+
+  var LS_QA_UPLOAD_URL = 'qa_questionnaire_upload_url';
+  var LS_QA_UPLOAD_SECRET = 'qa_questionnaire_upload_secret';
+
+  function getQuestionnaireUploadUrl() {
+    var u = (QUESTIONNAIRE_UPLOAD_URL && String(QUESTIONNAIRE_UPLOAD_URL).trim()) || '';
+    if (u) return u;
+    try {
+      u = localStorage.getItem(LS_QA_UPLOAD_URL);
+      return u && String(u).trim() ? String(u).trim() : '';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function getQuestionnaireUploadSecret() {
+    var s = (QUESTIONNAIRE_UPLOAD_SECRET && String(QUESTIONNAIRE_UPLOAD_SECRET).trim()) || '';
+    if (s) return s;
+    try {
+      s = localStorage.getItem(LS_QA_UPLOAD_SECRET);
+      return s && String(s).trim() ? String(s).trim() : '';
+    } catch (e) {
+      return '';
+    }
+  }
 
   var TECH_LOG_STORAGE_KEY = 'qa_tech_log_v1';
   var TECH_REPORT_VERSION = 1;
@@ -874,6 +934,7 @@
       btn_png_t: 'Сохранить результат анализа как изображение PNG',
       btn_pdf_t: 'Сохранить результат анализа как файл PDF',
       btn_doctor_t: 'Скачать JSON анкеты для лекаря и открыть бота в Telegram',
+      btn_doctor_label: 'Отправить к лекарю',
       theme_classic: 'Классика', theme_green: 'Зелёная', theme_dark: 'Тёмная',
       theme_classic_t: 'Классическая золотая палитра',
       theme_green_t: 'Зелёные акценты',
@@ -925,12 +986,18 @@
       doctor_modal_title: 'Отправка лекарю',
       doctor_modal_ok: 'Понял',
       toast_doctor_bad: 'Не удалось подготовить JSON.',
+      toast_doctor_upload_ok: 'Анкета загружена в репозиторий.',
+      toast_doctor_upload_fallback: 'Загрузка на сервер не удалась — сохраняю файл как раньше.',
+      toast_doctor_upload_misconfigured: 'Worker без токена GitHub: выполните npx wrangler secret put GITHUB_TOKEN в папке workers.',
       copy_line_analysis: 'Анализ по анкете', copy_line_summary: 'Сводка:', copy_line_dist: 'Распределение:',
       copy_line_obs: 'Наблюдения:', copy_line_recs: 'Духовные рекомендации:',
       group_tech: 'Диагностика',
       btn_tech_t: 'Скопировать техотчёт (JSON) в буфер. Shift+клик — скачать файл.',
       toast_tech_copy_ok: 'Техотчёт скопирован в буфер',
-      toast_tech_dl_ok: 'Техотчёт сохранён файлом'
+      toast_tech_dl_ok: 'Техотчёт сохранён файлом',
+      launch_hint_title: 'Важно',
+      launch_hint_body: 'Мои дорогие, вам следует запускать данный анализ не с браузера Telegram, а с Chrome, Opera, Yandex и т. д. В браузере Telegram не все функции работают должным образом.',
+      launch_hint_ok: 'Понял'
     },
     uz: {
       doc_title: 'Tabib Abu Muhammad — So‘rovnoma → tahlil',
@@ -947,6 +1014,7 @@
       btn_png_t: 'Tahlil natijasini PNG rasmi sifatida saqlash',
       btn_pdf_t: 'Tahlil natijasini PDF fayl sifatida saqlash',
       btn_doctor_t: 'Tabib uchun JSON yuklab olish va Telegram-botni ochish',
+      btn_doctor_label: 'Tabibga yuborish',
       theme_classic: 'Klassik', theme_green: 'Yashil', theme_dark: 'Qorong‘i',
       theme_classic_t: 'Oltin klassik palitra',
       theme_green_t: 'Yashil aksentlar',
@@ -998,12 +1066,18 @@
       doctor_modal_title: 'Tabibga yuborish',
       doctor_modal_ok: 'Tushundim',
       toast_doctor_bad: 'JSON tayyorlab bo‘lmadi.',
+      toast_doctor_upload_ok: 'So‘rovnoma repozitoriyga yuklandi.',
+      toast_doctor_upload_fallback: 'Serverga yuklash muvaffaqiyatsiz — avvalgidek fayl sifatida saqlanmoqda.',
+      toast_doctor_upload_misconfigured: 'Worker sozlanmagan: workers papkasida npx wrangler secret put GITHUB_TOKEN bajaring.',
       copy_line_analysis: 'So‘rovnoma bo‘yicha tahlil', copy_line_summary: 'Xulosa:', copy_line_dist: 'Taqsimot:',
       copy_line_obs: 'Kuzatuvlar:', copy_line_recs: 'Ruhiy tavsiyalar:',
       group_tech: 'Diagnostika',
       btn_tech_t: 'Texnik hisobotni (JSON) buferga nusxalash. Shift+bosish — fayl sifatida yuklab olish.',
       toast_tech_copy_ok: 'Texnik hisobot buferga nusxalandi',
-      toast_tech_dl_ok: 'Texnik hisobot fayl sifatida saqlandi'
+      toast_tech_dl_ok: 'Texnik hisobot fayl sifatida saqlandi',
+      launch_hint_title: 'Muhim',
+      launch_hint_body: 'Azizlar, ushbu tahlilni Telegram ichki brauzeridan emas, balki Chrome, Opera, Yandex va shu kabi to‘liq brauzerlardan oching. Telegram brauzerida ba’zi funksiyalar to‘liq ishlamasligi mumkin.',
+      launch_hint_ok: 'Tushundim'
     }
   };
 
@@ -1130,9 +1204,19 @@
     tb = document.getElementById('btnSavePdf');
     tb.title = t('btn_pdf_t'); tb.setAttribute('aria-label', t('btn_pdf_t'));
     tb = document.getElementById('btnSendDoctor');
-    if (tb) { tb.title = t('btn_doctor_t'); tb.setAttribute('aria-label', t('btn_doctor_t')); }
+    if (tb) {
+      tb.title = t('btn_doctor_t');
+      tb.setAttribute('aria-label', t('btn_doctor_t'));
+      var cap = tb.querySelector('.tb-doctor-caption');
+      if (cap) cap.textContent = t('btn_doctor_label');
+    }
     tb = document.getElementById('btnSendDoctorFooter');
-    if (tb) { tb.title = t('btn_doctor_t'); tb.setAttribute('aria-label', t('btn_doctor_t')); }
+    if (tb) {
+      tb.title = t('btn_doctor_t');
+      tb.setAttribute('aria-label', t('btn_doctor_t'));
+      cap = tb.querySelector('.tb-doctor-caption');
+      if (cap) cap.textContent = t('btn_doctor_label');
+    }
     tb = document.getElementById('btnTechReport');
     if (tb) { tb.title = t('btn_tech_t'); tb.setAttribute('aria-label', t('btn_tech_t')); }
 
@@ -1142,6 +1226,13 @@
     if (dmTitle) dmTitle.textContent = t('doctor_modal_title');
     if (dmBody) dmBody.textContent = t('toast_doctor_hint');
     if (dmOk) dmOk.textContent = t('doctor_modal_ok');
+
+    var lhTitle = document.getElementById('launchHintTitle');
+    var lhBody = document.getElementById('launchHintBody');
+    var lhOk = document.getElementById('launchHintOk');
+    if (lhTitle) lhTitle.textContent = t('launch_hint_title');
+    if (lhBody) lhBody.textContent = t('launch_hint_body');
+    if (lhOk) lhOk.textContent = t('launch_hint_ok');
 
     var groups = document.querySelectorAll('.toolbar .tb-group[role="group"]');
     if (groups[0]) groups[0].setAttribute('aria-label', t('group_analysis'));
@@ -1537,6 +1628,46 @@
     doctorModalPrevFocus = null;
   }
 
+  var LAUNCH_HINT_SESSION_KEY = 'qa_inapp_browser_hint_ok';
+  var launchHintPrevFocus = null;
+
+  function onLaunchHintKeydown(ev) {
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      closeLaunchHintModal();
+    }
+  }
+
+  function openLaunchHintModal() {
+    var modal = document.getElementById('launchHintModal');
+    if (!modal) return;
+    launchHintPrevFocus = document.activeElement;
+    modal.classList.add('is-open');
+    var ok = document.getElementById('launchHintOk');
+    if (ok) ok.focus();
+    document.addEventListener('keydown', onLaunchHintKeydown);
+  }
+
+  function closeLaunchHintModal() {
+    var modal = document.getElementById('launchHintModal');
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    document.removeEventListener('keydown', onLaunchHintKeydown);
+    try { sessionStorage.setItem(LAUNCH_HINT_SESSION_KEY, '1'); } catch (e) {}
+    if (launchHintPrevFocus && typeof launchHintPrevFocus.focus === 'function') {
+      try { launchHintPrevFocus.focus(); } catch (e) {}
+    }
+    launchHintPrevFocus = null;
+  }
+
+  function maybeShowLaunchHintInApp() {
+    if (!isRestrictedInAppBrowser()) return;
+    try {
+      if (sessionStorage.getItem(LAUNCH_HINT_SESSION_KEY) === '1') return;
+    } catch (e) {}
+    openLaunchHintModal();
+  }
+
   function performDoctorSend() {
     techReport.breadcrumb('doctorSend:start');
     var popup = isRestrictedInAppBrowser() ? openExportPopup() : null;
@@ -1552,37 +1683,81 @@
         }, 400);
       }
 
-      if (!isRestrictedInAppBrowser()) {
-        var url0 = URL.createObjectURL(blob);
-        downloadBlobUrl(url0, fname);
-        openBotSoon();
+      function doLocalDoctorExport() {
+        if (!isRestrictedInAppBrowser()) {
+          var url0 = URL.createObjectURL(blob);
+          downloadBlobUrl(url0, fname);
+          openBotSoon();
+          return;
+        }
+
+        tryShareBlob(blob, fname, 'application/json').then(function (shared) {
+          if (shared) {
+            closeExportPopup(popup);
+            openBotSoon();
+            return;
+          }
+          var url = URL.createObjectURL(blob);
+          if (tryNavigateExportPopup(popup, url)) {
+            showToast(t('toast_download_fallback'));
+            setTimeout(function () { try { URL.revokeObjectURL(url); } catch (e) {} }, 120000);
+            openBotSoon();
+            return;
+          }
+          try { URL.revokeObjectURL(url); } catch (e) {}
+          var jsonUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+          if (tryNavigateExportPopup(popup, jsonUrl)) {
+            showToast(t('toast_download_fallback'));
+            openBotSoon();
+            return;
+          }
+          var url2 = URL.createObjectURL(blob);
+          downloadBlobUrl(url2, fname);
+          openBotSoon();
+        });
+      }
+
+      var uploadUrl = getQuestionnaireUploadUrl();
+      if (uploadUrl) {
+        var headers = { 'Content-Type': 'application/json', 'X-Filename': fname };
+        var upSec = getQuestionnaireUploadSecret();
+        if (upSec) headers['X-Upload-Secret'] = upSec;
+        fetch(uploadUrl, { method: 'POST', headers: headers, body: json, credentials: 'omit' })
+          .then(function (res) {
+            return res.text().then(function (text) {
+              var data;
+              try {
+                data = JSON.parse(text);
+              } catch (e) {
+                data = null;
+              }
+              if (res.ok && data && data.ok) {
+                closeExportPopup(popup);
+                showToast(t('toast_doctor_upload_ok'));
+                openBotSoon();
+                return;
+              }
+              techReport.recordError(
+                'upload ' + res.status + ' ' + (text && text.slice ? text.slice(0, 500) : text),
+                'performDoctorSend:upload'
+              );
+              if (data && data.error === 'server_misconfigured') {
+                showToast(t('toast_doctor_upload_misconfigured'));
+              } else {
+                showToast(t('toast_doctor_upload_fallback'));
+              }
+              doLocalDoctorExport();
+            });
+          })
+          .catch(function (e) {
+            techReport.recordError(e, 'performDoctorSend:upload');
+            showToast(t('toast_doctor_upload_fallback'));
+            doLocalDoctorExport();
+          });
         return;
       }
 
-      tryShareBlob(blob, fname, 'application/json').then(function (shared) {
-        if (shared) {
-          closeExportPopup(popup);
-          openBotSoon();
-          return;
-        }
-        var url = URL.createObjectURL(blob);
-        if (tryNavigateExportPopup(popup, url)) {
-          showToast(t('toast_download_fallback'));
-          setTimeout(function () { try { URL.revokeObjectURL(url); } catch (e) {} }, 120000);
-          openBotSoon();
-          return;
-        }
-        try { URL.revokeObjectURL(url); } catch (e) {}
-        var jsonUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
-        if (tryNavigateExportPopup(popup, jsonUrl)) {
-          showToast(t('toast_download_fallback'));
-          openBotSoon();
-          return;
-        }
-        var url2 = URL.createObjectURL(blob);
-        downloadBlobUrl(url2, fname);
-        openBotSoon();
-      });
+      doLocalDoctorExport();
     } catch (e) {
       closeExportPopup(popup);
       techReport.recordError(e, 'performDoctorSend');
@@ -2217,6 +2392,8 @@
         closeDoctorModal();
         performDoctorSend();
       });
+      document.getElementById('launchHintBackdrop').addEventListener('click', closeLaunchHintModal);
+      document.getElementById('launchHintOk').addEventListener('click', closeLaunchHintModal);
       document.getElementById('btnSavePng').addEventListener('click', savePng);
       document.getElementById('btnSavePdf').addEventListener('click', savePdf);
       document.getElementById('btnTechReport').addEventListener('click', function (ev) {
@@ -2238,6 +2415,8 @@
           setLang(b.getAttribute('data-lang-pick'));
         });
       });
+
+      maybeShowLaunchHintInApp();
 
       document.addEventListener('visibilitychange', function () {
         if (document.visibilityState === 'hidden') saveDraft();
