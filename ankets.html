@@ -630,6 +630,14 @@
       </button>
     </div>
     <div class="sep" aria-hidden="true"></div>
+    <div class="tb-group" role="group" aria-label="Диагностика">
+      <button type="button" class="tb tb-icon" id="btnTechReport"
+        title="Скопировать техотчёт (JSON) в буфер. Shift+клик — скачать файл."
+        aria-label="Скопировать техотчёт (JSON) в буфер. Shift+клик — скачать файл.">
+        <i class="fas fa-bug" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="sep" aria-hidden="true"></div>
     <div class="theme-segment" id="themeSegment" role="radiogroup" aria-label="Тема оформления страницы">
       <button type="button" class="theme-seg-btn is-active" data-theme-s="classic" role="radio" aria-checked="true"
         title="Классическая золотая палитра">Классика</button>
@@ -718,6 +726,138 @@
   var BRAND_BY_LANG = { ru: 'Лекарь Абу Мухаммад', uz: 'Tabib Abu Muhammad' };
   var TELEGRAM_BOT_URL = 'https://t.me/Lechenya_bot';
 
+  var TECH_LOG_STORAGE_KEY = 'qa_tech_log_v1';
+  var TECH_REPORT_VERSION = 1;
+  var TECH_LOG_MAX = 100;
+  var TECH_STORAGE_MAX_CHARS = 240000;
+
+  var techLogEntries = [];
+
+  function techLogLoadFromStorage() {
+    try {
+      var raw = sessionStorage.getItem(TECH_LOG_STORAGE_KEY);
+      if (!raw) return;
+      var arr = JSON.parse(raw);
+      if (Array.isArray(arr)) techLogEntries = arr.slice(-TECH_LOG_MAX);
+    } catch (e) {}
+  }
+
+  function techLogPersist() {
+    try {
+      var slice = techLogEntries.slice(-TECH_LOG_MAX);
+      var s = JSON.stringify(slice);
+      if (s.length > TECH_STORAGE_MAX_CHARS) {
+        slice = slice.slice(-Math.floor(TECH_LOG_MAX / 2));
+        s = JSON.stringify(slice);
+      }
+      sessionStorage.setItem(TECH_LOG_STORAGE_KEY, s);
+    } catch (e) {}
+  }
+
+  var techPersistTimer = null;
+  function techLogSchedulePersist() {
+    if (techPersistTimer) return;
+    techPersistTimer = setTimeout(function () {
+      techPersistTimer = null;
+      techLogPersist();
+    }, 500);
+  }
+
+  function techLogPush(entry) {
+    techLogEntries.push(entry);
+    if (techLogEntries.length > TECH_LOG_MAX) techLogEntries = techLogEntries.slice(-TECH_LOG_MAX);
+    techLogSchedulePersist();
+  }
+
+  var techReport = {
+    push: techLogPush,
+    breadcrumb: function (label) {
+      techLogPush({
+        t: new Date().toISOString(),
+        level: 'info',
+        type: 'breadcrumb',
+        message: String(label || '')
+      });
+    },
+    recordError: function (err, context) {
+      var msg = '';
+      var stack = '';
+      var name = '';
+      if (err == null) msg = String(context || 'unknown');
+      else if (typeof err === 'string') msg = err;
+      else {
+        name = err.name || '';
+        msg = err.message || String(err);
+        stack = err.stack || '';
+      }
+      techLogPush({
+        t: new Date().toISOString(),
+        level: 'error',
+        type: 'caught',
+        context: context != null ? String(context) : '',
+        name: name,
+        message: msg,
+        stack: stack
+      });
+    }
+  };
+
+  function installGlobalTechHandlers() {
+    window.addEventListener('error', function (ev) {
+      var el = ev.target;
+      if (el && (el.nodeName === 'SCRIPT' || el.nodeName === 'LINK')) {
+        techReport.push({
+          t: new Date().toISOString(),
+          level: 'error',
+          type: 'resource',
+          message: 'resource_load_error',
+          source: el.src || el.href || ''
+        });
+        return;
+      }
+    }, true);
+
+    window.addEventListener('error', function (ev) {
+      var el = ev.target;
+      if (el && (el.nodeName === 'SCRIPT' || el.nodeName === 'LINK')) return;
+      var err = ev.error;
+      techReport.push({
+        t: new Date().toISOString(),
+        level: 'error',
+        type: 'runtime',
+        message: ev.message || (err && err.message) || 'error',
+        source: ev.filename || '',
+        line: ev.lineno,
+        col: ev.colno,
+        stack: err && err.stack ? String(err.stack) : ''
+      });
+    });
+
+    window.addEventListener('unhandledrejection', function (ev) {
+      var r = ev.reason;
+      var msg = '';
+      var stack = '';
+      if (r == null) msg = 'null';
+      else if (typeof r === 'string') msg = r;
+      else if (r instanceof Error) {
+        msg = r.message || String(r);
+        stack = r.stack || '';
+      } else {
+        try { msg = JSON.stringify(r); } catch (e) { msg = String(r); }
+      }
+      techReport.push({
+        t: new Date().toISOString(),
+        level: 'error',
+        type: 'unhandledrejection',
+        message: msg,
+        stack: stack
+      });
+    });
+  }
+
+  techLogLoadFromStorage();
+  installGlobalTechHandlers();
+
   var I18N = {
     ru: {
       doc_title: 'Лекарь Абу Мухаммад — Анкета → анализ',
@@ -786,7 +926,11 @@
       doctor_modal_ok: 'Понял',
       toast_doctor_bad: 'Не удалось подготовить JSON.',
       copy_line_analysis: 'Анализ по анкете', copy_line_summary: 'Сводка:', copy_line_dist: 'Распределение:',
-      copy_line_obs: 'Наблюдения:', copy_line_recs: 'Духовные рекомендации:'
+      copy_line_obs: 'Наблюдения:', copy_line_recs: 'Духовные рекомендации:',
+      group_tech: 'Диагностика',
+      btn_tech_t: 'Скопировать техотчёт (JSON) в буфер. Shift+клик — скачать файл.',
+      toast_tech_copy_ok: 'Техотчёт скопирован в буфер',
+      toast_tech_dl_ok: 'Техотчёт сохранён файлом'
     },
     uz: {
       doc_title: 'Tabib Abu Muhammad — So‘rovnoma → tahlil',
@@ -855,7 +999,11 @@
       doctor_modal_ok: 'Tushundim',
       toast_doctor_bad: 'JSON tayyorlab bo‘lmadi.',
       copy_line_analysis: 'So‘rovnoma bo‘yicha tahlil', copy_line_summary: 'Xulosa:', copy_line_dist: 'Taqsimot:',
-      copy_line_obs: 'Kuzatuvlar:', copy_line_recs: 'Ruhiy tavsiyalar:'
+      copy_line_obs: 'Kuzatuvlar:', copy_line_recs: 'Ruhiy tavsiyalar:',
+      group_tech: 'Diagnostika',
+      btn_tech_t: 'Texnik hisobotni (JSON) buferga nusxalash. Shift+bosish — fayl sifatida yuklab olish.',
+      toast_tech_copy_ok: 'Texnik hisobot buferga nusxalandi',
+      toast_tech_dl_ok: 'Texnik hisobot fayl sifatida saqlandi'
     }
   };
 
@@ -985,6 +1133,8 @@
     if (tb) { tb.title = t('btn_doctor_t'); tb.setAttribute('aria-label', t('btn_doctor_t')); }
     tb = document.getElementById('btnSendDoctorFooter');
     if (tb) { tb.title = t('btn_doctor_t'); tb.setAttribute('aria-label', t('btn_doctor_t')); }
+    tb = document.getElementById('btnTechReport');
+    if (tb) { tb.title = t('btn_tech_t'); tb.setAttribute('aria-label', t('btn_tech_t')); }
 
     var dmTitle = document.getElementById('doctorModalTitle');
     var dmBody = document.getElementById('doctorModalBody');
@@ -997,6 +1147,7 @@
     if (groups[0]) groups[0].setAttribute('aria-label', t('group_analysis'));
     if (groups[1]) groups[1].setAttribute('aria-label', t('group_copy'));
     if (groups[2]) groups[2].setAttribute('aria-label', t('group_doctor'));
+    if (groups[3]) groups[3].setAttribute('aria-label', t('group_tech'));
     var themeSeg = document.getElementById('themeSegment');
     if (themeSeg) themeSeg.setAttribute('aria-label', t('group_theme'));
     var rs = document.getElementById('resultCard').querySelector('.report-actions');
@@ -1387,16 +1538,54 @@
   }
 
   function performDoctorSend() {
+    techReport.breadcrumb('doctorSend:start');
+    var popup = isRestrictedInAppBrowser() ? openExportPopup() : null;
     try {
       var payload = buildAnalysisPayload();
       var json = JSON.stringify(payload, null, 2);
       var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
-      var url = URL.createObjectURL(blob);
-      downloadBlobUrl(url, doctorJsonFilename());
-      setTimeout(function () {
-        try { window.open(TELEGRAM_BOT_URL, '_blank', 'noopener,noreferrer'); } catch (e) {}
-      }, 400);
+      var fname = doctorJsonFilename();
+
+      function openBotSoon() {
+        setTimeout(function () {
+          try { window.open(TELEGRAM_BOT_URL, '_blank', 'noopener,noreferrer'); } catch (e) {}
+        }, 400);
+      }
+
+      if (!isRestrictedInAppBrowser()) {
+        var url0 = URL.createObjectURL(blob);
+        downloadBlobUrl(url0, fname);
+        openBotSoon();
+        return;
+      }
+
+      tryShareBlob(blob, fname, 'application/json').then(function (shared) {
+        if (shared) {
+          closeExportPopup(popup);
+          openBotSoon();
+          return;
+        }
+        var url = URL.createObjectURL(blob);
+        if (tryNavigateExportPopup(popup, url)) {
+          showToast(t('toast_download_fallback'));
+          setTimeout(function () { try { URL.revokeObjectURL(url); } catch (e) {} }, 120000);
+          openBotSoon();
+          return;
+        }
+        try { URL.revokeObjectURL(url); } catch (e) {}
+        var jsonUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+        if (tryNavigateExportPopup(popup, jsonUrl)) {
+          showToast(t('toast_download_fallback'));
+          openBotSoon();
+          return;
+        }
+        var url2 = URL.createObjectURL(blob);
+        downloadBlobUrl(url2, fname);
+        openBotSoon();
+      });
     } catch (e) {
+      closeExportPopup(popup);
+      techReport.recordError(e, 'performDoctorSend');
       showToast(t('toast_doctor_bad'));
     }
   }
@@ -1499,28 +1688,124 @@
 
   function isRestrictedInAppBrowser() {
     var ua = navigator.userAgent || '';
-    return /Telegram|Instagram|FBAN|FBAV/i.test(ua);
+    return /Telegram|Instagram|FBAN|FBAV|; wv\)|; wv |WebView/i.test(ua);
+  }
+
+  function safePageUrl() {
+    try {
+      var u = new URL(location.href);
+      return u.origin + u.pathname;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function buildTechReportObject() {
+    var fp = document.getElementById('f_practice');
+    var practiceVal = fp ? fp.value : '';
+    return {
+      reportVersion: TECH_REPORT_VERSION,
+      generatedAt: new Date().toISOString(),
+      url: safePageUrl(),
+      userAgent: navigator.userAgent || '',
+      language: navigator.language || '',
+      platform: navigator.platform || '',
+      cookieEnabled: !!navigator.cookieEnabled,
+      onLine: !!navigator.onLine,
+      viewport: { w: window.innerWidth, h: window.innerHeight },
+      devicePixelRatio: window.devicePixelRatio || 1,
+      theme: document.documentElement.getAttribute('data-theme') || '',
+      lang: currentLang,
+      libs: {
+        html2canvas: !!window.html2canvas,
+        jspdf: !!(window.jspdf && window.jspdf.jsPDF)
+      },
+      restrictedInApp: isRestrictedInAppBrowser(),
+      questionnaire: {
+        checkedCount: Object.keys(getCheckedIds()).length,
+        practiceSlider: practiceVal
+      },
+      entries: techLogEntries.slice()
+    };
+  }
+
+  function techReportFilename() {
+    return 'tech_report_' + new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19) + '.json';
+  }
+
+  function openExportPopup() {
+    try {
+      return window.open('about:blank', '_blank');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function closeExportPopup(w) {
+    if (!w || w.closed) return;
+    try { w.close(); } catch (e) {}
+  }
+
+  function tryNavigateExportPopup(w, url) {
+    if (!w || w.closed) return false;
+    try {
+      w.location.href = url;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function tryShareBlob(blob, filename, mime) {
+    return new Promise(function (resolve) {
+      if (!navigator.share) {
+        resolve(false);
+        return;
+      }
+      try {
+        var file = new File([blob], filename, { type: mime || blob.type || 'application/octet-stream' });
+        var shareData = { files: [file] };
+        if (navigator.canShare && !navigator.canShare(shareData)) {
+          resolve(false);
+          return;
+        }
+        navigator.share(shareData).then(function () { resolve(true); }).catch(function () { resolve(false); });
+      } catch (e) {
+        resolve(false);
+      }
+    });
   }
 
   function triggerDownload(url, filename) {
-    if (isRestrictedInAppBrowser()) {
+    var restricted = isRestrictedInAppBrowser();
+    if (!restricted) {
       try {
-        var w = window.open(url, '_blank', 'noopener,noreferrer');
-        if (w) {
-          showToast(t('toast_download_fallback'));
-          return;
-        }
-      } catch (e) {}
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (e2) {}
+      return;
     }
     try {
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } catch (e2) {}
+      var w = window.open(url, '_blank', 'noopener,noreferrer');
+      if (w) {
+        showToast(t('toast_download_fallback'));
+        return;
+      }
+    } catch (e) {}
+    try {
+      var a2 = document.createElement('a');
+      a2.href = url;
+      a2.download = filename;
+      a2.style.display = 'none';
+      document.body.appendChild(a2);
+      a2.click();
+      document.body.removeChild(a2);
+    } catch (e3) {}
   }
 
   function downloadDataUrl(dataUrl, filename) {
@@ -1572,9 +1857,17 @@
 
   function loadExportLibs(cb) {
     if (ensureExportLibs()) { cb(true); return; }
+    techReport.breadcrumb('loadExportLibs:start');
     loadHtml2Canvas(function (ok1) {
-      if (!ok1) { cb(false); return; }
-      loadJsPdf(function (ok2) { cb(!!ok2); });
+      if (!ok1) {
+        techReport.recordError('html2canvas failed to load', 'loadExportLibs');
+        cb(false);
+        return;
+      }
+      loadJsPdf(function (ok2) {
+        if (!ok2) techReport.recordError('jspdf failed to load', 'loadExportLibs');
+        cb(!!ok2);
+      });
     });
   }
 
@@ -1595,31 +1888,82 @@
     });
   }
 
-  function runSavePng() {
+  function runSavePng(popup) {
     showToast(t('toast_png_p'));
+    var restricted = isRestrictedInAppBrowser();
     renderReportToCanvas().then(function (canvas) {
-      var dataUrl = canvas.toDataURL('image/png');
-      downloadDataUrl(dataUrl, exportFilenameBase() + '.png');
-      showToast(t('toast_png_ok'));
-    }).catch(function () {
+      var fname = exportFilenameBase() + '.png';
+
+      if (!restricted) {
+        try {
+          downloadDataUrl(canvas.toDataURL('image/png'), fname);
+          showToast(t('toast_png_ok'));
+        } catch (e) {
+          techReport.recordError(e, 'runSavePng:nonRestricted');
+          showToast(t('toast_png_bad'));
+        }
+        return;
+      }
+
+      canvas.toBlob(function (blob) {
+        if (!blob) {
+          closeExportPopup(popup);
+          techReport.recordError('toBlob returned null', 'runSavePng');
+          showToast(t('toast_png_bad'));
+          return;
+        }
+        tryShareBlob(blob, fname, 'image/png').then(function (shared) {
+          if (shared) {
+            closeExportPopup(popup);
+            showToast(t('toast_png_ok'));
+            return;
+          }
+          var dataUrl = canvas.toDataURL('image/png');
+          if (tryNavigateExportPopup(popup, dataUrl)) {
+            showToast(t('toast_download_fallback'));
+            return;
+          }
+          try {
+            downloadDataUrl(dataUrl, fname);
+            showToast(t('toast_png_ok'));
+          } catch (e) {
+            closeExportPopup(popup);
+            techReport.recordError(e, 'runSavePng:downloadDataUrl');
+            showToast(t('toast_png_bad'));
+          }
+        });
+      }, 'image/png');
+    }).catch(function (e) {
+      closeExportPopup(popup);
+      techReport.recordError(e, 'runSavePng:render');
       showToast(t('toast_png_bad'));
     });
   }
 
   function savePng() {
     if (!isReportReady()) { showToast(t('toast_check')); return; }
+    techReport.breadcrumb('savePng:click');
+    var popup = isRestrictedInAppBrowser() ? openExportPopup() : null;
+    function start() {
+      runSavePng(popup);
+    }
     if (ensureExportLibs()) {
-      runSavePng();
+      start();
       return;
     }
     loadExportLibs(function (ok) {
-      if (!ok) { showToast(t('toast_libs')); return; }
-      runSavePng();
+      if (!ok) {
+        closeExportPopup(popup);
+        showToast(t('toast_libs'));
+        return;
+      }
+      start();
     });
   }
 
-  function runSavePdf() {
+  function runSavePdf(popup) {
     showToast(t('toast_pdf_p'));
+    var restricted = isRestrictedInAppBrowser();
     renderReportToCanvas().then(function (canvas) {
       var jsPDF = window.jspdf.jsPDF;
       var pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
@@ -1669,28 +2013,86 @@
         }
       }
 
+      var fname = exportFilenameBase() + '.pdf';
+
+      function deliverPdfBlob(outBlob) {
+        if (!restricted) {
+          try {
+            var blobUrl = URL.createObjectURL(outBlob);
+            downloadBlobUrl(blobUrl, fname);
+            showToast(t('toast_pdf_ok'));
+          } catch (e) {
+            techReport.recordError(e, 'runSavePdf:downloadBlob');
+            try {
+              pdf.save(fname);
+              showToast(t('toast_pdf_ok'));
+            } catch (e2) {
+              techReport.recordError(e2, 'runSavePdf:pdf.save');
+              showToast(t('toast_pdf_bad'));
+            }
+          }
+          return;
+        }
+        tryShareBlob(outBlob, fname, 'application/pdf').then(function (shared) {
+          if (shared) {
+            closeExportPopup(popup);
+            showToast(t('toast_pdf_ok'));
+            return;
+          }
+          var blobUrl = URL.createObjectURL(outBlob);
+          if (tryNavigateExportPopup(popup, blobUrl)) {
+            showToast(t('toast_download_fallback'));
+            setTimeout(function () { try { URL.revokeObjectURL(blobUrl); } catch (e) {} }, 120000);
+            return;
+          }
+          downloadBlobUrl(blobUrl, fname);
+          showToast(t('toast_pdf_ok'));
+        });
+      }
+
       try {
         var outBlob = pdf.output('blob');
-        var blobUrl = URL.createObjectURL(outBlob);
-        downloadBlobUrl(blobUrl, exportFilenameBase() + '.pdf');
+        deliverPdfBlob(outBlob);
       } catch (e) {
-        pdf.save(exportFilenameBase() + '.pdf');
+        techReport.recordError(e, 'runSavePdf:outputBlob');
+        if (!restricted) {
+          try {
+            pdf.save(fname);
+            showToast(t('toast_pdf_ok'));
+          } catch (e2) {
+            techReport.recordError(e2, 'runSavePdf:pdf.save_fallback');
+            showToast(t('toast_pdf_bad'));
+          }
+        } else {
+          closeExportPopup(popup);
+          showToast(t('toast_pdf_bad'));
+        }
       }
-      showToast(t('toast_pdf_ok'));
-    }).catch(function () {
+    }).catch(function (e) {
+      closeExportPopup(popup);
+      techReport.recordError(e, 'runSavePdf:render');
       showToast(t('toast_pdf_bad'));
     });
   }
 
   function savePdf() {
     if (!isReportReady()) { showToast(t('toast_check')); return; }
+    techReport.breadcrumb('savePdf:click');
+    var popup = isRestrictedInAppBrowser() ? openExportPopup() : null;
+    function start() {
+      runSavePdf(popup);
+    }
     if (ensureExportLibs()) {
-      runSavePdf();
+      start();
       return;
     }
     loadExportLibs(function (ok) {
-      if (!ok) { showToast(t('toast_libs')); return; }
-      runSavePdf();
+      if (!ok) {
+        closeExportPopup(popup);
+        showToast(t('toast_libs'));
+        return;
+      }
+      start();
     });
   }
 
@@ -1745,24 +2147,6 @@
     saveDraft();
   }
 
-  document.getElementById('questionnaireRoot').addEventListener('change', onAnyChange);
-  document.getElementById('f_practice').addEventListener('input', onAnyChange);
-  document.getElementById('f_name').addEventListener('input', onAnyChange);
-  document.getElementById('f_age').addEventListener('input', onAnyChange);
-  document.getElementById('f_city').addEventListener('input', onAnyChange);
-  document.getElementById('btnRun').addEventListener('click', onAnyChange);
-  document.getElementById('btnCopyText').addEventListener('click', copyText);
-  document.getElementById('btnPrint').addEventListener('click', function () { window.print(); });
-  document.getElementById('btnSendDoctor').addEventListener('click', sendToDoctor);
-  document.getElementById('btnSendDoctorFooter').addEventListener('click', sendToDoctor);
-  document.getElementById('doctorModalBackdrop').addEventListener('click', closeDoctorModal);
-  document.getElementById('doctorModalOk').addEventListener('click', function () {
-    closeDoctorModal();
-    performDoctorSend();
-  });
-  document.getElementById('btnSavePng').addEventListener('click', savePng);
-  document.getElementById('btnSavePdf').addEventListener('click', savePdf);
-
   function setTheme(th) {
     if (!th) return;
     document.documentElement.setAttribute('data-theme', th);
@@ -1775,13 +2159,6 @@
       }
     });
   }
-
-  document.querySelectorAll('[data-theme-s]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      setTheme(b.getAttribute('data-theme-s'));
-    });
-  });
-  setTheme(document.documentElement.getAttribute('data-theme') || 'classic');
 
   function copyToClipboard(text, okMsg) {
     if (navigator.clipboard && window.isSecureContext) {
@@ -1799,19 +2176,79 @@
     }
   }
 
-  initLangFromStorage();
-  setLang(currentLang);
+  function copyTechReportJSON() {
+    try {
+      var json = JSON.stringify(buildTechReportObject(), null, 2);
+      copyToClipboard(json, t('toast_tech_copy_ok'));
+    } catch (e) {
+      techReport.recordError(e, 'copyTechReportJSON');
+      showToast(t('toast_copy_bad'));
+    }
+  }
 
-  document.querySelectorAll('[data-lang-pick]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      setLang(b.getAttribute('data-lang-pick'));
-    });
-  });
+  function downloadTechReportJSON() {
+    try {
+      var json = JSON.stringify(buildTechReportObject(), null, 2);
+      var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      downloadBlobUrl(url, techReportFilename());
+      showToast(t('toast_tech_dl_ok'));
+    } catch (e) {
+      techReport.recordError(e, 'downloadTechReportJSON');
+      showToast(t('toast_doctor_bad'));
+    }
+  }
 
-  document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'hidden') saveDraft();
-  });
-  window.addEventListener('pagehide', saveDraft);
+  function bootstrapApp() {
+    try {
+      techReport.breadcrumb('bootstrap:start');
+      document.getElementById('questionnaireRoot').addEventListener('change', onAnyChange);
+      document.getElementById('f_practice').addEventListener('input', onAnyChange);
+      document.getElementById('f_name').addEventListener('input', onAnyChange);
+      document.getElementById('f_age').addEventListener('input', onAnyChange);
+      document.getElementById('f_city').addEventListener('input', onAnyChange);
+      document.getElementById('btnRun').addEventListener('click', onAnyChange);
+      document.getElementById('btnCopyText').addEventListener('click', copyText);
+      document.getElementById('btnPrint').addEventListener('click', function () { window.print(); });
+      document.getElementById('btnSendDoctor').addEventListener('click', sendToDoctor);
+      document.getElementById('btnSendDoctorFooter').addEventListener('click', sendToDoctor);
+      document.getElementById('doctorModalBackdrop').addEventListener('click', closeDoctorModal);
+      document.getElementById('doctorModalOk').addEventListener('click', function () {
+        closeDoctorModal();
+        performDoctorSend();
+      });
+      document.getElementById('btnSavePng').addEventListener('click', savePng);
+      document.getElementById('btnSavePdf').addEventListener('click', savePdf);
+      document.getElementById('btnTechReport').addEventListener('click', function (ev) {
+        if (ev.shiftKey) downloadTechReportJSON(); else copyTechReportJSON();
+      });
+
+      document.querySelectorAll('[data-theme-s]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          setTheme(b.getAttribute('data-theme-s'));
+        });
+      });
+      setTheme(document.documentElement.getAttribute('data-theme') || 'classic');
+
+      initLangFromStorage();
+      setLang(currentLang);
+
+      document.querySelectorAll('[data-lang-pick]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          setLang(b.getAttribute('data-lang-pick'));
+        });
+      });
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') saveDraft();
+      });
+      window.addEventListener('pagehide', saveDraft);
+    } catch (e) {
+      techReport.recordError(e, 'bootstrapApp');
+    }
+  }
+
+  bootstrapApp();
 })();
   </script>
 </body>
