@@ -505,6 +505,14 @@
       </button>
     </div>
     <div class="sep" aria-hidden="true"></div>
+    <div class="tb-group" role="group" aria-label="Отправка лекарю">
+      <button type="button" class="tb tb-icon" id="btnSendDoctor"
+        title="Скачать JSON и открыть бота в Telegram"
+        aria-label="Скачать JSON и открыть бота в Telegram">
+        <i class="fab fa-telegram" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="sep" aria-hidden="true"></div>
     <div class="theme-segment" id="themeSegment" role="radiogroup" aria-label="Тема оформления страницы">
       <button type="button" class="theme-seg-btn is-active" data-theme-s="classic" role="radio" aria-checked="true"
         title="Классическая золотая палитра">Классика</button>
@@ -561,6 +569,11 @@
           aria-label="Сохранить результат анализа как файл PDF">
           <i class="fas fa-file-pdf" aria-hidden="true"></i> PDF
         </button>
+        <button type="button" class="tb tb-icon" id="btnSendDoctorFooter"
+          title="Скачать JSON и открыть бота в Telegram"
+          aria-label="Скачать JSON и открыть бота в Telegram">
+          <i class="fab fa-telegram" aria-hidden="true"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -582,6 +595,7 @@
       toolbar_sub: 'Анкета → Анализ',
       group_analysis: 'Анализ',
       group_copy: 'Копирование и печать',
+      group_doctor: 'Отправка лекарю',
       group_theme: 'Тема оформления страницы',
       group_save: 'Сохранить отчёт',
       group_lang: 'Язык интерфейса',
@@ -590,6 +604,7 @@
       btn_print_t: 'Печать или сохранение в PDF через диалог системы',
       btn_png_t: 'Сохранить результат анализа как изображение PNG',
       btn_pdf_t: 'Сохранить результат анализа как файл PDF',
+      btn_doctor_t: 'Скачать JSON анкеты для лекаря и открыть бота в Telegram',
       theme_classic: 'Классика', theme_green: 'Зелёная', theme_dark: 'Тёмная',
       theme_classic_t: 'Классическая золотая палитра',
       theme_green_t: 'Зелёные акценты',
@@ -636,6 +651,8 @@
       toast_png_p: 'Готовлю PNG…', toast_png_ok: 'PNG сохранён', toast_png_bad: 'Не удалось сохранить PNG',
       toast_pdf_p: 'Готовлю PDF…', toast_pdf_ok: 'PDF сохранён', toast_pdf_bad: 'Не удалось сохранить PDF',
       toast_empty: 'Пустой отчёт.', toast_copy_ok: 'Текст скопирован', toast_copy_bad: 'Ошибка копирования',
+      toast_doctor_ok: 'JSON сохранён. В Telegram прикрепите этот файл в чате с ботом.',
+      toast_doctor_bad: 'Не удалось подготовить JSON.',
       copy_line_analysis: 'Анализ по анкете', copy_line_summary: 'Сводка:', copy_line_dist: 'Распределение:',
       copy_line_obs: 'Наблюдения:', copy_line_recs: 'Духовные рекомендации:'
     },
@@ -644,6 +661,7 @@
       toolbar_sub: 'So‘rovnoma → Tahlil',
       group_analysis: 'Tahlil',
       group_copy: 'Nusxa va chop etish',
+      group_doctor: 'Tabibga yuborish',
       group_theme: 'Sahifa mavzusi',
       group_save: 'Hisobotni saqlash',
       group_lang: 'Interfeys tili',
@@ -652,6 +670,7 @@
       btn_print_t: 'Chop etish yoki tizim PDF dialogi orqali saqlash',
       btn_png_t: 'Tahlil natijasini PNG rasmi sifatida saqlash',
       btn_pdf_t: 'Tahlil natijasini PDF fayl sifatida saqlash',
+      btn_doctor_t: 'Tabib uchun JSON yuklab olish va Telegram-botni ochish',
       theme_classic: 'Klassik', theme_green: 'Yashil', theme_dark: 'Qorong‘i',
       theme_classic_t: 'Oltin klassik palitra',
       theme_green_t: 'Yashil aksentlar',
@@ -698,6 +717,8 @@
       toast_png_p: 'PNG tayyorlanmoqda…', toast_png_ok: 'PNG saqlandi', toast_png_bad: 'PNG saqlab bo‘lmadi',
       toast_pdf_p: 'PDF tayyorlanmoqda…', toast_pdf_ok: 'PDF saqlandi', toast_pdf_bad: 'PDF saqlab bo‘lmadi',
       toast_empty: 'Bo‘sh hisobot.', toast_copy_ok: 'Matn nusxalandi', toast_copy_bad: 'Nusxalash xatosi',
+      toast_doctor_ok: 'JSON saqlandi. Telegramda bot chatiga ushbu faylni biriktiring.',
+      toast_doctor_bad: 'JSON tayyorlab bo‘lmadi.',
       copy_line_analysis: 'So‘rovnoma bo‘yicha tahlil', copy_line_summary: 'Xulosa:', copy_line_dist: 'Taqsimot:',
       copy_line_obs: 'Kuzatuvlar:', copy_line_recs: 'Ruhiy tavsiyalar:'
     }
@@ -775,10 +796,15 @@
     tb.title = t('btn_png_t'); tb.setAttribute('aria-label', t('btn_png_t'));
     tb = document.getElementById('btnSavePdf');
     tb.title = t('btn_pdf_t'); tb.setAttribute('aria-label', t('btn_pdf_t'));
+    tb = document.getElementById('btnSendDoctor');
+    if (tb) { tb.title = t('btn_doctor_t'); tb.setAttribute('aria-label', t('btn_doctor_t')); }
+    tb = document.getElementById('btnSendDoctorFooter');
+    if (tb) { tb.title = t('btn_doctor_t'); tb.setAttribute('aria-label', t('btn_doctor_t')); }
 
     var groups = document.querySelectorAll('.toolbar .tb-group[role="group"]');
     if (groups[0]) groups[0].setAttribute('aria-label', t('group_analysis'));
     if (groups[1]) groups[1].setAttribute('aria-label', t('group_copy'));
+    if (groups[2]) groups[2].setAttribute('aria-label', t('group_doctor'));
     var themeSeg = document.getElementById('themeSegment');
     if (themeSeg) themeSeg.setAttribute('aria-label', t('group_theme'));
     var rs = document.getElementById('resultCard').querySelector('.report-actions');
@@ -1042,20 +1068,15 @@
       '\n\n' + t('recs_sub_obsess') + '\n' + t('recs_o1');
   }
 
-  function buildReport() {
-    var s = scoreNow();
+  function computeReportData(s) {
     var name = (document.getElementById('f_name').value || '').trim() || '—';
     var age = (document.getElementById('f_age').value || '').trim() || '—';
     var city = (document.getElementById('f_city').value || '').trim() || '—';
-    var nChecked = Object.keys(s.checked).length;
-    if (nChecked === 0) {
-      return {
-        html: '<div class="report-brand">' + esc(brand()) + '</div><p class="placeholder" id="reportPlaceholder">' + esc(t('report_empty')) + '</p>' + contactFooterHtml(),
-        text: brand() + '\n\n' + t('report_empty') + '\n\n' + t('contact_plain') + ' ' + TELEGRAM_BOT_URL
-      };
-    }
-
+    var date = document.getElementById('f_date').value;
     var mult = practiceAilmentDisplayMult();
+    var practiceVal = parseInt(document.getElementById('f_practice').value, 10) || 0;
+    practiceVal = Math.max(0, Math.min(3, practiceVal));
+
     var rows = CAT.map(function (c) {
       var adj = s.current[c] * mult;
       var p = Math.min(100, percentage(adj, MAX_SCORES[c]));
@@ -1073,6 +1094,100 @@
     } else {
       summary = t('summary_hi_start') + top[0].label + (top[1] && top[1].p > 5 ? t('summary_hi_mid') + top[1].label : '') + t('summary_hi_outro');
     }
+
+    return {
+      name: name, age: age, city: city, date: date, mult: mult, practiceVal: practiceVal,
+      rows: rows, top: top, conf: conf, symptomsList: symptomsList, summary: summary
+    };
+  }
+
+  function plainReportTextFromComputation(cd) {
+    return brand() + '\n\n' + t('copy_line_analysis') + '\n' +
+      t('meta_name') + ' ' + cd.name + '\n' + t('meta_age') + ' ' + cd.age + '\n' + t('meta_city') + ' ' + cd.city + '\n' + t('meta_date') + ' ' + cd.date + '\n' +
+      t('copy_line_summary') + ' ' + cd.summary + '\n\n' +
+      t('copy_line_dist') + '\n' + cd.rows.map(function (r) { return r.label + ': ' + r.p + '%'; }).join('\n') +
+      '\n\n' + t('copy_line_obs') + '\n- ' + cd.symptomsList.join('\n- ') + '\n\n' + t('copy_line_recs') + '\n\n' + spiritualRecommendationsPlain() +
+      '\n\n' + t('contact_plain') + ' ' + TELEGRAM_BOT_URL +
+      '\n\n' + t('report_closing');
+  }
+
+  function buildAnalysisPayload() {
+    var s = scoreNow();
+    var cd = computeReportData(s);
+    var checkedItemIds = Object.keys(s.checked).sort();
+    return {
+      schemaVersion: 1,
+      exportedAt: new Date().toISOString(),
+      lang: currentLang,
+      telegramBot: TELEGRAM_BOT_URL,
+      brand: brand(),
+      patient: { name: cd.name, age: cd.age, city: cd.city, date: cd.date },
+      practiceSlider: { value: cd.practiceVal, ailmentDisplayMult: Math.round(cd.mult * 1000) / 1000 },
+      checkedItemIds: checkedItemIds,
+      scoresRaw: s.current,
+      distribution: cd.rows.map(function (r) {
+        return { key: r.key, label: r.label, percent: r.p, raw: r.raw };
+      }),
+      topCategories: cd.top.map(function (x) {
+        return { key: x.key, label: catLabel(x.key), percent: x.p };
+      }),
+      confidence: cd.conf,
+      summaryText: cd.summary,
+      reportPlainText: plainReportTextFromComputation(cd)
+    };
+  }
+
+  function doctorJsonFilename() {
+    var d = new Date();
+    var yyyy = d.getFullYear();
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    var hh = String(d.getHours()).padStart(2, '0');
+    var mi = String(d.getMinutes()).padStart(2, '0');
+    var ss = String(d.getSeconds()).padStart(2, '0');
+    return 'lekabr_analysis_' + yyyy + '-' + mm + '-' + dd + '_' + hh + mi + ss + '.json';
+  }
+
+  function sendToDoctor() {
+    if (!isReportReady()) { showToast(t('toast_check')); return; }
+    try {
+      var payload = buildAnalysisPayload();
+      var json = JSON.stringify(payload, null, 2);
+      var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = doctorJsonFilename();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      window.open(TELEGRAM_BOT_URL, '_blank', 'noopener,noreferrer');
+      showToast(t('toast_doctor_ok'));
+    } catch (e) {
+      showToast(t('toast_doctor_bad'));
+    }
+  }
+
+  function buildReport() {
+    var s = scoreNow();
+    var nChecked = Object.keys(s.checked).length;
+    if (nChecked === 0) {
+      return {
+        html: '<div class="report-brand">' + esc(brand()) + '</div><p class="placeholder" id="reportPlaceholder">' + esc(t('report_empty')) + '</p>' + contactFooterHtml(),
+        text: brand() + '\n\n' + t('report_empty') + '\n\n' + t('contact_plain') + ' ' + TELEGRAM_BOT_URL
+      };
+    }
+
+    var cd = computeReportData(s);
+    var name = cd.name;
+    var age = cd.age;
+    var city = cd.city;
+    var rows = cd.rows;
+    var top = cd.top;
+    var conf = cd.conf;
+    var symptomsList = cd.symptomsList;
+    var summary = cd.summary;
 
     var html = '';
     html += '<div class="report-brand">' + esc(brand()) + '</div>';
@@ -1106,13 +1221,7 @@
     html += contactFooterHtml();
     html += '<div class="report-closing">' + esc(t('report_closing')) + '</div>';
 
-    var text = brand() + '\n\n' + t('copy_line_analysis') + '\n' +
-      t('meta_name') + ' ' + name + '\n' + t('meta_age') + ' ' + age + '\n' + t('meta_city') + ' ' + city + '\n' + t('meta_date') + ' ' + document.getElementById('f_date').value + '\n' +
-      t('copy_line_summary') + ' ' + summary + '\n\n' +
-      t('copy_line_dist') + '\n' + rows.map(function (r) { return r.label + ': ' + r.p + '%'; }).join('\n') +
-      '\n\n' + t('copy_line_obs') + '\n- ' + symptomsList.join('\n- ') +       '\n\n' + t('copy_line_recs') + '\n\n' + spiritualRecommendationsPlain() +
-      '\n\n' + t('contact_plain') + ' ' + TELEGRAM_BOT_URL +
-      '\n\n' + t('report_closing');
+    var text = plainReportTextFromComputation(cd);
 
     return { html: html, text: text };
   }
@@ -1323,6 +1432,8 @@
   document.getElementById('btnRun').addEventListener('click', onAnyChange);
   document.getElementById('btnCopyText').addEventListener('click', copyText);
   document.getElementById('btnPrint').addEventListener('click', function () { window.print(); });
+  document.getElementById('btnSendDoctor').addEventListener('click', sendToDoctor);
+  document.getElementById('btnSendDoctorFooter').addEventListener('click', sendToDoctor);
   document.getElementById('btnSavePng').addEventListener('click', savePng);
   document.getElementById('btnSavePdf').addEventListener('click', savePdf);
 
