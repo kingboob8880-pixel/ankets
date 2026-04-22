@@ -712,6 +712,7 @@
   'use strict';
 
   var LANG_KEY = 'qa_lang';
+  var DRAFT_KEY = 'qa_draft';
   var currentLang = 'ru';
 
   var BRAND_BY_LANG = { ru: 'Лекарь Абу Мухаммад', uz: 'Tabib Abu Muhammad' };
@@ -879,6 +880,54 @@
     } catch (e) {}
   }
 
+  function loadDraft() {
+    var empty = { checks: {}, name: '', age: '', city: '', practice: '1' };
+    try {
+      var raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return empty;
+      var o = JSON.parse(raw);
+      if (!o || typeof o !== 'object') return empty;
+      var checks = o.checks && typeof o.checks === 'object' ? o.checks : {};
+      return {
+        checks: checks,
+        name: typeof o.name === 'string' ? o.name : '',
+        age: typeof o.age === 'string' ? o.age : '',
+        city: typeof o.city === 'string' ? o.city : '',
+        practice: o.practice != null ? String(o.practice) : '1'
+      };
+    } catch (e) {
+      return empty;
+    }
+  }
+
+  function saveDraft() {
+    try {
+      var payload = {
+        checks: getCheckedIds(),
+        name: document.getElementById('f_name').value || '',
+        age: document.getElementById('f_age').value || '',
+        city: document.getElementById('f_city').value || '',
+        practice: document.getElementById('f_practice').value || '1'
+      };
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
+    } catch (e) {}
+  }
+
+  function restoreDraftFormFields() {
+    var d = loadDraft();
+    var fn = document.getElementById('f_name');
+    var fa = document.getElementById('f_age');
+    var fc = document.getElementById('f_city');
+    var fp = document.getElementById('f_practice');
+    if (fn) fn.value = d.name;
+    if (fa) fa.value = d.age;
+    if (fc) fc.value = d.city;
+    if (fp && d.practice != null) {
+      var pv = parseInt(d.practice, 10);
+      if (!isNaN(pv) && pv >= 0 && pv <= 3) fp.value = String(pv);
+    }
+  }
+
   function setLang(lang) {
     if (lang !== 'ru' && lang !== 'uz') return;
     currentLang = lang;
@@ -890,9 +939,11 @@
       btn.classList.toggle('is-active', on);
       if (btn.getAttribute('role') === 'radio') btn.setAttribute('aria-checked', on ? 'true' : 'false');
     });
+    if (document.querySelector('#questionnaireRoot input[data-qid]')) saveDraft();
     refreshDateField();
     applyStaticI18n();
     buildQuestionnaire();
+    restoreDraftFormFields();
     updatePracticeLabel();
     render();
   }
@@ -1559,7 +1610,8 @@
 
   function buildQuestionnaire() {
     var root = document.getElementById('questionnaireRoot');
-    var saved = getCheckedIds();
+    var fromDom = getCheckedIds();
+    var saved = Object.keys(fromDom).length ? fromDom : loadDraft().checks;
     root.textContent = '';
     var frag = document.createDocumentFragment();
     var fl = document.createElement('div');
@@ -1594,6 +1646,7 @@
   function onAnyChange() {
     updatePracticeLabel();
     render();
+    saveDraft();
   }
 
   document.getElementById('questionnaireRoot').addEventListener('change', onAnyChange);
@@ -1658,6 +1711,11 @@
       setLang(b.getAttribute('data-lang-pick'));
     });
   });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') saveDraft();
+  });
+  window.addEventListener('pagehide', saveDraft);
 })();
   </script>
 </body>
