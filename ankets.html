@@ -777,6 +777,7 @@
       report_closing: 'Лекарь Абу Мухаммад готов принять вас на своё профессиональное лечение.',
       toast_check: 'Сначала отметьте пункты анкеты.',
       toast_libs: 'Библиотеки экспорта не загрузились.',
+      toast_download_fallback: 'Открыта новая вкладка — в меню браузера нажмите «Скачать» или «Поделиться».',
       toast_png_p: 'Готовлю PNG…', toast_png_ok: 'PNG сохранён', toast_png_bad: 'Не удалось сохранить PNG',
       toast_pdf_p: 'Готовлю PDF…', toast_pdf_ok: 'PDF сохранён', toast_pdf_bad: 'Не удалось сохранить PDF',
       toast_empty: 'Пустой отчёт.', toast_copy_ok: 'Текст скопирован', toast_copy_bad: 'Ошибка копирования',
@@ -845,6 +846,7 @@
       report_closing: 'Tabib Abu Muhammad sizni professional davolashga qabul qilishga tayyor.',
       toast_check: 'Avval so‘rovnoma bandlarini belgilang.',
       toast_libs: 'Eksport kutubxonalari yuklanmadi.',
+      toast_download_fallback: 'Yangi varaq ochildi — brauzer menyusidan «Yuklab olish» yoki «Ulashish»ni bosing.',
       toast_png_p: 'PNG tayyorlanmoqda…', toast_png_ok: 'PNG saqlandi', toast_png_bad: 'PNG saqlab bo‘lmadi',
       toast_pdf_p: 'PDF tayyorlanmoqda…', toast_pdf_ok: 'PDF saqlandi', toast_pdf_bad: 'PDF saqlab bo‘lmadi',
       toast_empty: 'Bo‘sh hisobot.', toast_copy_ok: 'Matn nusxalandi', toast_copy_bad: 'Nusxalash xatosi',
@@ -1374,14 +1376,10 @@
       var json = JSON.stringify(payload, null, 2);
       var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
       var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = doctorJsonFilename();
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      window.open(TELEGRAM_BOT_URL, '_blank', 'noopener,noreferrer');
+      downloadBlobUrl(url, doctorJsonFilename());
+      setTimeout(function () {
+        try { window.open(TELEGRAM_BOT_URL, '_blank', 'noopener,noreferrer'); } catch (e) {}
+      }, 400);
     } catch (e) {
       showToast(t('toast_doctor_bad'));
     }
@@ -1491,19 +1489,85 @@
     return 'analysis_' + yyyy + '-' + mm + '-' + dd;
   }
 
+  function isRestrictedInAppBrowser() {
+    var ua = navigator.userAgent || '';
+    return /Telegram|Instagram|FBAN|FBAV/i.test(ua);
+  }
+
+  function triggerDownload(url, filename) {
+    if (isRestrictedInAppBrowser()) {
+      try {
+        var w = window.open(url, '_blank', 'noopener,noreferrer');
+        if (w) {
+          showToast(t('toast_download_fallback'));
+          return;
+        }
+      } catch (e) {}
+    }
+    try {
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (e2) {}
+  }
+
   function downloadDataUrl(dataUrl, filename) {
-    var a = document.createElement('a');
-    a.href = dataUrl;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    triggerDownload(dataUrl, filename);
+  }
+
+  function downloadBlobUrl(url, filename) {
+    triggerDownload(url, filename);
+    setTimeout(function () {
+      try { URL.revokeObjectURL(url); } catch (e) {}
+    }, 45000);
   }
 
   function ensureExportLibs() {
     if (!window.html2canvas) return false;
     if (!window.jspdf || !window.jspdf.jsPDF) return false;
     return true;
+  }
+
+  function loadScriptOnce(url, cb) {
+    var s = document.createElement('script');
+    s.src = url;
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.onload = function () { cb(true); };
+    s.onerror = function () { cb(false); };
+    document.head.appendChild(s);
+  }
+
+  function loadHtml2Canvas(cb) {
+    if (window.html2canvas) { cb(true); return; }
+    loadScriptOnce('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js', function (ok) {
+      if (ok && window.html2canvas) { cb(true); return; }
+      loadScriptOnce('https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js', function (ok2) {
+        cb(!!(ok2 && window.html2canvas));
+      });
+    });
+  }
+
+  function loadJsPdf(cb) {
+    if (window.jspdf && window.jspdf.jsPDF) { cb(true); return; }
+    loadScriptOnce('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js', function (ok) {
+      if (ok && window.jspdf && window.jspdf.jsPDF) { cb(true); return; }
+      loadScriptOnce('https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js', function (ok2) {
+        cb(!!(ok2 && window.jspdf && window.jspdf.jsPDF));
+      });
+    });
+  }
+
+  function loadExportLibs(cb) {
+    if (ensureExportLibs()) { cb(true); return; }
+    loadHtml2Canvas(function (ok1) {
+      if (!ok1) { cb(false); return; }
+      loadJsPdf(function (ok2) { cb(!!ok2); });
+    });
   }
 
   function renderReportToCanvas() {
@@ -1523,9 +1587,7 @@
     });
   }
 
-  function savePng() {
-    if (!isReportReady()) { showToast(t('toast_check')); return; }
-    if (!ensureExportLibs()) { showToast(t('toast_libs')); return; }
+  function runSavePng() {
     showToast(t('toast_png_p'));
     renderReportToCanvas().then(function (canvas) {
       var dataUrl = canvas.toDataURL('image/png');
@@ -1536,11 +1598,20 @@
     });
   }
 
-  function savePdf() {
+  function savePng() {
     if (!isReportReady()) { showToast(t('toast_check')); return; }
-    if (!ensureExportLibs()) { showToast(t('toast_libs')); return; }
-    showToast(t('toast_pdf_p'));
+    if (ensureExportLibs()) {
+      runSavePng();
+      return;
+    }
+    loadExportLibs(function (ok) {
+      if (!ok) { showToast(t('toast_libs')); return; }
+      runSavePng();
+    });
+  }
 
+  function runSavePdf() {
+    showToast(t('toast_pdf_p'));
     renderReportToCanvas().then(function (canvas) {
       var jsPDF = window.jspdf.jsPDF;
       var pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
@@ -1558,7 +1629,6 @@
       if (imgH <= innerH) {
         pdf.addImage(imgData, 'PNG', margin, margin, imgW, imgH, undefined, 'FAST');
       } else {
-        // Multi-page: slice the canvas into page-height chunks.
         var pageCanvas = document.createElement('canvas');
         var pageCtx = pageCanvas.getContext('2d');
         var pxPerMm = canvas.width / imgW;
@@ -1591,10 +1661,28 @@
         }
       }
 
-      pdf.save(safeFilenameBase() + '.pdf');
+      try {
+        var outBlob = pdf.output('blob');
+        var blobUrl = URL.createObjectURL(outBlob);
+        downloadBlobUrl(blobUrl, safeFilenameBase() + '.pdf');
+      } catch (e) {
+        pdf.save(safeFilenameBase() + '.pdf');
+      }
       showToast(t('toast_pdf_ok'));
     }).catch(function () {
       showToast(t('toast_pdf_bad'));
+    });
+  }
+
+  function savePdf() {
+    if (!isReportReady()) { showToast(t('toast_check')); return; }
+    if (ensureExportLibs()) {
+      runSavePdf();
+      return;
+    }
+    loadExportLibs(function (ok) {
+      if (!ok) { showToast(t('toast_libs')); return; }
+      runSavePdf();
     });
   }
 
