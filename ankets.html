@@ -345,6 +345,15 @@
     .report-contact-link:hover { color: var(--gold-light); }
     [data-theme="dark"] .report-page .report-contact { color: #b8a898; }
     [data-theme="dark"] .report-page .report-contact-link { color: #e0c478; }
+    .report-closing {
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      margin-top: 16px;
+      color: var(--ink-soft);
+      line-height: 1.45;
+    }
+    [data-theme="dark"] .report-page .report-closing { color: #c8b8a0; }
     .placeholder { color: var(--ink-soft); text-align: center; padding: 32px; font-style: italic; }
     .toast {
       position: fixed;
@@ -621,6 +630,7 @@
       contact_pre: 'Связь с лекарем Абу Мухаммад:',
       contact_link: 'Открыть бота в Telegram',
       contact_plain: 'Связь с лекарем (Telegram):',
+      report_closing: 'Лекарь Абу Мухаммад готов принять вас на своё профессиональное лечение.',
       toast_check: 'Сначала отметьте пункты анкеты.',
       toast_libs: 'Библиотеки экспорта не загрузились.',
       toast_png_p: 'Готовлю PNG…', toast_png_ok: 'PNG сохранён', toast_png_bad: 'Не удалось сохранить PNG',
@@ -682,6 +692,7 @@
       contact_pre: 'Tabib Abu Muhammad bilan aloqa:',
       contact_link: 'Telegram-botni ochish',
       contact_plain: 'Tabib bilan aloqa (Telegram):',
+      report_closing: 'Tabib Abu Muhammad sizni professional davolashga qabul qilishga tayyor.',
       toast_check: 'Avval so‘rovnoma bandlarini belgilang.',
       toast_libs: 'Eksport kutubxonalari yuklanmadi.',
       toast_png_p: 'PNG tayyorlanmoqda…', toast_png_ok: 'PNG saqlandi', toast_png_bad: 'PNG saqlab bo‘lmadi',
@@ -1093,13 +1104,15 @@
 
     html += '<div class="disclaimer">' + esc(t('disclaimer')) + '</div>';
     html += contactFooterHtml();
+    html += '<div class="report-closing">' + esc(t('report_closing')) + '</div>';
 
     var text = brand() + '\n\n' + t('copy_line_analysis') + '\n' +
       t('meta_name') + ' ' + name + '\n' + t('meta_age') + ' ' + age + '\n' + t('meta_city') + ' ' + city + '\n' + t('meta_date') + ' ' + document.getElementById('f_date').value + '\n' +
       t('copy_line_summary') + ' ' + summary + '\n\n' +
       t('copy_line_dist') + '\n' + rows.map(function (r) { return r.label + ': ' + r.p + '%'; }).join('\n') +
-      '\n\n' + t('copy_line_obs') + '\n- ' + symptomsList.join('\n- ') + '\n\n' + t('copy_line_recs') + '\n\n' + spiritualRecommendationsPlain() +
-      '\n\n' + t('contact_plain') + ' ' + TELEGRAM_BOT_URL;
+      '\n\n' + t('copy_line_obs') + '\n- ' + symptomsList.join('\n- ') +       '\n\n' + t('copy_line_recs') + '\n\n' + spiritualRecommendationsPlain() +
+      '\n\n' + t('contact_plain') + ' ' + TELEGRAM_BOT_URL +
+      '\n\n' + t('report_closing');
 
     return { html: html, text: text };
   }
