@@ -115,6 +115,16 @@
       font-weight: 600;
       font-size: 12px;
     }
+    .tb.tb-copy-json {
+      min-width: unset;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tb-json-caption {
+      font-weight: 600;
+      font-size: 12px;
+    }
     .tb-group {
       display: inline-flex;
       flex-wrap: wrap;
@@ -710,6 +720,12 @@
           aria-label="Сохранить результат анализа как файл PDF">
           <i class="fas fa-file-pdf" aria-hidden="true"></i> PDF
         </button>
+        <button type="button" class="tb tb-icon tb-copy-json" id="btnCopyJson"
+          title="Скопировать данные анкеты для лекаря в JSON. Shift+клик — скачать файл."
+          aria-label="Скопировать данные анкеты для лекаря в JSON. Shift+клик — скачать файл.">
+          <i class="fas fa-file-code" aria-hidden="true"></i>
+          <span class="tb-json-caption">Скопировать JSON</span>
+        </button>
         <button type="button" class="tb tb-doctor" id="btnSendDoctorFooter"
           title="Скачать JSON и открыть бота в Telegram"
           aria-label="Скачать JSON и открыть бота в Telegram">
@@ -935,6 +951,10 @@
       btn_pdf_t: 'Сохранить результат анализа как файл PDF',
       btn_doctor_t: 'Скачать JSON анкеты для лекаря и открыть бота в Telegram',
       btn_doctor_label: 'Отправить к лекарю',
+      btn_copy_json: 'Скопировать JSON',
+      btn_copy_json_t: 'Скопировать данные анкеты для лекаря в JSON. Shift+клик — скачать файл.',
+      toast_copy_json_ok: 'JSON анкеты скопирован в буфер',
+      toast_copy_json_dl_ok: 'JSON анкеты сохранён файлом',
       theme_classic: 'Классика', theme_green: 'Зелёная', theme_dark: 'Тёмная',
       theme_classic_t: 'Классическая золотая палитра',
       theme_green_t: 'Зелёные акценты',
@@ -1017,6 +1037,10 @@
       btn_pdf_t: 'Tahlil natijasini PDF fayl sifatida saqlash',
       btn_doctor_t: 'Tabib uchun JSON yuklab olish va Telegram-botni ochish',
       btn_doctor_label: 'Tabibga yuborish',
+      btn_copy_json: 'JSON nusxalash',
+      btn_copy_json_t: 'Tabib uchun so‘rovnoma ma’lumotlarini JSON sifatida buferga nusxalash. Shift+bosish — fayl sifatida yuklab olish.',
+      toast_copy_json_ok: 'So‘rovnoma JSON buferga nusxalandi',
+      toast_copy_json_dl_ok: 'So‘rovnoma JSON fayl sifatida saqlandi',
       theme_classic: 'Klassik', theme_green: 'Yashil', theme_dark: 'Qorong‘i',
       theme_classic_t: 'Oltin klassik palitra',
       theme_green_t: 'Yashil aksentlar',
@@ -1207,6 +1231,13 @@
     tb.title = t('btn_png_t'); tb.setAttribute('aria-label', t('btn_png_t'));
     tb = document.getElementById('btnSavePdf');
     tb.title = t('btn_pdf_t'); tb.setAttribute('aria-label', t('btn_pdf_t'));
+    tb = document.getElementById('btnCopyJson');
+    if (tb) {
+      tb.title = t('btn_copy_json_t');
+      tb.setAttribute('aria-label', t('btn_copy_json_t'));
+      var capJson = tb.querySelector('.tb-json-caption');
+      if (capJson) capJson.textContent = t('btn_copy_json');
+    }
     tb = document.getElementById('btnSendDoctor');
     if (tb) {
       tb.title = t('btn_doctor_t');
@@ -2378,6 +2409,27 @@
     copyToClipboard(r.text, t('toast_copy_ok'));
   }
 
+  function copyDoctorJson(ev) {
+    if (!isReportReady()) {
+      showToast(t('toast_check'));
+      return;
+    }
+    try {
+      var json = JSON.stringify(buildAnalysisPayload(), null, 2);
+      if (ev && ev.shiftKey) {
+        var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        downloadBlobUrl(url, doctorJsonFilename());
+        showToast(t('toast_copy_json_dl_ok'));
+        return;
+      }
+      copyToClipboard(json, t('toast_copy_json_ok'));
+    } catch (e) {
+      techReport.recordError(e, 'copyDoctorJson');
+      showToast(t('toast_doctor_bad'));
+    }
+  }
+
   function buildQuestionnaire() {
     var root = document.getElementById('questionnaireRoot');
     var fromDom = getCheckedIds();
@@ -2493,6 +2545,7 @@
       document.getElementById('launchHintOk').addEventListener('click', closeLaunchHintModal);
       document.getElementById('btnSavePng').addEventListener('click', savePng);
       document.getElementById('btnSavePdf').addEventListener('click', savePdf);
+      document.getElementById('btnCopyJson').addEventListener('click', copyDoctorJson);
       document.getElementById('btnTechReport').addEventListener('click', function (ev) {
         if (ev.shiftKey) downloadTechReportJSON(); else copyTechReportJSON();
       });
