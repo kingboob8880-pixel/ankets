@@ -373,6 +373,60 @@
     }
     [data-theme="dark"] .toast { background: rgba(30, 26, 20, 0.95); }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .doctor-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+      padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    }
+    .doctor-modal.is-open {
+      display: flex;
+    }
+    .doctor-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(42, 36, 28, 0.45);
+      cursor: pointer;
+    }
+    [data-theme="dark"] .doctor-modal-backdrop {
+      background: rgba(0, 0, 0, 0.55);
+    }
+    .doctor-modal-panel {
+      position: relative;
+      z-index: 1;
+      max-width: 420px;
+      width: 100%;
+      background: var(--ui-surface);
+      color: var(--ui-text);
+      border: 1px solid rgba(215, 164, 73, 0.35);
+      border-radius: 16px;
+      padding: 20px 22px 18px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+    }
+    .doctor-modal-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .doctor-modal-body {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--ui-text);
+      margin-bottom: 18px;
+    }
+    .doctor-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .doctor-modal-actions .tb {
+      min-height: 44px;
+      padding: 10px 20px;
+    }
     .report-actions {
       display: flex;
       flex-wrap: wrap;
@@ -468,7 +522,7 @@
     }
 
     @media print {
-      .toolbar, .report-actions, .card:first-of-type .flabel, .q-block, .sidebar-only { display: none !important; }
+      .toolbar, .report-actions, .doctor-modal, .card:first-of-type .flabel, .q-block, .sidebar-only { display: none !important; }
       body { background: #fff; color: #000; }
       .layout { display: block; max-width: 100%; padding: 0; }
       .card { border: none; box-shadow: none; background: transparent; padding: 0; }
@@ -579,6 +633,17 @@
   </div>
   <div class="toast" id="toast" role="status"></div>
 
+  <div class="doctor-modal" id="doctorModal" role="dialog" aria-modal="true" aria-labelledby="doctorModalTitle">
+    <div class="doctor-modal-backdrop" id="doctorModalBackdrop" aria-hidden="true"></div>
+    <div class="doctor-modal-panel">
+      <h2 class="doctor-modal-title" id="doctorModalTitle"></h2>
+      <p class="doctor-modal-body" id="doctorModalBody"></p>
+      <div class="doctor-modal-actions">
+        <button type="button" class="tb primary" id="doctorModalOk"></button>
+      </div>
+    </div>
+  </div>
+
   <script>
 (function(){
   'use strict';
@@ -651,7 +716,9 @@
       toast_png_p: 'Готовлю PNG…', toast_png_ok: 'PNG сохранён', toast_png_bad: 'Не удалось сохранить PNG',
       toast_pdf_p: 'Готовлю PDF…', toast_pdf_ok: 'PDF сохранён', toast_pdf_bad: 'Не удалось сохранить PDF',
       toast_empty: 'Пустой отчёт.', toast_copy_ok: 'Текст скопирован', toast_copy_bad: 'Ошибка копирования',
-      toast_doctor_ok: 'JSON сохранён. В Telegram прикрепите этот файл в чате с ботом.',
+      toast_doctor_hint: 'Сейчас скачается JSON-файл. Откроется бот в Telegram — прикрепите этот файл в чате, чтобы передать данные лекарю.',
+      doctor_modal_title: 'Отправка лекарю',
+      doctor_modal_ok: 'Понял',
       toast_doctor_bad: 'Не удалось подготовить JSON.',
       copy_line_analysis: 'Анализ по анкете', copy_line_summary: 'Сводка:', copy_line_dist: 'Распределение:',
       copy_line_obs: 'Наблюдения:', copy_line_recs: 'Духовные рекомендации:'
@@ -717,7 +784,9 @@
       toast_png_p: 'PNG tayyorlanmoqda…', toast_png_ok: 'PNG saqlandi', toast_png_bad: 'PNG saqlab bo‘lmadi',
       toast_pdf_p: 'PDF tayyorlanmoqda…', toast_pdf_ok: 'PDF saqlandi', toast_pdf_bad: 'PDF saqlab bo‘lmadi',
       toast_empty: 'Bo‘sh hisobot.', toast_copy_ok: 'Matn nusxalandi', toast_copy_bad: 'Nusxalash xatosi',
-      toast_doctor_ok: 'JSON saqlandi. Telegramda bot chatiga ushbu faylni biriktiring.',
+      toast_doctor_hint: 'Hozir JSON-fayl yuklab olinadi. Telegram-bot ochiladi — ushbu faylni tabibga uzatish uchun bot chatiga biriktiring.',
+      doctor_modal_title: 'Tabibga yuborish',
+      doctor_modal_ok: 'Tushundim',
       toast_doctor_bad: 'JSON tayyorlab bo‘lmadi.',
       copy_line_analysis: 'So‘rovnoma bo‘yicha tahlil', copy_line_summary: 'Xulosa:', copy_line_dist: 'Taqsimot:',
       copy_line_obs: 'Kuzatuvlar:', copy_line_recs: 'Ruhiy tavsiyalar:'
@@ -800,6 +869,13 @@
     if (tb) { tb.title = t('btn_doctor_t'); tb.setAttribute('aria-label', t('btn_doctor_t')); }
     tb = document.getElementById('btnSendDoctorFooter');
     if (tb) { tb.title = t('btn_doctor_t'); tb.setAttribute('aria-label', t('btn_doctor_t')); }
+
+    var dmTitle = document.getElementById('doctorModalTitle');
+    var dmBody = document.getElementById('doctorModalBody');
+    var dmOk = document.getElementById('doctorModalOk');
+    if (dmTitle) dmTitle.textContent = t('doctor_modal_title');
+    if (dmBody) dmBody.textContent = t('toast_doctor_hint');
+    if (dmOk) dmOk.textContent = t('doctor_modal_ok');
 
     var groups = document.querySelectorAll('.toolbar .tb-group[role="group"]');
     if (groups[0]) groups[0].setAttribute('aria-label', t('group_analysis'));
@@ -1148,8 +1224,37 @@
     return 'lekabr_analysis_' + yyyy + '-' + mm + '-' + dd + '_' + hh + mi + ss + '.json';
   }
 
-  function sendToDoctor() {
-    if (!isReportReady()) { showToast(t('toast_check')); return; }
+  var doctorModalPrevFocus = null;
+
+  function onDoctorModalKeydown(ev) {
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      closeDoctorModal();
+    }
+  }
+
+  function openDoctorModal() {
+    var modal = document.getElementById('doctorModal');
+    if (!modal) return;
+    doctorModalPrevFocus = document.activeElement;
+    modal.classList.add('is-open');
+    var ok = document.getElementById('doctorModalOk');
+    if (ok) ok.focus();
+    document.addEventListener('keydown', onDoctorModalKeydown);
+  }
+
+  function closeDoctorModal() {
+    var modal = document.getElementById('doctorModal');
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    document.removeEventListener('keydown', onDoctorModalKeydown);
+    if (doctorModalPrevFocus && typeof doctorModalPrevFocus.focus === 'function') {
+      try { doctorModalPrevFocus.focus(); } catch (e) {}
+    }
+    doctorModalPrevFocus = null;
+  }
+
+  function performDoctorSend() {
     try {
       var payload = buildAnalysisPayload();
       var json = JSON.stringify(payload, null, 2);
@@ -1163,10 +1268,14 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       window.open(TELEGRAM_BOT_URL, '_blank', 'noopener,noreferrer');
-      showToast(t('toast_doctor_ok'));
     } catch (e) {
       showToast(t('toast_doctor_bad'));
     }
+  }
+
+  function sendToDoctor() {
+    if (!isReportReady()) { showToast(t('toast_check')); return; }
+    openDoctorModal();
   }
 
   function buildReport() {
@@ -1434,6 +1543,11 @@
   document.getElementById('btnPrint').addEventListener('click', function () { window.print(); });
   document.getElementById('btnSendDoctor').addEventListener('click', sendToDoctor);
   document.getElementById('btnSendDoctorFooter').addEventListener('click', sendToDoctor);
+  document.getElementById('doctorModalBackdrop').addEventListener('click', closeDoctorModal);
+  document.getElementById('doctorModalOk').addEventListener('click', function () {
+    closeDoctorModal();
+    performDoctorSend();
+  });
   document.getElementById('btnSavePng').addEventListener('click', savePng);
   document.getElementById('btnSavePdf').addEventListener('click', savePdf);
 
