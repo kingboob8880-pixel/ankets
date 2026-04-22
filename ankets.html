@@ -1329,7 +1329,16 @@
     };
   }
 
-  function doctorJsonFilename() {
+  function sanitizeExportNamePart(raw) {
+    var s = (raw == null ? '' : String(raw)).trim();
+    if (!s || s === '—' || s === '-') return '';
+    s = s.replace(/[\u0000-\u001f<>:"/\\|?*]/g, '');
+    s = s.replace(/\s+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+    if (s.length > 80) s = s.slice(0, 80).replace(/_+$/, '');
+    return s;
+  }
+
+  function exportFilenameBase() {
     var d = new Date();
     var yyyy = d.getFullYear();
     var mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -1337,7 +1346,14 @@
     var hh = String(d.getHours()).padStart(2, '0');
     var mi = String(d.getMinutes()).padStart(2, '0');
     var ss = String(d.getSeconds()).padStart(2, '0');
-    return 'lekabr_analysis_' + yyyy + '-' + mm + '-' + dd + '_' + hh + mi + ss + '.json';
+    var tail = yyyy + '-' + mm + '-' + dd + '_' + hh + mi + ss;
+    var namePart = sanitizeExportNamePart(document.getElementById('f_name').value);
+    if (namePart) return namePart + '_' + tail;
+    return 'analysis_' + tail;
+  }
+
+  function doctorJsonFilename() {
+    return exportFilenameBase() + '.json';
   }
 
   var doctorModalPrevFocus = null;
@@ -1481,14 +1497,6 @@
     return document.getElementById('reportOut');
   }
 
-  function safeFilenameBase() {
-    var d = new Date();
-    var yyyy = d.getFullYear();
-    var mm = String(d.getMonth() + 1).padStart(2, '0');
-    var dd = String(d.getDate()).padStart(2, '0');
-    return 'analysis_' + yyyy + '-' + mm + '-' + dd;
-  }
-
   function isRestrictedInAppBrowser() {
     var ua = navigator.userAgent || '';
     return /Telegram|Instagram|FBAN|FBAV/i.test(ua);
@@ -1591,7 +1599,7 @@
     showToast(t('toast_png_p'));
     renderReportToCanvas().then(function (canvas) {
       var dataUrl = canvas.toDataURL('image/png');
-      downloadDataUrl(dataUrl, safeFilenameBase() + '.png');
+      downloadDataUrl(dataUrl, exportFilenameBase() + '.png');
       showToast(t('toast_png_ok'));
     }).catch(function () {
       showToast(t('toast_png_bad'));
@@ -1664,9 +1672,9 @@
       try {
         var outBlob = pdf.output('blob');
         var blobUrl = URL.createObjectURL(outBlob);
-        downloadBlobUrl(blobUrl, safeFilenameBase() + '.pdf');
+        downloadBlobUrl(blobUrl, exportFilenameBase() + '.pdf');
       } catch (e) {
-        pdf.save(safeFilenameBase() + '.pdf');
+        pdf.save(exportFilenameBase() + '.pdf');
       }
       showToast(t('toast_pdf_ok'));
     }).catch(function () {
