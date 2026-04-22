@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="classic">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лекарь Абу Мухаммад — Анкета → анализ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <style>
+    :root {
+      --gold-deep: #b87c2e;
+      --gold-light: #d7a449;
+      --gold-pale: rgba(184, 124, 46, 0.1);
+      --ink: #2a241c;
+      --ink-soft: #4a3e30;
+      --parchment: #fef7e8;
+      /* Light UI by default (visual shell). */
+      --ui-bg: #f6f3ec;
+      --ui-surface: #ffffff;
+      --ui-surface2: #fbf7ee;
+      --ui-text: #2a241c;
+      --ui-muted: #7a6a58;
+    }
+    [data-theme="green"] {
+      --gold-deep: #2e7d4f;
+      --gold-light: #4caf50;
+      --gold-pale: rgba(46, 125, 79, 0.1);
+      --parchment: #f0faf0;
+      --ink: #1a2e1a;
+    }
+    [data-theme="dark"] {
+      --parchment: #1c1916;
+      --ink: #e8e0d0;
+      --ink-soft: #b8a898;
+      --ui-bg: #1e1a14;
+      --ui-surface: #2c241a;
+      --ui-surface2: #3f3324;
+      --ui-text: #faf0e1;
+      --ui-muted: #a89880;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      background: var(--ui-bg);
+      color: var(--ui-text);
+      min-height: 100vh;
+      line-height: 1.45;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    a { color: var(--gold-light); }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      padding: max(10px, env(safe-area-inset-top, 0px)) 12px 10px;
+      padding-left: max(12px, env(safe-area-inset-left, 0px));
+      padding-right: max(12px, env(safe-area-inset-right, 0px));
+      background: rgba(246, 243, 236, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(215, 164, 73, 0.25);
+    }
+    [data-theme="dark"] .toolbar { background: rgba(30, 26, 20, 0.95); }
+    .tb {
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(215, 164, 73, 0.35);
+      color: var(--gold-light);
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 24px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    [data-theme="dark"] .tb { background: rgba(255, 245, 225, 0.08); }
+    .tb:hover { background: var(--gold-deep); color: #1a150c; }
+    .tb.primary { background: linear-gradient(145deg, var(--gold-deep), #9c6a2c); color: #1e150c; }
+    /* Icon-only toolbar buttons: компактно, смысл — в title / aria-label */
+    .tb.tb-icon {
+      min-width: 40px;
+      min-height: 40px;
+      padding: 8px 10px;
+      justify-content: center;
+    }
+    .tb.tb-icon i { pointer-events: none; }
+    .tb-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+    .toolbar-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1.15;
+      margin-right: 4px;
+    }
+    .toolbar-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--gold-light);
+      font-size: 15px;
+      white-space: nowrap;
+    }
+    .toolbar-sub {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ui-muted);
+      white-space: nowrap;
+    }
+    /* Сегментированный переключатель тем */
+    .theme-segment {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      border: 1px solid rgba(215, 164, 73, 0.45);
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.5);
+    }
+    [data-theme="dark"] .theme-segment {
+      background: rgba(255, 245, 225, 0.06);
+    }
+    .theme-seg-btn {
+      appearance: none;
+      border: none;
+      margin: 0;
+      padding: 8px 14px;
+      font-family: 'Playfair Display', serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--ui-text);
+      background: transparent;
+      cursor: pointer;
+      border-right: 1px solid rgba(215, 164, 73, 0.35);
+      flex: 1 1 auto;
+      min-width: 5.2em;
+      text-align: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .theme-seg-btn:last-child { border-right: none; }
+    .theme-seg-btn:hover {
+      background: rgba(215, 164, 73, 0.12);
+      color: var(--gold-deep);
+    }
+    .theme-seg-btn.is-active {
+      background: linear-gradient(145deg, var(--gold-deep), #9c6a2c);
+      color: #1e150c;
+    }
+    [data-theme="dark"] .theme-seg-btn.is-active {
+      color: #1e150c;
+    }
+    .sep { width: 1px; height: 22px; background: rgba(215, 164, 73, 0.25); margin: 0 4px; }
+    .layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--ui-surface);
+      border: 1px solid rgba(215, 164, 73, 0.2);
+      border-radius: 16px;
+      padding: 18px 20px;
+    }
+    .card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--gold-light);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .fg { margin-bottom: 10px; }
+    .fg label {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--ui-muted);
+      margin-bottom: 4px;
+    }
+    .fg input[type="text"], .fg input[type="number"] {
+      width: 100%;
+      background: var(--ui-surface2);
+      border: 1px solid rgba(215, 164, 73, 0.3);
+      border-radius: 10px;
+      padding: 8px 12px;
+      color: var(--ui-text);
+      font-family: inherit;
+      font-size: 16px;
+    }
+    .frow2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 500px) { .frow2 { grid-template-columns: 1fr; } }
+    .flabel {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold-light);
+      font-family: 'Playfair Display', serif;
+      margin: 16px 0 8px;
+    }
+    .flabel:first-child { margin-top: 0; }
+    .q-block {
+      background: var(--ui-surface2);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .q-block h3 {
+      font-size: 12px;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .cbx {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 6px 0;
+      font-size: 15px;
+      color: var(--ui-text);
+      cursor: pointer;
+    }
+    .cbx input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--gold-deep); flex-shrink: 0; }
+    .mod-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--ui-muted);
+    }
+    .mod-row input[type="range"] { flex: 1; min-width: 120px; }
+    .report-page {
+      background: var(--parchment);
+      color: var(--ink);
+      border-radius: 4px;
+      border: 2px solid #c28a3b;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      padding: 12mm 14mm;
+      min-height: 200px;
+    }
+    [data-theme="dark"] .report-page {
+      background: #2a2620;
+      color: #e8e0d0;
+      border-color: #7a6a4a;
+    }
+    .report-brand {
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-deep);
+      margin-bottom: 6px;
+    }
+    [data-theme="dark"] .report-page .report-brand { color: #d4b060; }
+    .report-page h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      text-align: center;
+      color: var(--gold-deep);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+    [data-theme="dark"] .report-page h1 { color: #e0c478; }
+    .report-sub {
+      text-align: center;
+      font-size: 12px;
+      color: var(--ink-soft);
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+    .report-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 16px;
+      font-size: 13px;
+      margin-bottom: 14px;
+      padding: 10px 12px;
+      background: var(--gold-pale);
+      border-left: 3px solid var(--gold-deep);
+    }
+    [data-theme="dark"] .report-meta { background: rgba(192, 160, 80, 0.12); }
+    .sec-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold-deep);
+      border-left: 3px solid var(--gold-deep);
+      padding-left: 8px;
+      margin: 12px 0 6px;
+    }
+    [data-theme="dark"] .sec-title { color: #d4b060; }
+    .sec-body { font-size: 14px; line-height: 1.5; text-align: justify; color: var(--ink-soft); }
+    .sec-body ul { margin: 6px 0 6px 18px; }
+    .sec-body li { margin: 3px 0; }
+    .bar-row { display: flex; align-items: center; gap: 8px; font-size: 12px; margin: 4px 0; }
+    .bar-label { min-width: 9em; flex-shrink: 0; }
+    .bar-pct { min-width: 3.5em; text-align: right; flex-shrink: 0; }
+    .bar-bg { flex: 1; height: 8px; background: #e0d4c0; border-radius: 4px; overflow: hidden; min-width: 0; }
+    [data-theme="dark"] .bar-bg { background: #4a4035; }
+    .bar-fg { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #c9a84c, #8b6a2a); }
+    .disclaimer { font-size: 11px; color: #7a6a58; margin-top: 16px; padding-top: 12px; border-top: 1px dashed #c9b898; }
+    [data-theme="dark"] .disclaimer { color: #9a9080; }
+    .report-contact {
+      font-size: 12px;
+      text-align: center;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(184, 124, 46, 0.35);
+      color: var(--ink-soft);
+    }
+    .report-contact-link {
+      color: var(--gold-deep);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .report-contact-link:hover { color: var(--gold-light); }
+    [data-theme="dark"] .report-page .report-contact { color: #b8a898; }
+    [data-theme="dark"] .report-page .report-contact-link { color: #e0c478; }
+    .placeholder { color: var(--ink-soft); text-align: center; padding: 32px; font-style: italic; }
+    .toast {
+      position: fixed;
+      bottom: max(20px, env(safe-area-inset-bottom, 0px));
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      max-width: min(420px, calc(100vw - 24px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)));
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--gold-light);
+      padding: 10px 22px;
+      border-radius: 30px;
+      border: 1px solid rgba(215, 164, 73, 0.35);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    [data-theme="dark"] .toast { background: rgba(30, 26, 20, 0.95); }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .report-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(215, 164, 73, 0.25);
+    }
+    .report-actions .tb { font-size: 12px; }
+
+    @media (max-width: 600px) {
+      .toolbar { gap: 8px; padding-top: max(8px, env(safe-area-inset-top, 0px)); }
+      .toolbar-brand {
+        flex: 1 1 100%;
+        margin-right: 0;
+        margin-bottom: 2px;
+      }
+      .toolbar-title {
+        font-size: 14px;
+        white-space: normal;
+        word-break: break-word;
+      }
+      .toolbar-sub {
+        font-size: 11px;
+        white-space: normal;
+      }
+      .toolbar .sep { display: none; }
+      .theme-segment {
+        width: 100%;
+        flex: 1 1 100%;
+        border-radius: 16px;
+      }
+      .theme-seg-btn {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 10px 6px;
+        font-size: 10px;
+      }
+      .tb.tb-icon {
+        min-width: 44px;
+        min-height: 44px;
+      }
+      .layout {
+        padding: 12px max(12px, env(safe-area-inset-left, 0px)) 16px max(12px, env(safe-area-inset-right, 0px));
+        gap: 14px;
+      }
+      .card { padding: 14px 14px; }
+      .report-page {
+        padding: 12px 14px;
+        box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);
+      }
+      .report-page h1 {
+        font-size: 1.12rem;
+        letter-spacing: 0.08em;
+      }
+      .report-brand { letter-spacing: 0.1em; font-size: 0.65rem; }
+      .report-meta { grid-template-columns: 1fr; }
+      .sec-body {
+        text-align: left;
+        hyphens: auto;
+        -webkit-hyphens: auto;
+      }
+      .bar-row {
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .bar-label {
+        flex: 1 1 100%;
+        min-width: 0 !important;
+      }
+      .bar-bg { flex: 1 1 0; }
+      .report-actions {
+        justify-content: stretch;
+      }
+      .report-actions .tb {
+        flex: 1 1 auto;
+        justify-content: center;
+        min-height: 44px;
+      }
+      .placeholder { padding: 20px 12px; }
+      body { overflow-x: hidden; }
+    }
+
+    @media (max-width: 400px) {
+      .report-actions {
+        flex-direction: column;
+      }
+      .report-actions .tb {
+        width: 100%;
+      }
+    }
+
+    @media print {
+      .toolbar, .report-actions, .card:first-of-type .flabel, .q-block, .sidebar-only { display: none !important; }
+      body { background: #fff; color: #000; }
+      .layout { display: block; max-width: 100%; padding: 0; }
+      .card { border: none; box-shadow: none; background: transparent; padding: 0; }
+      .card + .card { break-inside: avoid; }
+      .report-page { box-shadow: none; border: 1px solid #ccc; }
+    }
+  </style>
+</head>
+<body data-theme="classic">
+  <div class="toolbar" role="banner">
+    <div class="toolbar-brand">
+      <span class="toolbar-title">Лекарь Абу Мухаммад</span>
+      <span class="toolbar-sub">Анкета → Анализ</span>
+    </div>
+    <div class="sep" aria-hidden="true"></div>
+    <div class="tb-group" role="group" aria-label="Анализ">
+      <button type="button" class="tb tb-icon primary" id="btnRun"
+        title="Обновить анализ по текущим отметкам анкеты"
+        aria-label="Обновить анализ по текущим отметкам анкеты">
+        <i class="fas fa-magic" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="sep" aria-hidden="true"></div>
+    <div class="tb-group" role="group" aria-label="Копирование и печать">
+      <button type="button" class="tb tb-icon" id="btnCopyText"
+        title="Скопировать текст отчёта в буфер обмена"
+        aria-label="Скопировать текст отчёта в буфер обмена">
+        <i class="fas fa-copy" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="tb tb-icon" id="btnPrint"
+        title="Печать или сохранение в PDF через диалог системы"
+        aria-label="Печать или сохранение в PDF через диалог системы">
+        <i class="fas fa-print" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="sep" aria-hidden="true"></div>
+    <div class="theme-segment" role="radiogroup" aria-label="Тема оформления страницы">
+      <button type="button" class="theme-seg-btn is-active" data-theme-s="classic" role="radio" aria-checked="true"
+        title="Классическая золотая палитра">Классика</button>
+      <button type="button" class="theme-seg-btn" data-theme-s="green" role="radio" aria-checked="false"
+        title="Зелёные акценты">Зелёная</button>
+      <button type="button" class="theme-seg-btn" data-theme-s="dark" role="radio" aria-checked="false"
+        title="Тёмный интерфейс">Тёмная</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="card" id="formCard">
+      <h2><i class="fas fa-clipboard-list"></i> Данные и анкета</h2>
+      <div class="frow2">
+        <div class="fg"><label>ФИО (необязательно)</label><input type="text" id="f_name" placeholder="—"></div>
+        <div class="fg"><label>Возраст</label><input type="text" id="f_age" placeholder="—"></div>
+      </div>
+      <div class="frow2">
+        <div class="fg"><label>Город</label><input type="text" id="f_city" placeholder="—"></div>
+        <div class="fg"><label>Дата заполнения</label><input type="text" id="f_date" readonly></div>
+      </div>
+      <div class="flabel">Регулярность обязательных и добровольных практик (намаз, Коран, азкары)</div>
+      <p class="mod-row" style="margin-bottom:6px; font-size:13px" id="practiceLabel">Средняя (по умолчанию снижает «уверенность» вывода при сильных практиках)</p>
+      <div class="mod-row">
+        <span>Низкая</span>
+        <input type="range" id="f_practice" min="0" max="3" value="1" step="1" aria-label="Регулярность практик">
+        <span>Высокая</span>
+      </div>
+      <div id="questionnaireRoot"></div>
+    </div>
+
+    <div class="card">
+      <h2><i class="fas fa-file-medical-alt"></i> Результат анализа</h2>
+      <div class="report-page" id="reportOut">
+        <div class="report-brand">Лекарь Абу Мухаммад</div>
+        <p class="placeholder" id="reportPlaceholder">Отметьте симптомы слева — анализ обновится автоматически.</p>
+        <div class="report-contact">Связь с лекарем Абу Мухаммад: <a class="report-contact-link" href="https://t.me/Lechenya_bot" target="_blank" rel="noopener noreferrer">Открыть бота в Telegram</a></div>
+      </div>
+      <div class="report-actions" role="group" aria-label="Сохранить отчёт">
+        <button type="button" class="tb tb-icon" id="btnSavePng"
+          title="Сохранить результат анализа как изображение PNG"
+          aria-label="Сохранить результат анализа как изображение PNG">
+          <i class="fas fa-file-image" aria-hidden="true"></i> PNG
+        </button>
+        <button type="button" class="tb tb-icon" id="btnSavePdf"
+          title="Сохранить результат анализа как файл PDF"
+          aria-label="Сохранить результат анализа как файл PDF">
+          <i class="fas fa-file-pdf" aria-hidden="true"></i> PDF
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+(function(){
+  'use strict';
+
+  var BRAND = 'Лекарь Абу Мухаммад';
+  var TELEGRAM_BOT_URL = 'https://t.me/Lechenya_bot';
+
+  var CAT = ['sihr','jinn','evil_eye','envy','waswasa'];
+  var CAT_LABEL = {
+    sihr: 'Сихр',
+    jinn: 'Джинн (масс / касание)',
+    evil_eye: 'Сглаз (айн)',
+    envy: 'Зависть (хасад)',
+    waswasa: 'Васваса (наущения)'
+  };
+
+  /**
+   * Редактируйте веса w.* для каждого пункта (0–3, целое).
+   * Максимум по категории = сумма w для этой категории по ВСЕМ пунктам, если отмечены все.
+   */
+  var QUESTION_GROUPS = [
+    {
+      title: 'Психоэмоциональные проявления',
+      items: [
+        { id: 'pe1', label: 'Нарушен сон, кошмары, страхи, паника', w: { sihr: 2, jinn: 1, evil_eye: 1, envy: 0, waswasa: 1 } },
+        { id: 'pe2', label: 'Навязчивые мысли, тревога, ощущение слежки', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'pe3', label: 'Сомнения в вере, религиозные сомнения, «шепот» мыслей', w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 0, waswasa: 3 } },
+        { id: 'pe4', label: 'Резкие смены настроения без видимой причины', w: { sihr: 2, jinn: 2, evil_eye: 1, envy: 1, waswasa: 1 } },
+        { id: 'pe5', label: 'Апатия, «пустота», резкая потеря интереса к привычному (без ясной жизненной причины)', w: { sihr: 1, jinn: 1, evil_eye: 1, envy: 0, waswasa: 1 } },
+        { id: 'pe6', label: 'Вспышки гнева или раздражения «как не свои»', w: { sihr: 2, jinn: 2, evil_eye: 0, envy: 1, waswasa: 0 } },
+        { id: 'pe7', label: 'Память и концентрация: заметное ухудшение непривычное для возраста', w: { sihr: 0, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'pe8', label: 'Ощущение отстранённости от себя или окружающего (дереализация)', w: { sihr: 1, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'pe9', label: 'Навязчивая идея о «наведении» без возможности «отпустить» мысль', w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 0, waswasa: 3 } },
+        { id: 'pe10', label: 'Плач, эмоциональные качели без связи с событиями', w: { sihr: 1, jinn: 1, evil_eye: 2, envy: 1, waswasa: 1 } },
+        { id: 'pe11', label: 'Резкое желание уйти от людей, избегание общения (не как обычная интроверсия)', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 1 } },
+        { id: 'pe12', label: 'Ощущение «присутствия» рядом, хотя никого нет (бодрствование)', w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 1 } }
+      ]
+    },
+    {
+      title: 'Реакция на поклонение и рукъю',
+      items: [
+        { id: 'wo1', label: 'Отвращение, тошнота или злость при чтении Корана / молитве (не путать с сонной усталостью)', w: { sihr: 2, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'wo2', label: 'Боль, давление или сильный дискомфорт при аятах, которых «не было» до недуга', w: { sihr: 2, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'wo3', label: 'Чувство облегчения при азане, слушании Корана, рукъе', w: { sihr: 1, jinn: 1, evil_eye: 1, envy: 0, waswasa: 0 } },
+        { id: 'wo4', label: 'Видения, ощущение «чужого» присутствия, голоса, давления', w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'wo5', label: 'Невозможность сосредоточиться в намазе, «отключение», мысли уносят', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'wo6', label: 'Забывание прочитанного в молитве непривычным образом', w: { sihr: 0, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'wo7', label: 'Спешка закончить молитву, дискомфорт в теле именно во время неё', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 1 } },
+        { id: 'wo8', label: 'Головокружение или тошнота при входе в место молитвы / при начале чтения', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'wo9', label: 'Страх или напряжение при взгляде на текст Корана (не из-за зрения)', w: { sihr: 1, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'wo10', label: 'Повторяющиеся «сбои»: падает мусхаф, гаснет свет при чтении (если заметный паттерн)', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } }
+      ]
+    },
+    {
+      title: 'Физические ощущения',
+      items: [
+        { id: 'ph1', label: 'Тяжесть в теле, ощущение удушья, сдавливания (после обследований: «норма»)', w: { sihr: 2, jinn: 2, evil_eye: 1, envy: 0, waswasa: 0 } },
+        { id: 'ph2', label: 'Онемение, «мурашки», необъяснимые боли, скачки давления/пульса', w: { sihr: 1, jinn: 1, evil_eye: 2, envy: 0, waswasa: 0 } },
+        { id: 'ph3', label: 'Судороги, обмороки, необычные движения без неврологического подтверждения', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'ph4', label: 'Головные боли волнами, не снимаются привычными средствами (после обследований при необходимости)', w: { sihr: 1, jinn: 1, evil_eye: 2, envy: 0, waswasa: 0 } },
+        { id: 'ph5', label: 'ЖКТ-симптомы без ясного диагноза после обследования', w: { sihr: 2, jinn: 1, evil_eye: 0, envy: 0, waswasa: 1 } },
+        { id: 'ph6', label: 'Кожный зуд, высыпания волнами без аллергологического объяснения', w: { sihr: 1, jinn: 1, evil_eye: 2, envy: 0, waswasa: 0 } },
+        { id: 'ph7', label: 'Холод или жар в конечностях без изменения температуры тела', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'ph8', label: 'Шум/давление в голове, усиливающиеся ночью', w: { sihr: 1, jinn: 2, evil_eye: 1, envy: 0, waswasa: 0 } },
+        { id: 'ph9', label: 'Внезапная слабость после удачного дня или похвалы', w: { sihr: 0, jinn: 0, evil_eye: 2, envy: 2, waswasa: 0 } },
+        { id: 'ph10', label: 'Учащённое сердцебиение в покое (после исключения органики у врача)', w: { sihr: 0, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'ph11', label: 'Боли в спине/шее «без причины» по обследованию', w: { sihr: 1, jinn: 1, evil_eye: 1, envy: 0, waswasa: 0 } },
+        { id: 'ph12', label: 'Кратковременные сбои зрения или обоняния без находок у офтальмолога/ЛОР', w: { sihr: 0, jinn: 1, evil_eye: 2, envy: 0, waswasa: 0 } }
+      ]
+    },
+    {
+      title: 'Сны и ночные признаки',
+      items: [
+        { id: 'dn1', label: 'Преследование, падение, удушье во сне, пробуждение в страхе', w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 1 } },
+        { id: 'dn2', label: 'Змеи, собаки, незнакомые существа, ощущение укуса во сне', w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'dn3', label: 'Навязчивые эротические сны, ощущение реального контакта', w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 1 } },
+        { id: 'dn4', label: 'Вода, грязь, кладбище, тёмные лабиринты — повторяющийся символ', w: { sihr: 2, jinn: 1, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'dn5', label: 'Паралич сна (не может пошевелиться при пробуждении) часто и пугает', w: { sihr: 0, jinn: 2, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'dn6', label: 'Один и тот же сюжет сна повторяется неделями', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 1 } },
+        { id: 'dn7', label: 'Кошмары усиливаются перед рассветом регулярно', w: { sihr: 1, jinn: 2, evil_eye: 1, envy: 0, waswasa: 0 } }
+      ]
+    },
+    {
+      title: 'Пища, предметы, окружение',
+      items: [
+        { id: 'fd1', label: 'Тошнота или дискомфорт после определённой еды без аллергии', w: { sihr: 2, jinn: 0, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'fd2', label: 'Потеря аппетита после визита конкретного человека', w: { sihr: 0, jinn: 0, evil_eye: 2, envy: 1, waswasa: 0 } },
+        { id: 'fd3', label: 'Появление чужого предмета/«украшения» и ухудшение после этого', w: { sihr: 3, jinn: 1, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'fd4', label: 'Еда/питьё из рук малознакомого и вскоре — резкое ухудшение', w: { sihr: 2, jinn: 0, evil_eye: 1, envy: 0, waswasa: 0 } },
+        { id: 'fd5', label: 'Страх есть за общим столом или у гостей без прежнего повода', w: { sihr: 0, jinn: 0, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'fd6', label: 'Переезд в новый дом/комнату и сразу сон, страхи, разлад', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } }
+      ]
+    },
+    {
+      title: 'Семья, брак, интимная сфера (субъективно, после медицинского исключения по возможности)',
+      items: [
+        { id: 'rp1', label: 'Внезапная холодность супруга без явного конфликта', w: { sihr: 2, jinn: 1, evil_eye: 0, envy: 1, waswasa: 0 } },
+        { id: 'rp2', label: 'Отвращение или боль при близости без находок у гинеколога/уролога', w: { sihr: 2, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'rp3', label: 'Повторяющиеся срывы помолвки/свадьбы «без логики»', w: { sihr: 2, jinn: 0, evil_eye: 1, envy: 2, waswasa: 0 } },
+        { id: 'rp4', label: 'Бесплодие при «норме» обследований у обоих супругов (по заключению врачей)', w: { sihr: 2, jinn: 0, evil_eye: 1, envy: 1, waswasa: 0 } },
+        { id: 'rp5', label: 'Ревность и фантазии об измене только после начала недуга', w: { sihr: 1, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2 } }
+      ]
+    },
+    {
+      title: 'Социальное, работа, быт',
+      items: [
+        { id: 'so1', label: 'Конфликты, разлад «без причины», внезапная отчуждённость в паре/семье', w: { sihr: 2, jinn: 0, evil_eye: 0, envy: 1, waswasa: 0 } },
+        { id: 'so2', label: 'Потери, поломки, ссоры, повторяющийся «чёрный» сценарий', w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 2, waswasa: 0 } },
+        { id: 'so3', label: 'Проблемы в доме, ощущение тяжести в дому, беспокойство детей', w: { sihr: 2, jinn: 1, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'so4', label: 'Срывы сделок, «ломается» работа после периода успеха', w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 2, waswasa: 0 } },
+        { id: 'so5', label: 'Дети плачут, боятся углов, не хотят спать в комнате без видимой причины', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'so6', label: 'Конфликт с родственником сразу после вашего успеха или покупки', w: { sihr: 0, jinn: 0, evil_eye: 1, envy: 3, waswasa: 0 } },
+        { id: 'so7', label: 'Череда поломок техники и вещей «подряд»', w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 1, waswasa: 0 } },
+        { id: 'so8', label: 'Перестали ходить в мечеть/джамаат после регулярности без объяснения', w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 1 } },
+        { id: 'so9', label: 'Финансовые потери после контакта с конкретным человеком', w: { sihr: 1, jinn: 0, evil_eye: 1, envy: 2, waswasa: 0 } },
+        { id: 'so10', label: 'Сплетни и нападки «с нуля» в учёбе или на работе', w: { sihr: 0, jinn: 0, evil_eye: 1, envy: 2, waswasa: 1 } }
+      ]
+    },
+    {
+      title: 'Триггеры (что предшествовало ухудшению)',
+      items: [
+        { id: 'tr1', label: 'Ухудшение после похвалы, взгляда, внимания (айн, «сглаз»)', w: { sihr: 0, jinn: 0, evil_eye: 3, envy: 0, waswasa: 0 } },
+        { id: 'tr2', label: 'Усиление после удач других людей, зависти, обсуждения чужого благополучия', w: { sihr: 0, jinn: 0, evil_eye: 0, envy: 3, waswasa: 0 } },
+        { id: 'tr3', label: 'Связь с подозрительным предметом, пищей, «наведением»', w: { sihr: 2, jinn: 0, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'tr4', label: 'Ухудшение после свадьбы или начала интимной жизни в браке', w: { sihr: 2, jinn: 0, evil_eye: 0, envy: 1, waswasa: 0 } },
+        { id: 'tr5', label: 'После ночи вне дома, дороги или поездки', w: { sihr: 0, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0 } },
+        { id: 'tr6', label: 'После принятия подарка от малознакомого', w: { sihr: 2, jinn: 0, evil_eye: 1, envy: 0, waswasa: 0 } },
+        { id: 'tr7', label: 'После публикации фото/успехов в соцсетях', w: { sihr: 0, jinn: 0, evil_eye: 2, envy: 1, waswasa: 0 } },
+        { id: 'tr8', label: 'После смены города, работы, резкого стресса (как начало, не как обычная адаптация)', w: { sihr: 0, jinn: 0, evil_eye: 0, envy: 0, waswasa: 2 } },
+        { id: 'tr9', label: 'После ссоры с родителем или старшим в семье', w: { sihr: 0, jinn: 0, evil_eye: 0, envy: 1, waswasa: 1 } },
+        { id: 'tr10', label: 'Симптомы совпали с конкретной датой/событием «как по часам» (субъективно)', w: { sihr: 1, jinn: 1, evil_eye: 1, envy: 0, waswasa: 1 } }
+      ]
+    }
+  ];
+
+  var RECS = {
+    sihr: [
+      'Сохранять регулярные обязанности и азкар; не прерывать «из страха» — при болях сразу врач, при духовной работе — осторожно и с опытом.',
+      'Чистая вода, чтение сур аль-Фаляк, ан-Нас, аят аль-Курси, окуривание по обычаю, избегать сомнительных оков и примет.'
+    ],
+    jinn: [
+      'Сухая чистка ума и тела, азкары утра/вечера, не смотреть на тревогу как на «доказательство»; при панике — дыхание и обращение к врачу при необходимости.',
+      'Рекомендована руководимая рукъя, без споров с «внутренним голосом»; избегать сильных внешних стимулов на ночь.'
+    ],
+    evil_eye: [
+      'Ма шаа Аллах при восхищении, суры Фалак/Нас, вода/масло с рукьёй по сунне, садака.',
+      'Снижать «показное» в соцсетях, если тянет внимание/зависть; проверьте, не сухая ли усталость/анемия.'
+    ],
+    envy: [
+      'Дуа от зависти, защитные молитвы, укрепление связи с благодетелями, садака и скромность в рассказах о успехах.',
+      'Править ситуации, где вас сравнивают или умаляют — иногда важен и психолог, и медик.'
+    ],
+    waswasa: [
+      'Различать: обычные сомнения (лечат знание и вопросы учёным) и навязчивый цикл; при панике, сердцебиении — врач.',
+      'Не тянуть сомнения к «срочной рукъе»; при навязчивом ОКР-типа — психотерапия + фикх под учёного.'
+    ]
+  };
+
+  var GENERIC = [
+    'Это ориентировочный разбор по анкете, не клинический диагноз. При острых симптомах (боль в груди, удушье, потеря сознания) — скорая/врач.',
+    'Медицинский осмотр (анализы, невролог, кардиолог по показаниям) разумно сочетать с религиозными средствами.',
+    'Ищите квалифицированного рака с известной репутацией, избегайте денежных требований и «срочного снятия» без вопросов.'
+  ];
+
+  function collectAllItems() {
+    var out = [];
+    QUESTION_GROUPS.forEach(function (g) {
+      g.items.forEach(function (it) { out.push(it); });
+    });
+    return out;
+  }
+
+  function computeMaxScores() {
+    var max = { sihr: 0, jinn: 0, evil_eye: 0, envy: 0, waswasa: 0 };
+    collectAllItems().forEach(function (it) {
+      CAT.forEach(function (c) {
+        max[c] += (it.w && it.w[c]) ? it.w[c] : 0;
+      });
+    });
+    return max;
+  }
+  var MAX_SCORES = computeMaxScores();
+
+  function getCheckedIds() {
+    var set = {};
+    document.querySelectorAll('#questionnaireRoot input[type="checkbox"][data-qid]:checked').forEach(function (el) {
+      set[el.getAttribute('data-qid')] = true;
+    });
+    return set;
+  }
+
+  function scoreNow() {
+    var checked = getCheckedIds();
+    var current = { sihr: 0, jinn: 0, evil_eye: 0, envy: 0, waswasa: 0 };
+    collectAllItems().forEach(function (it) {
+      if (!checked[it.id]) return;
+      CAT.forEach(function (c) {
+        current[c] += (it.w && it.w[c]) ? it.w[c] : 0;
+      });
+    });
+    return { checked: checked, current: current };
+  }
+
+  function percentage(current, max) {
+    if (!max || max <= 0) return 0;
+    return Math.round(1000 * current / max) / 10;
+  }
+
+  /** 0-3: чем выше регулярность практик, тем сильнее снижаем доверие к «чисто духовной» гипотезе в тексте (не к баллам) */
+  function practiceModFactor() {
+    var p = parseInt(document.getElementById('f_practice').value, 10) || 0;
+    return 1 - 0.12 * p;
+  }
+
+  function updatePracticeLabel() {
+    var p = parseInt(document.getElementById('f_practice').value, 10) || 0;
+    var labels = ['Практики слабые/нерегулярные', 'Ниже среднего', 'Средние/стабильные', 'Сильные/регулярные'];
+    var el = document.getElementById('practiceLabel');
+    if (el) el.textContent = labels[Math.min(3, p)] + ' — при сильных практиках рекомендуем не игнорировать врачей и психолога.';
+  }
+
+  function topTwo(sortedPairs) {
+    if (sortedPairs.length === 0) return [];
+    if (sortedPairs.length === 1) return [sortedPairs[0]];
+    return [sortedPairs[0], sortedPairs[1]];
+  }
+
+  function buildReport() {
+    var s = scoreNow();
+    var name = (document.getElementById('f_name').value || '').trim() || '—';
+    var age = (document.getElementById('f_age').value || '').trim() || '—';
+    var city = (document.getElementById('f_city').value || '').trim() || '—';
+    var nChecked = Object.keys(s.checked).length;
+    if (nChecked === 0) {
+      return {
+        html: '<div class="report-brand">' + esc(BRAND) + '</div><p class="placeholder" id="reportPlaceholder">Отметьте хотя бы один пункт анкеты.</p>' + contactFooterHtml(),
+        text: BRAND + '\n\nОтметьте хотя бы один пункт.\n\nСвязь с лекарем (Telegram): ' + TELEGRAM_BOT_URL
+      };
+    }
+
+    var rows = CAT.map(function (c) {
+      return { key: c, label: CAT_LABEL[c], p: percentage(s.current[c], MAX_SCORES[c]), raw: s.current[c] };
+    });
+    rows.sort(function (a, b) { return b.p - a.p; });
+    var top = topTwo(rows);
+    var pmod = practiceModFactor();
+    var conf = Math.min(100, Math.round(40 + (top[0].p * 0.4 + (top[1] ? top[1].p * 0.15 : 0)) * pmod));
+
+    var symptomsList = collectAllItems().filter(function (it) { return s.checked[it.id]; }).map(function (it) { return it.label; });
+
+    var summary;
+    if (top[0].p < 8) {
+      summary = 'По текущему набору отметок сигнал размыт. Имеет смысл расширить картину (даты начала, динамика, обследования) и/или сравнить с врачебным и психологическим взглядом.';
+    } else {
+      summary = 'По весовой модели наиболее согласовано с отмеченными проявлениями: «' + top[0].label + '»' +
+        (top[1] && top[1].p > 5 ? ', вторично — «' + top[1].label + '»' : '') +
+        '. Это ориентир для разговора с раки/учёным, не окончательный вердикт.';
+    }
+
+    var recList = [].concat(GENERIC);
+    recList = recList.concat(RECS[top[0].key] || []);
+    if (top[1] && top[1].p > 8 && top[1].key !== top[0].key) {
+      recList = recList.concat((RECS[top[1].key] || []).slice(0, 1));
+    }
+
+    var html = '';
+    html += '<div class="report-brand">' + esc(BRAND) + '</div>';
+    html += '<h1>Анализ по анкете</h1>';
+    html += '<div class="report-sub">Предварительная духовно-нравственная ориентация, не духовного «таинства»</div>';
+    html += '<div class="report-meta">';
+    html += '<div><strong>Имя:</strong> ' + esc(name) + '</div><div><strong>Возраст:</strong> ' + esc(age) + '</div>';
+    html += '<div><strong>Город:</strong> ' + esc(city) + '</div><div><strong>Дата:</strong> ' + esc(document.getElementById('f_date').value) + '</div>';
+    html += '</div>';
+
+    html += '<div class="sec-title">Сводка</div><div class="sec-body"><p>' + esc(summary) + '</p><p>Условная «уверенность» вывода: ~' + conf + ' % (с учётом регулярности практик).</p></div>';
+
+    html += '<div class="sec-title">Распределение (по весовой анкете)</div>';
+    rows.forEach(function (r) {
+      html += '<div class="bar-row"><span class="bar-label">' + esc(r.label) + '</span><div class="bar-bg"><div class="bar-fg" style="width:' + Math.min(100, r.p) + '%"></div></div><span class="bar-pct">' + r.p + '%</span></div>';
+    });
+
+    html += '<div class="sec-title">Вероятные ориентиры (топ-1 / топ-2)</div><div class="sec-body"><p><strong>Основной ориентир:</strong> ' + esc(CAT_LABEL[top[0].key]) + ' (≈ ' + top[0].p + '% максимума модуля)</p>';
+    if (top[1] && top[1].p > 0) {
+      html += '<p><strong>Дополнительно уточнить:</strong> ' + esc(CAT_LABEL[top[1].key]) + ' (≈ ' + top[1].p + '%)</p>';
+    }
+    html += '</div>';
+
+    html += '<div class="sec-title">Наблюдения (по отмеченным пунктам)</div><div class="sec-body"><ul>';
+    symptomsList.forEach(function (t) { html += '<li>' + esc(t) + '</li>'; });
+    html += '</ul></div>';
+
+    html += '<div class="sec-title">Рекомендации (общие и по ориентиру)</div><div class="sec-body"><ul>';
+    recList.forEach(function (t) { html += '<li>' + esc(t) + '</li>'; });
+    html += '</ul></div>';
+
+    html += '<div class="disclaimer">Данный текст сгенерирован автоматически по заполнению анкеты. Он не заменяет врача, психиатра, невролога и квалифицированного рака. Не путайте духовный недуг с психическим без осмотра. Да исцелит Аллах и даст вам крепость и ясный путь.</div>';
+    html += contactFooterHtml();
+
+    var text = BRAND + '\n\n' + 'Анализ по анкете\n' + 'Имя: ' + name + '\n' + 'Сводка: ' + summary + '\n\n' +
+      'Распределение:\n' + rows.map(function (r) { return r.label + ': ' + r.p + '%'; }).join('\n') +
+      '\n\nНаблюдения:\n- ' + symptomsList.join('\n- ') + '\n\nРекомендации:\n- ' + recList.join('\n- ') +
+      '\n\nСвязь с лекарем (Telegram): ' + TELEGRAM_BOT_URL;
+
+    return { html: html, text: text };
+  }
+
+  function esc(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function contactFooterHtml() {
+    return '<div class="report-contact">Связь с лекарем Абу Мухаммад: <a class="report-contact-link" href="' + TELEGRAM_BOT_URL + '" target="_blank" rel="noopener noreferrer">' + esc('Открыть бота в Telegram') + '</a></div>';
+  }
+
+  function render() {
+    var r = buildReport();
+    var out = document.getElementById('reportOut');
+    out.innerHTML = r.html;
+  }
+
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function () { t.classList.remove('show'); }, 2200);
+  }
+
+  function isReportReady() {
+    return Object.keys(getCheckedIds()).length > 0;
+  }
+
+  function getReportElement() {
+    return document.getElementById('reportOut');
+  }
+
+  function safeFilenameBase() {
+    var d = new Date();
+    var yyyy = d.getFullYear();
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    return 'analysis_' + yyyy + '-' + mm + '-' + dd;
+  }
+
+  function downloadDataUrl(dataUrl, filename) {
+    var a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  function ensureExportLibs() {
+    if (!window.html2canvas) return false;
+    if (!window.jspdf || !window.jspdf.jsPDF) return false;
+    return true;
+  }
+
+  function renderReportToCanvas() {
+    var el = getReportElement();
+    if (!el) throw new Error('report element missing');
+
+    var rect = el.getBoundingClientRect();
+    var scale = Math.max(2, Math.min(4, window.devicePixelRatio ? Math.ceil(window.devicePixelRatio) : 2));
+    return window.html2canvas(el, {
+      backgroundColor: getComputedStyle(el).backgroundColor || '#ffffff',
+      scale: scale,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      windowWidth: Math.ceil(rect.width),
+      windowHeight: Math.ceil(rect.height)
+    });
+  }
+
+  function savePng() {
+    if (!isReportReady()) { showToast('Сначала отметьте пункты анкеты.'); return; }
+    if (!ensureExportLibs()) { showToast('Библиотеки экспорта не загрузились.'); return; }
+    showToast('Готовлю PNG…');
+    renderReportToCanvas().then(function (canvas) {
+      var dataUrl = canvas.toDataURL('image/png');
+      downloadDataUrl(dataUrl, safeFilenameBase() + '.png');
+      showToast('PNG сохранён');
+    }).catch(function () {
+      showToast('Не удалось сохранить PNG');
+    });
+  }
+
+  function savePdf() {
+    if (!isReportReady()) { showToast('Сначала отметьте пункты анкеты.'); return; }
+    if (!ensureExportLibs()) { showToast('Библиотеки экспорта не загрузились.'); return; }
+    showToast('Готовлю PDF…');
+
+    renderReportToCanvas().then(function (canvas) {
+      var jsPDF = window.jspdf.jsPDF;
+      var pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+
+      var pageW = pdf.internal.pageSize.getWidth();
+      var pageH = pdf.internal.pageSize.getHeight();
+      var margin = 8;
+      var innerW = pageW - margin * 2;
+      var innerH = pageH - margin * 2;
+
+      var imgData = canvas.toDataURL('image/png');
+      var imgW = innerW;
+      var imgH = (canvas.height * imgW) / canvas.width;
+
+      if (imgH <= innerH) {
+        pdf.addImage(imgData, 'PNG', margin, margin, imgW, imgH, undefined, 'FAST');
+      } else {
+        // Multi-page: slice the canvas into page-height chunks.
+        var pageCanvas = document.createElement('canvas');
+        var pageCtx = pageCanvas.getContext('2d');
+        var pxPerMm = canvas.width / imgW;
+        var pagePxH = Math.floor(innerH * pxPerMm);
+
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = pagePxH;
+
+        var y = 0;
+        var pageIndex = 0;
+        while (y < canvas.height) {
+          if (pageIndex > 0) pdf.addPage();
+
+          pageCtx.clearRect(0, 0, pageCanvas.width, pageCanvas.height);
+          pageCtx.fillStyle = '#ffffff';
+          pageCtx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+
+          pageCtx.drawImage(
+            canvas,
+            0, y, canvas.width, Math.min(pagePxH, canvas.height - y),
+            0, 0, canvas.width, Math.min(pagePxH, canvas.height - y)
+          );
+
+          var pageData = pageCanvas.toDataURL('image/png');
+          var sliceH = Math.min(innerH, ((canvas.height - y) / pxPerMm));
+          pdf.addImage(pageData, 'PNG', margin, margin, imgW, sliceH, undefined, 'FAST');
+
+          y += pagePxH;
+          pageIndex += 1;
+        }
+      }
+
+      pdf.save(safeFilenameBase() + '.pdf');
+      showToast('PDF сохранён');
+    }).catch(function () {
+      showToast('Не удалось сохранить PDF');
+    });
+  }
+
+  function copyText() {
+    if (Object.keys(getCheckedIds()).length === 0) {
+      showToast('Сначала отметьте пункты анкеты.');
+      return;
+    }
+    var r = buildReport();
+    if (!r.text) { showToast('Пустой отчёт.'); return; }
+    copyToClipboard(r.text, 'Текст скопирован');
+  }
+
+  function buildQuestionnaire() {
+    var root = document.getElementById('questionnaireRoot');
+    var frag = document.createDocumentFragment();
+    var fl = document.createElement('div');
+    fl.className = 'flabel';
+    fl.textContent = 'Симптомы и обстоятельства (поставьте по релевантности)';
+    frag.appendChild(fl);
+
+    QUESTION_GROUPS.forEach(function (g) {
+      var block = document.createElement('div');
+      block.className = 'q-block';
+      var h3 = document.createElement('h3');
+      h3.textContent = g.title;
+      block.appendChild(h3);
+      g.items.forEach(function (it) {
+        var lab = document.createElement('label');
+        lab.className = 'cbx';
+        var inp = document.createElement('input');
+        inp.type = 'checkbox';
+        inp.setAttribute('data-qid', it.id);
+        var span = document.createElement('span');
+        span.textContent = it.label;
+        lab.appendChild(inp);
+        lab.appendChild(span);
+        block.appendChild(lab);
+      });
+      frag.appendChild(block);
+    });
+    root.appendChild(frag);
+  }
+
+  function onAnyChange() {
+    updatePracticeLabel();
+    render();
+  }
+
+  document.getElementById('f_date').value = new Date().toLocaleDateString('ru-RU');
+  buildQuestionnaire();
+  document.getElementById('questionnaireRoot').addEventListener('change', onAnyChange);
+  document.getElementById('f_practice').addEventListener('input', onAnyChange);
+  document.getElementById('f_name').addEventListener('input', onAnyChange);
+  document.getElementById('f_age').addEventListener('input', onAnyChange);
+  document.getElementById('f_city').addEventListener('input', onAnyChange);
+  document.getElementById('btnRun').addEventListener('click', onAnyChange);
+  document.getElementById('btnCopyText').addEventListener('click', copyText);
+  document.getElementById('btnPrint').addEventListener('click', function () { window.print(); });
+  document.getElementById('btnSavePng').addEventListener('click', savePng);
+  document.getElementById('btnSavePdf').addEventListener('click', savePdf);
+
+  function setTheme(th) {
+    if (!th) return;
+    document.documentElement.setAttribute('data-theme', th);
+    document.body.setAttribute('data-theme', th);
+    document.querySelectorAll('[data-theme-s]').forEach(function (btn) {
+      var active = btn.getAttribute('data-theme-s') === th;
+      btn.classList.toggle('is-active', active);
+      if (btn.getAttribute('role') === 'radio') {
+        btn.setAttribute('aria-checked', active ? 'true' : 'false');
+      }
+    });
+  }
+
+  document.querySelectorAll('[data-theme-s]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      setTheme(b.getAttribute('data-theme-s'));
+    });
+  });
+  setTheme(document.documentElement.getAttribute('data-theme') || 'classic');
+
+  function copyToClipboard(text, okMsg) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { showToast(okMsg); }).catch(function () { legacy(); });
+    } else legacy();
+    function legacy() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.top = '-999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showToast(okMsg); } catch (e) { showToast('Ошибка копирования'); }
+      document.body.removeChild(ta);
+    }
+  }
+
+  updatePracticeLabel();
+  render();
+})();
+  </script>
+</body>
+</html>
