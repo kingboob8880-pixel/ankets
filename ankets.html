@@ -1007,7 +1007,7 @@
   var I18N = {
     ru: {
       doc_title: 'RUKYA PRO — быстрая анкета → анализ',
-      toolbar_sub: 'RUKYA PRO · как questionnaire-site',
+      toolbar_sub: 'RUKYA PRO · короткая анкета',
       group_analysis: 'Анализ',
       group_copy: 'Копирование и печать',
       group_doctor: 'Отправка лекарю',
@@ -1043,7 +1043,7 @@
       practice_low: 'Низкая', practice_high: 'Высокая',
       practice0: 'Практики слабые/нерегулярные', practice1: 'Ниже среднего', practice2: 'Средние/стабильные', practice3: 'Сильные/регулярные',
       practice_tail: 'корректирует отображаемые доли в «Распределении»: слабые практики — выше, сильные — ниже (к весам отмеченных пунктов).',
-      symptoms_intro: 'Разделы 2–11 — те же формулировки, что в анкете RUKYA PRO (questionnaire-site/config.json, surveyId patient_longform_2026). В открытых пунктах отметьте то, что относится к случаю, и кратко поясните; в закрытых — выберите вариант.',
+      symptoms_intro: 'Короткая анкета (5 блоков, surveyId patient_quick_2026). Где стоит галочка, пункт учитывается в анализе: в открытых полях кратко поясните; в закрытых — выберите вариант.',
       answer_placeholder: 'Краткий ответ (по желанию)',
       report_ph: 'Отметьте пункты анкеты в форме выше — анализ обновится автоматически.',
       report_empty: 'Отметьте хотя бы один пункт анкеты.',
@@ -1100,7 +1100,7 @@
     },
     uz: {
       doc_title: 'RUKYA PRO — tezkor so‘rovnoma → tahlil',
-      toolbar_sub: 'RUKYA PRO · questionnaire-site bilan mos',
+      toolbar_sub: 'RUKYA PRO · qisqa so‘rovnoma',
       group_analysis: 'Tahlil',
       group_copy: 'Nusxa va chop etish',
       group_doctor: 'Tabibga yuborish',
@@ -1136,7 +1136,7 @@
       practice_low: 'Past', practice_high: 'Yuqori',
       practice0: 'Amallar sust / tartibsiz', practice1: 'O‘rtacha dan past', practice2: 'O‘rtacha / barqaror', practice3: 'Kuchli / muntazam',
       practice_tail: '«Taqsimot»dagi ko‘rinadigan ulushlarni tuzatadi: sust amallar — yuqori, kuchli amallar — pastroq (belgilangan bandlar vazniga nisbatan).',
-      symptoms_intro: '2–11-bo‘limlar — RUKYA PRO (questionnaire-site/config.json, patient_longform_2026) dagi xuddi shu matnlar. Ochiq bandlarda tegishlilarini belgilang va qisqacha yozing; yopiq bandlarda variantni tanlang.',
+      symptoms_intro: 'Qisqa so‘rovnoma (5 blok, patient_quick_2026). Belgi qo‘yilgan band hisobga olinadi: ochiq maydonlarda qisqacha yozing; yopiqda variantni tanlang.',
       answer_placeholder: 'Qisqa javob (ixtiyoriy)',
       report_ph: 'Yuqoridagi so‘rovnomada mos bandlarni belgilang — tahlil avtomatik yangilanadi.',
       report_empty: 'Kamida bitta bandni belgilang.',
@@ -1402,18 +1402,13 @@
   };
 
   function catLabel(key) { return txt(CAT_LABEL[key]); }
-  /** Заголовки разделов как в questionnaire-site/config.json (surveySections). */
+  /** Группы короткой анкеты (не совпадают с полной longform). */
   var SECTION_TITLE = {
-    s2: { ru: '2. Текущее состояние одним текстом', uz: '2. Hozirgi holat (bitta matn bilan)' },
-    s3: { ru: '3. Время и динамика', uz: '3. Vaqt va dinamika' },
-    s4: { ru: '4. Триггеры и контекст', uz: '4. Uzilishlar va kontekst' },
-    s5: { ru: '5. Тело и «место»', uz: '5. Tana va «joy»' },
-    s6: { ru: '6. Психика, сон, намаз', uz: '6. Psixika, uyqu, namoz' },
-    s7: { ru: '7. Дом и окружение', uz: '7. Uy va atrof-muhit' },
-    s8: { ru: '8. Джинн / масс', uz: '8. Jinn / mass' },
-    s9: { ru: '9. Сглаз и зависть', uz: "9. Ko'z yumib qolish va hasad" },
-    s10: { ru: '10. Сихр «по видам»', uz: '10. Sihr «turlari bo‘yicha»' },
-    s11: { ru: '11. Тон и поддержка', uz: '11. Ohang va qo‘llab-quvvatlash' }
+    k1: { ru: '1. Ситуация', uz: '1. Vaziyat' },
+    k2: { ru: '2. Время и триггеры', uz: '2. Vaqt va triggirlar' },
+    k3: { ru: '3. Тело и психика', uz: '3. Tana va psixika' },
+    k4: { ru: '4. Дом, джинн, сглаз, сихр (кратко)', uz: '4. Uy, jinn, ko‘z, sihr (qisqa)' },
+    k5: { ru: '5. Тон и надежда', uz: '5. Ohang va umid' }
   };
   function groupTitle(g) { return txt(SECTION_TITLE[g.sec]); }
   function itemLbl(it) { return txt(it.label); }
@@ -1450,73 +1445,29 @@
   ];
 
   /**
-   * Тексты полей — как в RUKYA PRO questionnaire-site/config.json + locales.js (UZ).
-   * response: 'text' — галочка + поле ввода; 'choice' — радиоварианты.
-   * Веса w.* — эвристика для быстрого распределения (0–3); правка при необходимости.
+   * Короткая анкета: id = k{группа}_{ключ}. Веса w.* — эвристика «Распределения».
+   * response: 'text' — галочка + textarea; 'choice' — варианты (см. CH_*).
    */
   var RUKYA_QUICK_FIELD_ROWS = [
-    { sec: 's2', key: 'current_state', response: 'text', ru: 'Опишите своими словами: что именно беспокоит сейчас, с чего началось и как менялось со временем?', uz: 'O‘z so‘zlaringiz bilan yozing: hozir nima bezovta qilyapti, qachon boshlangan va vaqt o‘tishi bilan qanday o‘zgargan?', w: mkW(1, 1, 1, 1, 1, 1) },
-    { sec: 's2', key: 'daily_impact', response: 'text', ru: 'Что мешает больше всего в быту: сон, работа, семья, молитва, здоровье?', uz: 'Kundalik hayotda eng ko‘p nima xalaqit beradi: uyqu, ish, oila, namoz, salomatlik?', w: mkW(1, 1, 1, 1, 2, 1) },
-    { sec: 's2', key: 'main_expectation', response: 'text', ru: 'Чего ожидаете: только рукья, беседа, сочетание, другое (коротко)?', uz: 'Nimani kutyapsiz: faqat ruqya, suhbat, aralash, boshqalar (qisqacha)?', w: mkW(1, 1, 1, 1, 1, 0) },
-    { sec: 's2', key: 'prior_therapy', response: 'text', ru: 'Куда обращались раньше (медицина, психология, духовные) и что дало/не дало облегчения?', uz: 'Avval qayerga murojaat qildingiz (tibbiyot, psixologiya, ruhiy) va nima yengillik berdi/bermadi?', w: mkW(0, 0, 0, 0, 0, 0) },
-    { sec: 's2', key: 'urgency_now', response: 'choice', choices: CH_YNU, ru: 'Состояние сейчас ощущается как срочное (нужна помощь в ближайшее время)?', uz: 'Hozir shoshilinch (yaqin yordam kerak)dekmi?', w: mkW(1, 1, 1, 1, 2, 1) },
-    { sec: 's3', key: 'onset', response: 'text', ru: 'Когда впервые заметили симптомы (примерная дата или «N лет/месяцев назад»)?', uz: 'Alomatlar birinchi marta qachon sezilgan (taxminiy sana yoki «N yil/oy oldin»)?', w: mkW(1, 1, 1, 1, 1, 1) },
-    { sec: 's3', key: 'waves', response: 'choice', choices: CH_WAVES, ru: 'Симптомы постоянные или волнообразные (улучшение — снова ухудшение)? Если волнообразные — как часто?', uz: 'Alomatlar doimiy yoki to‘lqinsimon (yaxshilanish — yana yomonlashish)? Agar to‘lqinsimon bo‘lsa — qanchalik tez-tez?', w: mkW(2, 2, 1, 1, 1, 1) },
-    { sec: 's3', key: 'calendar', response: 'choice', choices: CH_YNU, ru: 'Есть ли связь с календарём (новолуние, пятница, ночь, пост)?', uz: 'Taqvim bilan bog‘liqlik bormi (yangi oy, juma, tun, ro‘za)?', w: mkW(2, 2, 1, 1, 1, 1) },
-    { sec: 's3', key: 'sleep_change', response: 'choice', choices: CH_YNU, ru: 'Изменения сна, засыпания, ночных пробуждений, кошмаров?', uz: 'Uyqu, uxlash, tungi uyg‘onish, dahshatli tushlar o‘zgaradimi?', w: mkW(1, 1, 1, 0, 2, 1) },
-    { sec: 's3', key: 'time_of_day', response: 'text', ru: 'Когда сильнее симптомы: утро, день, вечер, ночь?', uz: 'Qachon alomatlar kuchayadi: tong, kun, kech, tun?', w: mkW(1, 1, 1, 1, 1, 1) },
-    { sec: 's3', key: 'stress_trigger', response: 'choice', choices: CH_YNU, ru: 'Усиление в стресс, дедлайны, сроки, конфликты на работе/в семье?', uz: 'Stress, muddat, ish/oiladagi mojarolar bilan kuchayadimi?', w: mkW(0, 0, 0, 0, 2, 1) },
-    { sec: 's3', key: 'exercise_food', response: 'text', ru: 'Связь с нагрузкой, едой, голодом, жарой/холодом (кратко)?', uz: 'Jismoniy yuk, ovqat, och, issiq/sovuq bilan (qisqacha)?', w: mkW(0, 0, 0, 0, 0, 0) },
-    { sec: 's4', key: 'life_events', response: 'text', ru: 'Совпало ли ухудшение с конкретным событием: ссора, разлука, свадьба, переезд, похороны, поездка, новый дом?', uz: 'Yomonlashish ma’lum voqea bilan bir vaqtda bo‘ldimi: janjal, ajralish, to‘y, ko‘chish, dafn, sayohat, yangi uy?', w: mkW(2, 2, 0, 1, 1, 1) },
-    { sec: 's4', key: 'food_drink', response: 'choice', choices: CH_YNU, ru: 'Было ли резкое ухудшение после еды/питья у кого-то или в гостях?', uz: 'Birovning uyida ovqat/ichimlikdan keyin keskin yomonlashish bo‘ldimi?', w: mkW(3, 0, 0, 0, 0, 1) },
-    { sec: 's4', key: 'meeting_praise', response: 'choice', choices: CH_YNU, ru: 'Было ли ухудшение после встречи с конкретным человеком или после похвалы/завистливых слов?', uz: 'Muayyan inson bilan uchrashgandan yoki maqtov / hasadgo‘y so‘zlardan keyin yomonlashish bo‘ldimi?', w: mkW(0, 0, 3, 1, 0, 0) },
-    { sec: 's4', key: 'attachment', response: 'choice', choices: CH_YNU, ru: 'Есть ли навязчивая привязанность к человеку, мысли, которые «не отпускают»?', uz: 'Insonga majburiy bog‘liqlik, «qo‘ymaydigan» fikrlar bormi?', w: mkW(2, 0, 0, 0, 2, 0) },
-    { sec: 's4', key: 'family', response: 'choice', choices: CH_YNU, ru: 'Семья: ссоры «из ниоткуда», холод между супругами, мысли о разводе — есть ли?', uz: 'Oila: «hech nimadan» janjallar, er-xotin oralig‘i sovuq, ajrashish haqidagi fikrlar — bormi?', w: mkW(2, 1, 0, 1, 1, 1) },
-    { sec: 's4', key: 'work_money', response: 'choice', choices: CH_YNU, ru: 'Связь с работой, увольнением, долгами, сильной финансовой тревогой?', uz: 'Ish, ishdan bo‘shatilish, qarz, pul tashvishi bilan bog‘liqmi?', w: mkW(1, 0, 0, 0, 2, 0) },
-    { sec: 's4', key: 'social_isolation', response: 'choice', choices: CH_YNU, ru: 'Ощущение «все против», изоляция, слежка, пересуды — заметны?', uz: '«Hammasi qarshi», yolg‘iz qolish, tuhmat — seziladimi?', w: mkW(0, 0, 0, 0, 2, 0) },
-    { sec: 's4', key: 'betrayal_loss', response: 'text', ru: 'Потери и предательства (близкий человек, смерть, уход) в период начала/ухудшения — что было?', uz: "Yo'qotish, xonaxonalik (o'lim, ketish) — nima bo'lgan?", w: mkW(2, 0, 0, 0, 1, 0) },
-    { sec: 's4', key: 'slander_plot', response: 'choice', choices: CH_YNU, ru: 'Клевета, интриги, несправедливый суд/разбирательство — влияли на состояние?', uz: 'Tuhmat, intriqalar, adolatsiz qaror — holatga ta’sir qildimi?', w: mkW(1, 0, 0, 0, 1, 0) },
-    { sec: 's5', key: 'localization', response: 'text', ru: 'Где основная тяжесть или боль: голова, грудь, живот, спина, шея, конечности, «по всему телу»?', uz: 'Asosiy og‘irlik yoki og‘riq qayerda: bosh, ko‘krak, qorin, bel, bo‘yin, oyoq-qo‘llar, «butun tana»?', w: mkW(1, 1, 1, 0, 1, 2) },
-    { sec: 's5', key: 'sensation', response: 'text', ru: 'Опишите боль/тяжесть: постоянная, приступами, онемение, жар/холод, сдавление в груди?', uz: 'Og‘riq/og‘irlikni tasvirlang: doimiy, tutqunlik bilan, uyushish, issiq/sovuq, ko‘krakda bosim?', w: mkW(1, 1, 1, 0, 1, 1) },
-    { sec: 's5', key: 'medical_checkups', response: 'text', ru: 'Были ли обследования у врачей и что сказали (чтобы отделить явное телесное от духовного в вашей записи)?', uz: 'Shifokorlarda tekshiruv bo‘ldimi va nima dedilar (jismoniy va ruhiy alomatni yozuvda ajratish uchun)?', w: mkW(0, 0, 0, 0, 0, 0) },
-    { sec: 's5', key: 'breathing_heart', response: 'text', ru: 'Одышка, перебои сердца, дискомфорт в груди, перехватывает дыхание?', uz: 'Havo yetishmasligi, yurak urishi, ko‘krakda noqulaylik, nafas qisilishi bormi?', w: mkW(0, 0, 0, 0, 1, 1) },
-    { sec: 's5', key: 'digestion_skin', response: 'text', ru: 'Желудок, пищеварение, кожа, волосы, необычный зуд или высыпания?', uz: 'Oshqozon, hazm, teri, soch, g‘alitcha qichish yoki toshmalar bormi?', w: mkW(0, 0, 0, 0, 0, 0) },
-    { sec: 's5', key: 'hearing_vision', response: 'choice', choices: CH_YNU, ru: 'Шум, звон в ушах, вспышки, мушки, «пелена» в глазах — заметны?', uz: 'Kulokda shovqin, parchalar, kozda tunoq/mushkalar seziladimi?', w: mkW(1, 0, 0, 0, 1, 0) },
-    { sec: 's6', key: 'fear_darkness', response: 'text', ru: 'Страх, тьма, депрессия без видимой причины — как проявляются?', uz: 'Qo‘rqinch, zulmat, sababsiz tushkunlik — qanday namoyon bo‘ladi?', w: mkW(2, 1, 1, 0, 1, 2) },
-    { sec: 's6', key: 'waswasa_namaz', response: 'text', ru: 'Навязчивые мысли, сомнения, «кино в голове» — когда усиливаются (во время намаза, ночью)?', uz: 'Majburiy fikrlar, shubhalar, «kalladagi kino» — qachon kuchayadi (namoz vaqtida, tunda)?', w: mkW(1, 1, 0, 0, 3, 0) },
-    { sec: 's6', key: 'dreams', response: 'text', ru: 'Сны: повторяющиеся сюжеты, погони, змеи, вода, узлы, чужие лица, падение — что запомнилось?', uz: 'Tushlar: takrorlanuvchi syujetlar, quvish, ilonlar, suv, tugunlar, begona yuzlar, yiqilish — nimani eslaysiz?', w: mkW(1, 3, 0, 0, 1, 2) },
-    { sec: 's6', key: 'faith_focus', response: 'text', ru: 'Есть ли мысли против веры или ощущение «не могу сосредоточиться в молитве»?', uz: 'Imonga qarshi fikrlar yoki «namozda diqqatni jamlay olmayapman» his-tuyg‘usi bormi?', w: mkW(1, 1, 0, 0, 3, 0) },
-    { sec: 's6', key: 'anger_rage', response: 'choice', choices: CH_YNU, ru: 'Срывы, вспышки гнева, раздражение «на пустом месте»?', uz: 'Achyqlar, g‘azab, sababsiz asabiylashish bormi?', w: mkW(1, 0, 0, 0, 2, 0) },
-    { sec: 's6', key: 'memory_fog', response: 'text', ru: 'Память, внимание, «туман в голове», путаница в простых вещах?', uz: 'Xotira, e’tibor, «jiring bosh», oddiy narsalarda chalkashish?', w: mkW(0, 0, 0, 0, 2, 0) },
-    { sec: 's6', key: 'guilt_shame', response: 'text', ru: 'Тяжёлая вина, стыд, ощущение ничтожности (без физической причины)?', uz: 'Juda aybdorlik, uyalish, o‘zini past his qilish (sababsiz)?', w: mkW(0, 0, 0, 0, 2, 1) },
-    { sec: 's7', key: 'home_room', response: 'choice', choices: CH_HOME_ROOM, ru: 'Симптомы сильнее дома или в конкретной комнате?', uz: 'Alomatlar uyda yoki ma’lum xonada kuchayroqmi?', w: mkW(2, 2, 0, 0, 1, 2) },
-    { sec: 's7', key: 'night_signs', response: 'choice', choices: CH_YNU, ru: 'Ночью: стуки, шаги, тени, ощущение чужого присутствия, тяжёлые двери?', uz: 'Tunda: ta‘rillar, qadamlar, soyalar, begona ishtirok hissi, og‘ir eshiklar?', w: mkW(2, 3, 0, 0, 0, 2) },
-    { sec: 's7', key: 'tech_smells_kids', response: 'choice', choices: CH_YNU, ru: 'Техника ломается без причины, странные запахи, дети плачут по ночам?', uz: 'Texnika sababsiz buziladi, g‘alati hidlar, bolalar tunda yig‘laydimi?', w: mkW(1, 2, 0, 0, 0, 2) },
-    { sec: 's7', key: 'objects_presence', response: 'choice', choices: CH_YNU, ru: 'Предметы перекладываются, ощущение «не один»?', uz: 'Buyumlar o‘rnidan qo‘zg‘aladimi, «bir o‘zim emasman» hissi?', w: mkW(1, 3, 0, 0, 1, 2) },
-    { sec: 's7', key: 'move_renovation', response: 'choice', choices: CH_YNU, ru: 'Совпало с переездом, ремонтом, сменой мебели, «новым» местом в доме?', uz: "Ko'chish, remont, mebel almashtirish, uyda «yangi» joy bilan mos keladimi?", w: mkW(1, 1, 0, 0, 1, 1) },
-    { sec: 's7', key: 'neighbor_tension', response: 'choice', choices: CH_YNU, ru: 'Соседи, съём, споры о границе/шуме — влияет на ощущения в дому?', uz: 'Qoʻshnilar, ijarachilar, shovqin/chegara mojarosi uyda hissga ta’sir qiladimi?', w: mkW(0, 0, 0, 0, 1, 0) },
-    { sec: 's7', key: 'pets_react', response: 'choice', choices: CH_YNU, ru: 'Реакция животных: избегают комнату, смотрят в угол, рычат пусто?', uz: 'Hayvonlar xonadan qochadimi, burchakni tiklaydi, sababsiz g‘urlashadimi?', w: mkW(0, 1, 0, 0, 0, 0) },
-    { sec: 's8', key: 'seizures', response: 'choice', choices: CH_YNU, ru: 'Были ли приступы: судороги, потеря контроля, чужой голос, агрессия, падения?', uz: 'Tutqunliklar bo‘ldimi: qo‘zgalishlar, nazoratni yo‘qotish, begona ovoz, aggressiya, yiqilishlar?', w: mkW(1, 0, 0, 0, 0, 3) },
-    { sec: 's8', key: 'quran_reaction', response: 'choice', choices: CH_YNU, ru: 'Ощущение «кто-то внутри», давление в животе/груди при чтении Корана или поминании Аллаха?', uz: '«Ichkarida kimdir» hissi, Qurvon o‘qish yoki Allohni zikr qilganda qorin/ko‘krakda bosilishi?', w: mkW(2, 3, 0, 0, 0, 2) },
-    { sec: 's8', key: 'voice_aggression', response: 'choice', choices: CH_YNU, ru: 'Меняется ли голос, появляется ли нехарактерная жестокость?', uz: 'Ovoz o‘zgaradimi, xaraktersiz qattiqlik paydo bo‘ladimi?', w: mkW(1, 3, 0, 0, 0, 0) },
-    { sec: 's8', key: 'chills_sweat', response: 'choice', choices: CH_YNU, ru: 'Озноб, холодный пот, тряска без температуры при зикре/намазе?', uz: "Ter, titroq, zikr yoki namoz paytida isitma bo'lmagan holda yomonlashish bormi?", w: mkW(1, 0, 0, 0, 0, 1) },
-    { sec: 's8', key: 'animal_aversion', response: 'choice', choices: CH_YNU, ru: 'Странная реакция на кошек/собак/птиц или страх, который раньше не был?', uz: 'Mushuk/it/qushlarga g‘alati qarshilik yoki avvalgidan qo‘rquv bormi?', w: mkW(0, 1, 0, 0, 0, 0) },
-    { sec: 's8', key: 'laugh_cry', response: 'choice', choices: CH_YNU, ru: 'Внезапный смех/плач, настроение «переключается» без ясной причины?', uz: 'Sababsiz kulish yoki yig‘lash, kayfiyat tez o‘zgaradimi?', w: mkW(0, 0, 0, 0, 1, 0) },
-    { sec: 's9', key: 'after_admiration', response: 'choice', choices: CH_YNU, ru: 'После восхищения или завистливого взгляда — что почувствовали?', uz: 'Hayrat yoki hasadgo‘y qarab qolishdan keyin nimani his qildingiz?', w: mkW(0, 0, 3, 0, 0, 0) },
-    { sec: 's9', key: 'source_ayn', response: 'choice', choices: CH_AYN_SOURCE, ru: 'Знаете ли источник сглаза (конкретный человек) или нет?', uz: 'Ko‘z yumish manbasini bilasizmi (aniq inson) yoki yo‘qmi?', w: mkW(0, 0, 2, 0, 0, 0) },
-    { sec: 's9', key: 'barakah_loss', response: 'choice', choices: CH_YNU, ru: 'Потеря бараката в делах, деньгах, семье после похвалы?', uz: 'Maqtovdan keyin ish, pul, oilada barakatsizlik yo‘qolishimi?', w: mkW(0, 0, 2, 2, 0, 0) },
-    { sec: 's9', key: 'mirror_photo', response: 'choice', choices: CH_YNU, ru: 'Дискомфорт у зеркала, от фотографий, селфи, «не нравлюсь себе» внезапно?', uz: 'Oyna, foto, selfida noqulaylik, o‘zini yoqtirmaslik bormi?', w: mkW(0, 0, 1, 0, 0, 0) },
-    { sec: 's9', key: 'eye_contact_ayn', response: 'choice', choices: CH_YNU, ru: 'Прямой зрительный контакт с кем-то — вызывает тревогу, жжение, тяжесть?', uz: 'Birovga to‘g‘ridan-to‘g‘ri qarab qolganda beqaror, achish, og‘irlik bormi?', w: mkW(0, 0, 2, 0, 0, 0) },
-    { sec: 's9', key: 'gifts_food_ayn', response: 'choice', choices: CH_YNU, ru: 'Сомнения в подарке/сладости/еде с рук — даже при отсутствии фактов?', uz: 'Sovg‘a, shirinlik, qo‘ldagi ovqatga shubha (haqiqat bo‘lmasa ham)?', w: mkW(0, 0, 1, 0, 0, 0) },
-    { sec: 's10', key: 'knots', response: 'choice', choices: CH_YNU, ru: 'Ощущение «узлов», оков, стеснения в груди?', uz: '«Tugunlar», kishanlar, ko‘krakda siqilish hissi bormi?', w: mkW(3, 0, 0, 0, 0, 2) },
-    { sec: 's10', key: 'place_specific', response: 'choice', choices: CH_YNU, ru: 'Симптомы усиливаются у определённого места (двор, колодец, угол дома)?', uz: 'Alomatlar ma’lum joyda kuchayadimi (hovli, quduq, uy burchagi)?', w: mkW(3, 1, 0, 0, 0, 1) },
-    { sec: 's10', key: 'suspicion_items', response: 'choice', choices: CH_YNU, ru: 'Есть ли подозрение на подклад/копание/магические предметы (без деталей — только факт подозрения для карты случая)?', uz: 'Yashirin buyum/qazish/sehrli narsalar haqidagi gumon bormi (tafsilotlarsiz — faqat holat xaritasi uchun)?', w: mkW(3, 0, 0, 0, 0, 1) },
-    { sec: 's10', key: 'cemetery_route', response: 'choice', choices: CH_YNU, ru: 'Усиление у кладбища, в больнице, у воды, на перекрёстке — замечается?', uz: "Qabriston, shifoxona, suv yoqi, yo'l chorrahasida kuchayish bormi?", w: mkW(1, 0, 0, 0, 0, 1) },
-    { sec: 's10', key: 'heirloom_hair', response: 'choice', choices: CH_YNU, ru: 'Старые вещи, наследство, волосы/ногти, фото — ощущение «тяжести» от этого?', uz: 'Eski buyum, meros, soch/tirnoq, foto — “og‘irlik” hissi bormi?', w: mkW(2, 0, 0, 0, 0, 0) },
-    { sec: 's10', key: 'bath_wudu', response: 'choice', choices: CH_YNU, ru: 'Усиление до/после мытья, гуся, ванной, омовения (без соматики)?', uz: 'Yuvinish, g‘usl, vanna, tozalash oldin/keyin (sababsiz) kuchayadimi?', w: mkW(1, 0, 0, 0, 0, 1) },
-    { sec: 's11', key: 'support_network', response: 'choice', choices: CH_YNU, ru: 'Есть ли рядом доверённый человек (семья, наставник), с кем можно говорить?', uz: "Gaplashish mumkin bo'lgan ishonchli inson (oila, ustoz) bormi?", w: mkW(0, 0, 0, 0, 0, 0) },
-    { sec: 's11', key: 'hope_readiness', response: 'text', ru: 'Кратко: что даёт вам надежду; готовы ли стабильно к Корану/намазу/азкарам (без деталей, по чести)?', uz: 'Qisqacha: umid nimadan; Qur’on, namoz, zikrga muntazam tayyormisiz (halol)?', w: mkW(0, 0, 0, 0, 0, 0) },
-    { sec: 's11', key: 'emotional_tone', response: 'choice', choices: CH_EMOTIONAL, ru: 'Как вы себя чувствуете эмоционально сейчас: спокойно хотите разобраться / сильный страх / измотанность и безнадёжность?', uz: 'Hozir hissiyotan o‘zingizni qanday his qilyapsiz: tinch — tushuntirishni xohlaysiz / katta qo‘rquv / charchash va umidsizlik?', w: mkW(1, 1, 1, 0, 2, 1) }
+    { sec: 'k1', key: 'story', response: 'text', ru: 'Коротко своими словами: что беспокоит, с чего началось, как менялось (можно 3–5 предложений).', uz: 'Qisqacha: nima bezovta qilyapti, qachon boshlangan, qanday o‘zgargan (3–5 jumla).', w: mkW(1, 1, 1, 1, 1, 1) },
+    { sec: 'k1', key: 'urgent', response: 'choice', choices: CH_YNU, ru: 'Сейчас ощущается срочно (нужна помощь в ближайшее время)?', uz: 'Hozir shoshilinch (yaqin yordam) kerakdekmi?', w: mkW(1, 1, 1, 1, 2, 1) },
+    { sec: 'k2', key: 'waves', response: 'choice', choices: CH_WAVES, ru: 'Симптомы постоянные или волнообразные (лучше — снова хуже)?', uz: 'Alomatlar doimiy yoki to‘lqinsimon (yaxshi — yana yomon)?', w: mkW(2, 2, 1, 1, 1, 1) },
+    { sec: 'k2', key: 'food', response: 'choice', choices: CH_YNU, ru: 'Резкое ухудшение после еды/питья у кого-то или в гостях?', uz: 'Birovning uyida ovqat/ichimlikdan keyin keskin yomonlashish bo‘ldimi?', w: mkW(3, 0, 0, 0, 0, 1) },
+    { sec: 'k2', key: 'praise', response: 'choice', choices: CH_YNU, ru: 'Ухудшение после встречи с кем-то или после похвалы / завистливых слов?', uz: 'Uchrashuv yoki maqtov / hasad so‘zlaridan keyin yomonlashish bormi?', w: mkW(0, 0, 3, 1, 0, 0) },
+    { sec: 'k2', key: 'stress', response: 'choice', choices: CH_YNU, ru: 'Связь со стрессом, ссорой, переездом, событием в семье/работе (если релевантно)?', uz: 'Stress, janjal, ko‘chish, oila/ishdagi voqea bilan bog‘liq bo‘lgan yomonlashish bormi?', w: mkW(2, 1, 0, 1, 2, 1) },
+    { sec: 'k3', key: 'body', response: 'text', ru: 'Где в теле тяжесть/боль, что ещё по телу и снам (коротко)?', uz: 'Tanada qayerda og‘irlik/og‘riq, uyqu bilan nima (qisqacha)?', w: mkW(1, 1, 1, 0, 1, 2) },
+    { sec: 'k3', key: 'dreams', response: 'choice', choices: CH_YNU, ru: 'Тревожные, повторяющиеся сны, погони, вода, узлы, чужие лица — заметны?', uz: 'Xavfli, takrorlanuvchi tushlar, quvish, suv, begona yuzlar — bormi?', w: mkW(1, 3, 0, 0, 1, 2) },
+    { sec: 'k3', key: 'mind', response: 'choice', choices: CH_YNU, ru: 'Навязчивые мысли, сомнения, плохо в намазе / внимании?', uz: 'Majburiy fikr, shubha, namozda diqqat yo‘qligi bormi?', w: mkW(1, 1, 0, 0, 3, 0) },
+    { sec: 'k4', key: 'home', response: 'choice', choices: CH_HOME_ROOM, ru: 'Сильнее дома / в отдельной комнате, чем вне дома?', uz: 'Uyda / ayrim xonada ko‘chada emas, kuchayadimi?', w: mkW(2, 2, 0, 0, 1, 2) },
+    { sec: 'k4', key: 'night', response: 'choice', choices: CH_YNU, ru: 'Ночью: стуки, шаги, тени, ощущение «не один»?', uz: 'Tunda shovqin, qadam, soya, «bir o‘zim emasman» hissi bormi?', w: mkW(2, 3, 0, 0, 0, 2) },
+    { sec: 'k4', key: 'quran', response: 'choice', choices: CH_YNU, ru: 'Давление / дискомфорт при чтении Корана, зикре, поминании Аллаха?', uz: 'Qur’on, zikr, Alloh zikrida bosim yoki noqulaylik bormi?', w: mkW(2, 3, 0, 0, 0, 2) },
+    { sec: 'k4', key: 'seizure', response: 'choice', choices: CH_YNU, ru: 'Сильные приступы, смена голоса, агрессия, падения?', uz: 'Kuchli tutqunlik, ovoz o‘zgarishi, agressiya, yiqilish bormi?', w: mkW(1, 0, 0, 0, 0, 3) },
+    { sec: 'k4', key: 'ayn', response: 'choice', choices: CH_YNU, ru: 'После взгляда / похвалы / зависти — заметно хуже (айн, сглаз)?', uz: 'Nazar / maqtov / hasaddan keyin aniq yomonlashish bormi?', w: mkW(0, 0, 3, 0, 0, 0) },
+    { sec: 'k4', key: 'ayn_source', response: 'choice', choices: CH_AYN_SOURCE, ru: 'Знаете источник сглаза (человек) или нет?', uz: 'Ko‘z tegizish manbasini bilsangiz (inson) yoki yo‘qmi?', w: mkW(0, 0, 2, 0, 0, 0) },
+    { sec: 'k4', key: 'knots', response: 'choice', choices: CH_YNU, ru: 'Ощущение «узлов» в груди, оков, стеснения?', uz: 'Ko‘krakda «tugun», kishan, siqilish hissi bormi?', w: mkW(3, 0, 0, 0, 0, 2) },
+    { sec: 'k4', key: 'place', response: 'choice', choices: CH_YNU, ru: 'Сильнее в конкретном месте (угол, двор, при ношении вещи)?', uz: 'Ma’lum joyda (burchak, hovli, buyum) kuchayadimi?', w: mkW(3, 1, 0, 0, 0, 1) },
+    { sec: 'k5', key: 'emotion', response: 'choice', choices: CH_EMOTIONAL, ru: 'Как эмоционально сейчас: спокойно / страх / измотанность?', uz: 'Hozir: tinch / qo‘rquv / charchash?', w: mkW(1, 1, 1, 0, 2, 1) },
+    { sec: 'k5', key: 'hope', response: 'text', ru: 'Одна строка: что укрепляет надежду (по чести).', uz: 'Bir qator: nima umid bag‘ishlaydi (halol).', w: mkW(0, 0, 0, 0, 0, 0) }
   ];
 
   var RUKYA_ROW_BY_ID = {};
@@ -1530,10 +1481,10 @@
     QUICK_FIELD_ID_TO_RU[row.sec + '_' + row.key] = row.ru;
   });
 
-  var RUKYA_QUICK_EXPORT_KIND = 'rukya_quick_analysis_v1';
-  var RUKYA_SURVEY_ID = 'patient_longform_2026';
+  var RUKYA_QUICK_EXPORT_KIND = 'rukya_quick_analysis_v2';
+  var RUKYA_SURVEY_ID = 'patient_quick_2026';
   var QUESTION_GROUPS = (function () {
-    var order = ['s2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11'];
+    var order = ['k1', 'k2', 'k3', 'k4', 'k5'];
     var map = {};
     order.forEach(function (s) { map[s] = { sec: s, items: [] }; });
     RUKYA_QUICK_FIELD_ROWS.forEach(function (row) {
@@ -1825,23 +1776,20 @@
         return '- ' + line;
       }).join('\n')
       : '—';
+    var topTwo = (cd.top || []).slice(0, 2).map(function (r) { return r.label + ' ~' + r.p + '%'; }).join(', ');
     var parts = [
-      'Пациент: ' + cd.name + ' (' + cd.gender + ', ' + cd.age + ' лет)',
-      'Город: ' + cd.city + ', тел.: ' + cd.phone
+      'Пациент: ' + cd.name + ' (' + cd.gender + ', ' + cd.age + '). Город: ' + cd.city + ', т.: ' + cd.phone
     ];
-    if (cd.referral && cd.referral !== '—') parts.push('Откуда узнали: ' + cd.referral);
-    parts.push('Дата: ' + cd.date, '');
-    parts.push('Практики (слайдер 0–3): ' + cd.practiceVal);
-    parts.push('Резюме экрана анализа: ' + cd.summary);
-    parts.push('Доли: ' + cd.rows.map(function (r) { return r.label + ' ' + r.p + '%'; }).join('; '), '');
-    parts.push('Жалобы / отмеченная анкета (разделы 2–11, да):');
-    parts.push(qBlock, '');
-    parts.push('Инструкция: первый элемент в types — главный тип для подбора программы в приложении; поля диагноза должны быть согласованы (джинн, дом, сглаз, приоритет).');
-    parts.push('Выдай JSON-диагноз по схеме RUKYA PRO (см. системный промпт).');
+    if (cd.referral && cd.referral !== '—') parts.push('Откуда: ' + cd.referral);
+    parts.push('Дата: ' + cd.date);
+    parts.push('Практики 0–3: ' + cd.practiceVal + (topTwo ? '. Топ: ' + topTwo : ''), '');
+    parts.push('Отмеченные пункты (короткая анкета v2, да):', qBlock, '');
+    parts.push('types[0] — главный для программы в приложении; согласуй jinn, дом, айн, приоритет.');
+    parts.push('JSON-диагноз по схеме (prompt_deepseek / быстрый системный промпт).');
     return parts.join('\n');
   }
 
-  var DEEPSEEK_SYSTEM_NOTE_SHORT = 'Используй системный промпт RUKYA PRO из файла prompt_deepseek.txt (импорт в приложение Ash-Shifa). Ответ — один валидный JSON-объект без markdown.';
+  var DEEPSEEK_SYSTEM_NOTE_SHORT = 'Быстрая анкета v2: см. prompt_deepseek.txt, раздел «Быстрая анкета v2». Ответ — один валидный JSON-объект без markdown (как в обычном RUKYA PRO; пустые поля допустимы — клиент нормализует).';
 
   function buildAnalysisPayload() {
     var s = scoreNow();
@@ -1858,7 +1806,7 @@
       telegramBot: TELEGRAM_BOT_URL,
       brand: brand(),
       surveyId: RUKYA_SURVEY_ID,
-      checklistNote: 'Items map to questionnaire-site/config.json sections 2–11 (patient_longform_2026); id = sec_fieldKey. response=text: checkbox+textarea; response=choice: radio (values+countsForScore). See answers and checkedItemIds.',
+      checklistNote: 'Short quick form patient_quick_2026; id = k1_story … k5_hope (see RUKYA_QUICK_FIELD_ROWS in quick_analysis.html). response=text: checkbox+textarea; response=choice: radio. See answers and checkedItemIds.',
       patient: {
         name: cd.name, age: cd.age, gender: cd.gender, city: cd.city,
         phone: cd.phone, referral: cd.referral, date: cd.date
