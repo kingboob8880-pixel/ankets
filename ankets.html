@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Лекарь Абу Мухаммад — Анкета → анализ</title>
+  <title>RUKYA PRO — быстрая анкета → анализ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -231,7 +231,7 @@
     .fg { margin-bottom: 10px; }
     .fg label {
       display: block;
-      font-size: 10px;
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.6px;
       color: var(--ui-muted);
@@ -309,6 +309,80 @@
       -webkit-hyphens: auto;
       line-height: 1.45;
     }
+    .q-item {
+      border-bottom: 1px solid rgba(215, 164, 73, 0.18);
+      padding-bottom: 12px;
+      margin-bottom: 10px;
+    }
+    .q-item:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .q-prompt {
+      display: block;
+      font-size: 15px;
+      line-height: 1.45;
+      color: var(--ui-text);
+      margin: 0 0 6px 0;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .q-answer {
+      display: block;
+      width: 100%;
+      min-height: 4.2em;
+      max-width: 100%;
+      margin-top: 6px;
+      padding: 8px 10px;
+      font: inherit;
+      font-size: 15px;
+      line-height: 1.4;
+      color: var(--ui-text);
+      background: var(--ui-surface);
+      border: 1px solid rgba(215, 164, 73, 0.35);
+      border-radius: 8px;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    [data-theme="dark"] .q-answer {
+      background: rgba(255, 245, 225, 0.06);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .q-choice {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+    .q-choice-opts {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .q-choice-opt {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.4;
+      color: var(--ui-text);
+      cursor: pointer;
+    }
+    .qchoice-inp {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      margin-top: 2px;
+      accent-color: var(--gold-deep);
+      flex-shrink: 0;
+    }
     .mod-row {
       display: flex;
       align-items: center;
@@ -324,7 +398,7 @@
       border-radius: 4px;
       border: 2px solid #c28a3b;
       box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-      padding: 12mm 14mm;
+      padding: 28px 32px;
       min-height: 200px;
     }
     [data-theme="dark"] .report-page {
@@ -543,7 +617,7 @@
         min-height: 44px;
       }
       .layout {
-        padding: 12px max(12px, env(safe-area-inset-left, 0px)) 16px max(12px, env(safe-area-inset-right, 0px));
+        padding: 12px max(12px, env(safe-area-inset-right, 0px)) 16px max(12px, env(safe-area-inset-left, 0px));
         gap: 14px;
       }
       .card { padding: 14px 14px; }
@@ -598,6 +672,8 @@
         padding-left: 0;
         padding-right: 0;
       }
+      .q-answer { font-size: 16px; }
+      .q-prompt { font-size: 16px; }
     }
 
     @media (max-width: 400px) {
@@ -630,7 +706,7 @@
       <button type="button" class="tb tb-icon primary" id="btnRun"
         title="Обновить анализ по текущим отметкам анкеты"
         aria-label="Обновить анализ по текущим отметкам анкеты">
-        <i class="fas fa-magic" aria-hidden="true"></i>
+        <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i>
       </button>
     </div>
     <div class="sep" aria-hidden="true"></div>
@@ -681,17 +757,36 @@
     </div>
   </div>
 
+  <noscript><div style="padding:16px 20px;background:#fff3cd;color:#856404;font-family:sans-serif;font-size:15px;text-align:center;border-bottom:2px solid #ffc107">Для работы анкеты необходимо включить JavaScript в браузере.</div></noscript>
+  <main>
   <div class="layout">
     <div class="card" id="formCard">
       <h2 id="h2Form"><i class="fas fa-clipboard-list"></i> Данные и анкета</h2>
+      <datalist id="dl_gender_ru">
+        <option value="Мужской">
+        <option value="Женский">
+        <option value="Мужской (ибн)">
+        <option value="Женский (бинт)">
+      </datalist>
+      <datalist id="dl_gender_uz">
+        <option value="Erkak">
+        <option value="Ayol">
+        <option value="Erkak (ibn)">
+        <option value="Ayol (bint)">
+      </datalist>
       <div class="frow2">
-        <div class="fg"><label>ФИО (необязательно)</label><input type="text" id="f_name" placeholder="—"></div>
-        <div class="fg"><label>Возраст</label><input type="text" id="f_age" placeholder="—"></div>
+        <div class="fg"><label for="f_name" id="lbl_f_name">ФИО (необязательно)</label><input type="text" id="f_name" placeholder="—" autocomplete="name"></div>
+        <div class="fg"><label for="f_age" id="lbl_f_age">Возраст</label><input type="text" id="f_age" placeholder="—" autocomplete="off" inputmode="numeric"></div>
       </div>
       <div class="frow2">
-        <div class="fg"><label>Город</label><input type="text" id="f_city" placeholder="—"></div>
-        <div class="fg"><label>Дата заполнения</label><input type="text" id="f_date" readonly></div>
+        <div class="fg"><label for="f_gender" id="lbl_f_gender">Пол</label><input type="text" id="f_gender" placeholder="—" autocomplete="sex" list="dl_gender_ru"></div>
+        <div class="fg"><label for="f_city" id="lbl_f_city">Город</label><input type="text" id="f_city" placeholder="—" autocomplete="address-level2"></div>
       </div>
+      <div class="frow2">
+        <div class="fg"><label for="f_phone" id="lbl_f_phone">Телефон</label><input type="text" id="f_phone" placeholder="—" autocomplete="tel" inputmode="tel"></div>
+        <div class="fg"><label for="f_date" id="lbl_f_date">Дата заполнения</label><input type="text" id="f_date" readonly autocomplete="off"></div>
+      </div>
+      <div class="fg" style="margin-top:8px"><label for="f_referral" id="lbl_f_referral">Откуда о нас узнали</label><input type="text" id="f_referral" placeholder="—" autocomplete="off"></div>
       <div class="flabel" id="flabelPractice">Регулярность обязательных и добровольных практик (намаз, Коран, азкары)</div>
       <p class="mod-row" style="margin-bottom:6px; font-size:13px" id="practiceLabel">Ниже среднего — слабее практики, тем выше доли в «Распределении»; сильнее практики — ниже (ориентир по анкете).</p>
       <div class="mod-row">
@@ -735,7 +830,8 @@
       </div>
     </div>
   </div>
-  <div class="toast" id="toast" role="status"></div>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <div class="doctor-modal" id="doctorModal" role="dialog" aria-modal="true" aria-labelledby="doctorModalTitle">
     <div class="doctor-modal-backdrop" id="doctorModalBackdrop" aria-hidden="true"></div>
@@ -764,10 +860,10 @@
   'use strict';
 
   var LANG_KEY = 'qa_lang';
-  var DRAFT_KEY = 'qa_draft';
+  var DRAFT_KEY = 'qa_draft_v2';
   var currentLang = 'ru';
 
-  var BRAND_BY_LANG = { ru: 'Лекарь Абу Мухаммад', uz: 'Tabib Abu Muhammad' };
+  var BRAND_BY_LANG = { ru: 'RUKYA PRO · Абу Мухаммад', uz: "RUKYA PRO · Tabib Abu Muhammad" };
   var TELEGRAM_BOT_URL = 'https://t.me/Lechenya_bot';
   /**
    * URL Worker после wrangler deploy. Пусто — только скачивание JSON.
@@ -936,8 +1032,8 @@
 
   var I18N = {
     ru: {
-      doc_title: 'Лекарь Абу Мухаммад — Анкета → анализ',
-      toolbar_sub: 'Анкета → Анализ',
+      doc_title: 'RUKYA PRO — быстрая анкета → анализ',
+      toolbar_sub: 'RUKYA PRO · короткая анкета',
       group_analysis: 'Анализ',
       group_copy: 'Копирование и печать',
       group_doctor: 'Отправка лекарю',
@@ -961,18 +1057,25 @@
       theme_dark_t: 'Тёмный интерфейс',
       h2_form: 'Данные и анкета',
       h2_report: 'Результат анализа',
-      lbl_name: 'ФИО (необязательно)', lbl_age: 'Возраст', lbl_city: 'Город', lbl_date: 'Дата заполнения',
+      lbl_name: 'Как вас полностью зовут (имя, отчество; бинт или ибн при необходимости)?',
+      lbl_age: 'Возраст?',
+      lbl_gender: 'Пол?',
+      lbl_city: 'Город проживания?',
+      lbl_phone: 'Телефон для связи?',
+      lbl_referral: 'Откуда о нас узнали или кто направил (по желанию)?',
+      lbl_date: 'Дата заполнения',
       flabel_practice: 'Регулярность обязательных и добровольных практик (намаз, Коран, азкары)',
       practice_slider_a: 'Регулярность практик',
       practice_low: 'Низкая', practice_high: 'Высокая',
       practice0: 'Практики слабые/нерегулярные', practice1: 'Ниже среднего', practice2: 'Средние/стабильные', practice3: 'Сильные/регулярные',
       practice_tail: 'корректирует отображаемые доли в «Распределении»: слабые практики — выше, сильные — ниже (к весам отмеченных пунктов).',
-      symptoms_intro: 'Симптомы и обстоятельства (поставьте по релевантности)',
+      symptoms_intro: 'Короткая анкета (5 блоков, surveyId patient_quick_2026). Где стоит галочка, пункт учитывается в анализе: в открытых полях кратко поясните; в закрытых — выберите вариант.',
+      answer_placeholder: 'Краткий ответ (по желанию)',
       report_ph: 'Отметьте пункты анкеты в форме выше — анализ обновится автоматически.',
       report_empty: 'Отметьте хотя бы один пункт анкеты.',
       report_h1: 'Анализ по анкете',
       report_sub: 'Предварительная духовно-нравственная ориентация, не духовного «таинства»',
-      meta_name: 'Имя:', meta_age: 'Возраст:', meta_city: 'Город:', meta_date: 'Дата:',
+      meta_name: 'Имя:', meta_age: 'Возраст:', meta_gender: 'Пол:', meta_city: 'Город:', meta_phone: 'Телефон:', meta_referral: 'Направление:', meta_date: 'Дата:',
       sec_summary: 'Сводка', sec_dist: 'Распределение (весовая анкета и ползунок практик)',
       sec_hints: 'Вероятные ориентиры (топ-1 / топ-2)', sec_obs: 'Наблюдения (по отмеченным пунктам)',
       sec_recs: 'Духовные рекомендации лекаря Абу Мухаммад',
@@ -1002,7 +1105,7 @@
       toast_png_p: 'Готовлю PNG…', toast_png_ok: 'PNG сохранён', toast_png_bad: 'Не удалось сохранить PNG',
       toast_pdf_p: 'Готовлю PDF…', toast_pdf_ok: 'PDF сохранён', toast_pdf_bad: 'Не удалось сохранить PDF',
       toast_empty: 'Пустой отчёт.', toast_copy_ok: 'Текст скопирован', toast_copy_bad: 'Ошибка копирования',
-      toast_doctor_hint: 'Сейчас ваши данные будут загружаться в ваш телефон в виде JSON-файл. Затем Откроется бот в Telegram — прикрепите этот json файл в чате, чтобы передать данные лекарю.',
+      toast_doctor_hint: 'Сейчас ваши данные будут загружаться в ваш телефон в виде JSON-файла. Затем откроется бот в Telegram — прикрепите этот JSON-файл в чате, чтобы передать данные лекарю.',
       doctor_modal_title: 'Отправка лекарю',
       doctor_modal_ok: 'Понял',
       toast_doctor_bad: 'Не удалось подготовить JSON.',
@@ -1022,8 +1125,8 @@
       launch_hint_ok: 'Понял'
     },
     uz: {
-      doc_title: 'Tabib Abu Muhammad — So‘rovnoma → tahlil',
-      toolbar_sub: 'So‘rovnoma → Tahlil',
+      doc_title: 'RUKYA PRO — tezkor so‘rovnoma → tahlil',
+      toolbar_sub: 'RUKYA PRO · qisqa so‘rovnoma',
       group_analysis: 'Tahlil',
       group_copy: 'Nusxa va chop etish',
       group_doctor: 'Tabibga yuborish',
@@ -1047,18 +1150,25 @@
       theme_dark_t: 'Qorong‘i interfeys',
       h2_form: 'Ma’lumot va so‘rovnoma',
       h2_report: 'Tahlil natijasi',
-      lbl_name: 'F.I.Sh. (ixtiyoriy)', lbl_age: 'Yosh', lbl_city: 'Shahar', lbl_date: 'To‘ldirilgan sana',
+      lbl_name: 'To‘liq ismingiz (ism va otasining ismi; kerak bo‘lsa bint yoki ibn)?',
+      lbl_age: 'Yoshingiz?',
+      lbl_gender: 'Jinsingiz?',
+      lbl_city: 'Yashash shahringiz?',
+      lbl_phone: 'Aloqa uchun telefon?',
+      lbl_referral: 'Biz haqimizda qayerdan eshitdingiz yoki kim yo‘naltirdi (ixtiyoriy)?',
+      lbl_date: 'To‘ldirilgan sana',
       flabel_practice: 'Farz va ixtiyoriy amallar (namoz, Qur’on, zikrlar) muntazamligi',
       practice_slider_a: 'Amallar muntazamligi',
       practice_low: 'Past', practice_high: 'Yuqori',
       practice0: 'Amallar sust / tartibsiz', practice1: 'O‘rtacha dan past', practice2: 'O‘rtacha / barqaror', practice3: 'Kuchli / muntazam',
       practice_tail: '«Taqsimot»dagi ko‘rinadigan ulushlarni tuzatadi: sust amallar — yuqori, kuchli amallar — pastroq (belgilangan bandlar vazniga nisbatan).',
-      symptoms_intro: 'Alomatlar va sharoitlar (mos keladiganlarini belgilang)',
+      symptoms_intro: 'Qisqa so‘rovnoma (5 blok, patient_quick_2026). Belgi qo‘yilgan band hisobga olinadi: ochiq maydonlarda qisqacha yozing; yopiqda variantni tanlang.',
+      answer_placeholder: 'Qisqa javob (ixtiyoriy)',
       report_ph: 'Yuqoridagi so‘rovnomada mos bandlarni belgilang — tahlil avtomatik yangilanadi.',
       report_empty: 'Kamida bitta bandni belgilang.',
       report_h1: 'So‘rovnoma bo‘yicha tahlil',
       report_sub: 'Diniy-axloqiy yo‘naltirish, maxfiy «sir» emas',
-      meta_name: 'Ism:', meta_age: 'Yosh:', meta_city: 'Shahar:', meta_date: 'Sana:',
+      meta_name: 'Ism:', meta_age: 'Yosh:', meta_gender: 'Jins:', meta_city: 'Shahar:', meta_phone: 'Telefon:', meta_referral: 'Yo‘naltirish:', meta_date: 'Sana:',
       sec_summary: 'Qisqa xulosa', sec_dist: 'Taqsimot (vaznli so‘rovnoma va amallar slayderi)',
       sec_hints: 'Ehtimoliy yo‘nalishlar (1-2-o‘rin)', sec_obs: 'Kuzatuvlar (belgilangan bandlar)',
       sec_recs: 'Tabib Abu Muhammadning ruhiy tavsiyalari',
@@ -1133,18 +1243,23 @@
   }
 
   function loadDraft() {
-    var empty = { checks: {}, name: '', age: '', city: '', practice: '1' };
+    var empty = { checks: {}, answers: {}, name: '', age: '', gender: '', city: '', phone: '', referral: '', practice: '1' };
     try {
       var raw = localStorage.getItem(DRAFT_KEY);
       if (!raw) return empty;
       var o = JSON.parse(raw);
       if (!o || typeof o !== 'object') return empty;
       var checks = o.checks && typeof o.checks === 'object' ? o.checks : {};
+      var answers = o.answers && typeof o.answers === 'object' ? o.answers : {};
       return {
         checks: checks,
+        answers: answers,
         name: typeof o.name === 'string' ? o.name : '',
         age: typeof o.age === 'string' ? o.age : '',
+        gender: typeof o.gender === 'string' ? o.gender : '',
         city: typeof o.city === 'string' ? o.city : '',
+        phone: typeof o.phone === 'string' ? o.phone : '',
+        referral: typeof o.referral === 'string' ? o.referral : '',
         practice: o.practice != null ? String(o.practice) : '1'
       };
     } catch (e) {
@@ -1156,9 +1271,13 @@
     try {
       var payload = {
         checks: getCheckedIds(),
+        answers: collectAnswersObject(),
         name: document.getElementById('f_name').value || '',
         age: document.getElementById('f_age').value || '',
+        gender: document.getElementById('f_gender').value || '',
         city: document.getElementById('f_city').value || '',
+        phone: document.getElementById('f_phone').value || '',
+        referral: document.getElementById('f_referral').value || '',
         practice: document.getElementById('f_practice').value || '1'
       };
       localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
@@ -1169,11 +1288,17 @@
     var d = loadDraft();
     var fn = document.getElementById('f_name');
     var fa = document.getElementById('f_age');
+    var fg = document.getElementById('f_gender');
     var fc = document.getElementById('f_city');
+    var fph = document.getElementById('f_phone');
+    var fr = document.getElementById('f_referral');
     var fp = document.getElementById('f_practice');
     if (fn) fn.value = d.name;
     if (fa) fa.value = d.age;
+    if (fg) fg.value = d.gender;
     if (fc) fc.value = d.city;
+    if (fph) fph.value = d.phone;
+    if (fr) fr.value = d.referral;
     if (fp && d.practice != null) {
       var pv = parseInt(d.practice, 10);
       if (!isNaN(pv) && pv >= 0 && pv <= 3) fp.value = String(pv);
@@ -1186,12 +1311,14 @@
     try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
     document.documentElement.setAttribute('lang', lang === 'uz' ? 'uz' : 'ru');
     document.title = t('doc_title');
+    var genderInput = document.getElementById('f_gender');
+    if (genderInput) genderInput.setAttribute('list', lang === 'uz' ? 'dl_gender_uz' : 'dl_gender_ru');
     document.querySelectorAll('[data-lang-pick]').forEach(function (btn) {
       var on = btn.getAttribute('data-lang-pick') === lang;
       btn.classList.toggle('is-active', on);
       if (btn.getAttribute('role') === 'radio') btn.setAttribute('aria-checked', on ? 'true' : 'false');
     });
-    if (document.querySelector('#questionnaireRoot input[data-qid]')) saveDraft();
+    if (document.querySelector('#questionnaireRoot .q-item')) saveDraft();
     refreshDateField();
     applyStaticI18n();
     buildQuestionnaire();
@@ -1211,11 +1338,13 @@
     document.querySelector('.toolbar-sub').textContent = t('toolbar_sub');
     var tbt = document.querySelector('.toolbar-title');
     if (tbt) tbt.textContent = brand();
-    var labels = document.querySelectorAll('#formCard .fg label');
-    if (labels[0]) labels[0].textContent = t('lbl_name');
-    if (labels[1]) labels[1].textContent = t('lbl_age');
-    if (labels[2]) labels[2].textContent = t('lbl_city');
-    if (labels[3]) labels[3].textContent = t('lbl_date');
+    var ln = document.getElementById('lbl_f_name'); if (ln) ln.textContent = t('lbl_name');
+    var la = document.getElementById('lbl_f_age'); if (la) la.textContent = t('lbl_age');
+    var lg = document.getElementById('lbl_f_gender'); if (lg) lg.textContent = t('lbl_gender');
+    var lc = document.getElementById('lbl_f_city'); if (lc) lc.textContent = t('lbl_city');
+    var lph = document.getElementById('lbl_f_phone'); if (lph) lph.textContent = t('lbl_phone');
+    var lr = document.getElementById('lbl_f_referral'); if (lr) lr.textContent = t('lbl_referral');
+    var ld = document.getElementById('lbl_f_date'); if (ld) ld.textContent = t('lbl_date');
     document.getElementById('flabelPractice').textContent = t('flabel_practice');
     document.getElementById('practiceLow').textContent = t('practice_low');
     document.getElementById('practiceHigh').textContent = t('practice_high');
@@ -1301,162 +1430,104 @@
   };
 
   function catLabel(key) { return txt(CAT_LABEL[key]); }
-  var G_TITLES = {
-  "g1": {
-    "ru": "Состояние души и настроения",
-    "uz": "Ruh holati va kayfiyat"
-  },
-  "g2": {
-    "ru": "Реакция на поклонение и рукъю",
-    "uz": "Ibadat va ruqya ga reaksiya"
-  },
-  "g3": {
-    "ru": "Ощущения в теле",
-    "uz": "Tanadagi hissiyotlar"
-  },
-  "g4": {
-    "ru": "Сны и ночные признаки",
-    "uz": "Tushlar va tungi belgilar"
-  },
-  "g5": {
-    "ru": "Пища, предметы, окружение",
-    "uz": "Ovqat, buyumlar, muhit"
-  },
-  "g6": {
-    "ru": "Семья, брак, супружеская близость (субъективно)",
-    "uz": "Oila, nikoh, turmush o‘rtasidagi yaqinlik (subyektiv)"
-  },
-  "g7": {
-    "ru": "Социальное, работа, быт",
-    "uz": "Ijtimoiy hayot, ish, turmus"
-  },
-  "g8": {
-    "ru": "Триггеры (что предшествовало ухудшению)",
-    "uz": "Triggerlar (yomonlashishdan oldin nima bo‘ldi)"
-  }
-};
-  function groupTitle(g) { return txt(G_TITLES[g.titleKey]); }
+  /** Группы короткой анкеты (не совпадают с полной longform). */
+  var SECTION_TITLE = {
+    k1: { ru: '1. Ситуация', uz: '1. Vaziyat' },
+    k2: { ru: '2. Время и триггеры', uz: '2. Vaqt va triggirlar' },
+    k3: { ru: '3. Тело и психика', uz: '3. Tana va psixika' },
+    k4: { ru: '4. Дом, джинн, сглаз, сихр (кратко)', uz: '4. Uy, jinn, ko‘z, sihr (qisqa)' },
+    k5: { ru: '5. Тон и надежда', uz: '5. Ohang va umid' }
+  };
+  function groupTitle(g) { return txt(SECTION_TITLE[g.sec]); }
   function itemLbl(it) { return txt(it.label); }
 
+  function mkW(a, b, c, d, e, f) {
+    return { sihr: a || 0, jinn: b || 0, evil_eye: c || 0, envy: d || 0, waswasa: e || 0, hajim: f || 0 };
+  }
+
+  /** Закрытые вопросы: value → подписи + учёт в score при countsForScore. */
+  var CH_YNU = [
+    { value: 'yes', ru: 'Да, есть / относится', uz: "Ha, bor yoki o‘zimga tegishli", countsForScore: true },
+    { value: 'no', ru: 'Нет', uz: "Yo'q", countsForScore: false },
+    { value: 'unsure', ru: 'Не уверен(а)', uz: 'Ishonchsiz', countsForScore: false }
+  ];
+  var CH_WAVES = [
+    { value: 'constant', ru: 'Постоянные', uz: 'Doimiy', countsForScore: true },
+    { value: 'wave', ru: 'Волнообразные', uz: "To'lqinsimon", countsForScore: true },
+    { value: 'unsure', ru: 'Не уверен(а)', uz: 'Ishonchsiz', countsForScore: false }
+  ];
+  var CH_HOME_ROOM = [
+    { value: 'home', ru: 'Сильнее дома (в целом)', uz: "Uy bo‘yicha kuchayadi", countsForScore: true },
+    { value: 'room', ru: 'Сильнее в конкретной комнате', uz: 'Ayrim xonada kuchayadi', countsForScore: true },
+    { value: 'no', ru: 'Нет / не замечаю', uz: "Yo'q / sezmayapman", countsForScore: false }
+  ];
+  var CH_EMOTIONAL = [
+    { value: 'calm', ru: 'Спокойно, хочу разобраться', uz: 'Tinch, tushuntirishni xohlayman', countsForScore: false },
+    { value: 'fear', ru: 'Сильный страх', uz: "Kuchli qo‘rquv", countsForScore: true },
+    { value: 'exhausted', ru: 'Измотанность и безнадёжность', uz: 'Charchash va umidsizlik', countsForScore: true }
+  ];
+  var CH_AYN_SOURCE = [
+    { value: 'yes', ru: 'Да, знаю источник (конкретный человек)', uz: "Ha, manbani bilaman (aniq inson)", countsForScore: true },
+    { value: 'no', ru: 'Нет, не знаю', uz: "Yo'q, bilmayman", countsForScore: true },
+    { value: 'unsure', ru: 'Не уверен(а)', uz: 'Ishonchsiz', countsForScore: false }
+  ];
 
   /**
-   * Редактируйте веса w.* для каждого пункта (0–3, целое).
-   * Максимум по категории = сумма w для этой категории по ВСЕМ пунктам, если отмечены все.
+   * Короткая анкета: id = k{группа}_{ключ}. Веса w.* — эвристика «Распределения».
+   * response: 'text' — галочка + textarea; 'choice' — варианты (см. CH_*).
    */
-  var QUESTION_GROUPS = [
-    {
-      titleKey: 'g1',
-      items: [
-        { id: 'pe1', label: { ru: "Нарушен сон, кошмары, страхи, внезапный сильный страх", uz: "Uyqu buzilishi, vahimali tushlar, qo‘rquvlar, kutilmaganda kuchli qo‘rquv" }, w: { sihr: 2, jinn: 1, evil_eye: 1, envy: 0, waswasa: 1, hajim: 1 } },
-        { id: 'pe2', label: { ru: "Навязчивые мысли, внутреннее беспокойство, ощущение слежки", uz: "Majburiy fikrlar, ichki xavotir, kuzatilayotgandek his" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 2, hajim: 1 } },
-        { id: 'pe3', label: { ru: "Сомнения в вере, религиозные сомнения, «шепот» мыслей", uz: "Imonda shubhalar, diniy shubhalar, fikrlarning «pichirig‘i»" }, w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 0, waswasa: 3, hajim: 0 } },
-        { id: 'pe4', label: { ru: "Резкие смены настроения без видимой причины", uz: "Aniq sababsiz kayfiyatning keskin o‘zgarishi" }, w: { sihr: 2, jinn: 2, evil_eye: 1, envy: 1, waswasa: 1, hajim: 1 } },
-        { id: 'pe5', label: { ru: "Апатия, «пустота», резкая потеря интереса к привычному (без ясной жизненной причины)", uz: "Apatiya, «bo‘shliq», odatdagiga qiziqishning yo‘qolishi (sabab aniq emas)" }, w: { sihr: 1, jinn: 1, evil_eye: 1, envy: 0, waswasa: 1, hajim: 1 } },
-        { id: 'pe6', label: { ru: "Вспышки гнева или раздражения «как не свои»", uz: "G‘azab yoki asabiylik «o‘ziga xos bo‘lmagan» portlashlari" }, w: { sihr: 2, jinn: 2, evil_eye: 0, envy: 1, waswasa: 0, hajim: 2 } },
-        { id: 'pe7', label: { ru: "Память и концентрация: заметное ухудшение непривычное для возраста", uz: "Xotira va diqqat: yoshga nisbatan g‘ayrioddiy pasayish" }, w: { sihr: 0, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2, hajim: 1 } },
-        { id: 'pe8', label: { ru: "Ощущение отстранённости от себя или окружающего, «как во сне наяву»", uz: "O‘zidan yoki atrofdan uzoqlashgandek, «uyg‘oq paytda tushdagidek»" }, w: { sihr: 1, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2, hajim: 1 } },
-        { id: 'pe9', label: { ru: "Навязчивая идея о «наведении» без возможности «отпустить» мысль", uz: "«Tilovat» haqidagi majburiy fikr, uni «qo‘yib yuborib» bo‘lmaydi" }, w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 0, waswasa: 3, hajim: 0 } },
-        { id: 'pe10', label: { ru: "Плач, эмоциональные качели без связи с событиями", uz: "Voqealar bilan bog‘liq bo‘lmagan yig‘lash, kayfiyat tebranishlari" }, w: { sihr: 1, jinn: 1, evil_eye: 2, envy: 1, waswasa: 1, hajim: 1 } },
-        { id: 'pe11', label: { ru: "Резкое желание уйти от людей, избегание общения (не как прежний нрав)", uz: "Odamlardan uzoqlashish, muloqotdan qochish (oldingi xulq-atvorga o‘xshamaydi)" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 1, hajim: 1 } },
-        { id: 'pe12', label: { ru: "Ощущение «присутствия» рядом, хотя никого нет (бодрствование)", uz: "Yon-atrofda «biror narsa» borgandek, hech kim yo‘q (uyg‘oq payt)" }, w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 1, hajim: 3 } }
-      ]
-    },
-    {
-      titleKey: 'g2',
-      items: [
-        { id: 'wo1', label: { ru: "Отвращение, тошнота или злость при чтении Корана / молитве (не путать с сонной усталостью)", uz: "Qur’on o‘qish / namozda nafrat, ko‘ngil aynishi yoki g‘azab (uyqudan charchoq bilan aralashtirmang)" }, w: { sihr: 2, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'wo2', label: { ru: "Боль, давление или сильный дискомфорт при аятах, которых «не было» до недуга", uz: "Og‘riq, bosim yoki kuchli noqulaylik oyatlarda, yomonlashishdan oldin «bo‘lmagan»" }, w: { sihr: 2, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'wo3', label: { ru: "Чувство облегчения при азане, слушании Корана, рукъе", uz: "Azon, Qur’on eshitish, ruqyada yengillik hissi" }, w: { sihr: 1, jinn: 1, evil_eye: 1, envy: 0, waswasa: 0, hajim: 1 } },
-        { id: 'wo4', label: { ru: "Видения, ощущение «чужого» присутствия, голоса, давления", uz: "Ko‘rinishlar, «begona» mavjudlik, ovoz, bosim hissi" }, w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 0, hajim: 3 } },
-        { id: 'wo5', label: { ru: "Невозможность сосредоточиться в намазе, «отключение», мысли уносят", uz: "Namozda diqqatni jamlab bo‘lmaslik, «o‘chib» qolish, fikrlar uchib ketadi" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 2, hajim: 2 } },
-        { id: 'wo6', label: { ru: "Забывание прочитанного в молитве непривычным образом", uz: "Namozda o‘qilganini odatdan tashqari tarzda unutish" }, w: { sihr: 0, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2, hajim: 1 } },
-        { id: 'wo7', label: { ru: "Спешка закончить молитву, дискомфорт в теле именно во время неё", uz: "Namozni tez tugatishga shoshilish, aynan namoz vaqtida tana noqulayligi" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 1, hajim: 2 } },
-        { id: 'wo8', label: { ru: "Головокружение или тошнота при входе в место молитвы / при начале чтения", uz: "Ibodat joyiga kirganda yoki o‘qishni boshlaganda bosh aylanishi yoki ko‘ngil aynishi" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'wo9', label: { ru: "Страх или напряжение при взгляде на текст Корана без явной мирской причины", uz: "Qur’on matniga qaraganda ochiq dunyoviy sababsiz qo‘rquv yoki charchoq" }, w: { sihr: 1, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2, hajim: 1 } },
-        { id: 'wo10', label: { ru: "Повторяющиеся «сбои»: падает мусхаф, гаснет свет при чтении (если заметный паттерн)", uz: "Takrorlanuvchi «nosozliklar»: o‘qiyotganda mushaf tushadi, chiroq o‘chadi (aniq naqsh bo‘lsa)" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } }
-      ]
-    },
-    {
-      titleKey: 'g3',
-      items: [
-        { id: 'ph1', label: { ru: "Тяжесть в теле, ощущение удушья, сдавливания при «ясной норме» с мирской стороны", uz: "Tanada og‘irlik, bo‘g‘ilish, siqilish — dunyoviy jihatdan «ochiq-oydindagi norma» bo‘lsa ham" }, w: { sihr: 2, jinn: 2, evil_eye: 1, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'ph2', label: { ru: "Онемение, «мурашки», необъяснимые боли, скачки давления/пульса", uz: "Semsizlanish, «murashkalar», tushuntirib bo‘lmaydigan og‘riqlar, bosim / puls sakrashlari" }, w: { sihr: 1, jinn: 1, evil_eye: 2, envy: 0, waswasa: 0, hajim: 1 } },
-        { id: 'ph3', label: { ru: "Судороги, обмороки, необычные движения при отсутствии ясного мирского объяснения", uz: "Tonik mushaklar, hushdan ketish, ochiq dunyoviy tushuntirisiz g‘ayrioddiy harakatlar" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 3 } },
-        { id: 'ph4', label: { ru: "Головные боли волнами, не проходят обычными мирскими способами", uz: "To‘lqinli bosh og‘rig‘i, oddiy dunyoviy usullar bilan yengilmaydi" }, w: { sihr: 1, jinn: 1, evil_eye: 2, envy: 0, waswasa: 0, hajim: 1 } },
-        { id: 'ph5', label: { ru: "Расстройство желудка и кишечника без ясной мирской причины", uz: "Oshqozon-ichak noqulayligi ochiq dunyoviy sababsiz" }, w: { sihr: 2, jinn: 1, evil_eye: 0, envy: 0, waswasa: 1, hajim: 2 } },
-        { id: 'ph6', label: { ru: "Кожный зуд, высыпания волнами без ясной мирской причины", uz: "Teri qichishi, to‘lqinli chiqitlar — ochiq dunyoviy sababsiz" }, w: { sihr: 1, jinn: 1, evil_eye: 2, envy: 0, waswasa: 0, hajim: 1 } },
-        { id: 'ph7', label: { ru: "Холод или жар в конечностях без изменения температуры тела", uz: "Tana harorati o‘zgarmagan holda qo‘l-oyoqda sovuq yoki issiq" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'ph8', label: { ru: "Шум/давление в голове, усиливающиеся ночью", uz: "Boshda shovqin / bosim, kechasi kuchayadi" }, w: { sihr: 1, jinn: 2, evil_eye: 1, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'ph9', label: { ru: "Внезапная слабость после удачного дня или похвалы", uz: "Muvaffaqiyatli kun yoki maqtovdan keyin kutilmaganda hollik" }, w: { sihr: 0, jinn: 0, evil_eye: 2, envy: 2, waswasa: 0, hajim: 0 } },
-        { id: 'ph10', label: { ru: "Учащённое сердцебиение в покое без ясной мирской причины", uz: "Tinchlikda yurak urishining tezlashishi — ochiq dunyoviy sababsiz" }, w: { sihr: 0, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2, hajim: 1 } },
-        { id: 'ph11', label: { ru: "Боли в спине/шее «без причины» с мирской стороны", uz: "Orqa / bo‘yinda og‘riq — dunyoviy jihatdan «sababsiz»" }, w: { sihr: 1, jinn: 1, evil_eye: 1, envy: 0, waswasa: 0, hajim: 1 } },
-        { id: 'ph12', label: { ru: "Кратковременные сбои зрения или обоняния без ясной мирской причины", uz: "Ko‘rish yoki hid bilan qisqa muddatli nosozliklar — ochiq dunyoviy sababsiz" }, w: { sihr: 0, jinn: 1, evil_eye: 2, envy: 0, waswasa: 0, hajim: 1 } }
-      ]
-    },
-    {
-      titleKey: 'g4',
-      items: [
-        { id: 'dn1', label: { ru: "Преследование, падение, удушье во сне, пробуждение в страхе", uz: "Tushda quvish, qulash, bo‘g‘ilish, qo‘rquv bilan uyg‘onish" }, w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 1, hajim: 2 } },
-        { id: 'dn2', label: { ru: "Змеи, собаки, незнакомые существа, ощущение укуса во сне", uz: "Ilonlar, itlar, noma’lum mavjudotlar, tushda tishlash hissi" }, w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'dn3', label: { ru: "Навязчивые эротические сны, ощущение реального контакта", uz: "Majburiy erotik tushlar, haqiqiy teginish hissi" }, w: { sihr: 1, jinn: 3, evil_eye: 0, envy: 0, waswasa: 1, hajim: 2 } },
-        { id: 'dn4', label: { ru: "Вода, грязь, кладбище, тёмные лабиринты — повторяющийся символ", uz: "Suv, ifloslik, qabriston, qorong‘i labirintlar — takrorlanuvchi ramz" }, w: { sihr: 2, jinn: 1, evil_eye: 0, envy: 0, waswasa: 0, hajim: 1 } },
-        { id: 'dn5', label: { ru: "Паралич сна (не может пошевелиться при пробуждении) часто и пугает", uz: "Uyqu falaji (uyg‘onganda harakatlantira olmaslik) tez-tez va qo‘rqitadi" }, w: { sihr: 0, jinn: 2, evil_eye: 0, envy: 0, waswasa: 2, hajim: 2 } },
-        { id: 'dn6', label: { ru: "Один и тот же сюжет сна повторяется неделями", uz: "Bir xil tush syujeti haftalar davomida takrorlanadi" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 1, hajim: 1 } },
-        { id: 'dn7', label: { ru: "Кошмары усиливаются перед рассветом регулярно", uz: "Dahshatli tushlar tongdan oldin muntazam kuchayadi" }, w: { sihr: 1, jinn: 2, evil_eye: 1, envy: 0, waswasa: 0, hajim: 1 } }
-      ]
-    },
-    {
-      titleKey: 'g5',
-      items: [
-        { id: 'fd1', label: { ru: "Тошнота или дискомфорт после определённой еды без явной мирской причины", uz: "Ma’lum ovqatdan keyin ko‘ngil aynishi yoki noqulaylik — ochiq dunyoviy sababsiz" }, w: { sihr: 2, jinn: 0, evil_eye: 0, envy: 0, waswasa: 0, hajim: 1 } },
-        { id: 'fd2', label: { ru: "Потеря аппетита после визита конкретного человека", uz: "Ma’lum odam tashrifidan keyin ishtahaning yo‘qolishi" }, w: { sihr: 0, jinn: 0, evil_eye: 2, envy: 1, waswasa: 0, hajim: 0 } },
-        { id: 'fd3', label: { ru: "Появление чужого предмета/«украшения» и ухудшение после этого", uz: "Begona buyum / «taqinchoq» paydo bo‘lishi va undan keyin yomonlashish" }, w: { sihr: 3, jinn: 1, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'fd4', label: { ru: "Еда/питьё из рук малознакомого и вскоре — резкое ухудшение", uz: "Yomon tanish odam qo‘lidan ovqat / ichimlik va tez orada keskin yomonlashish" }, w: { sihr: 2, jinn: 0, evil_eye: 1, envy: 0, waswasa: 0, hajim: 1 } },
-        { id: 'fd5', label: { ru: "Страх есть за общим столом или у гостей без прежнего повода", uz: "Umumiy dasturxon yoki mehmonda yeyishdan avvalgidek sababsiz qo‘rquv" }, w: { sihr: 0, jinn: 0, evil_eye: 0, envy: 0, waswasa: 2, hajim: 0 } },
-        { id: 'fd6', label: { ru: "Переезд в новый дом/комнату и сразу сон, страхи, разлад", uz: "Yangi uy / xonaga ko‘chish va darhol uyqu muammolari, qo‘rquqlar, nizolar" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } }
-      ]
-    },
-    {
-      titleKey: 'g6',
-      items: [
-        { id: 'rp1', label: { ru: "Внезапная холодность супруга без явного конфликта", uz: "Aniq ziddiyatsiz turmush o‘rtog‘ining kutilmaganda sovuqligi" }, w: { sihr: 2, jinn: 1, evil_eye: 0, envy: 1, waswasa: 0, hajim: 1 } },
-        { id: 'rp2', label: { ru: "Отвращение или боль при близости без ясной мирской причины", uz: "Yaqinlikda nafrat yoki og‘riq — ochiq dunyoviy sababsiz" }, w: { sihr: 2, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'rp3', label: { ru: "Повторяющиеся срывы помолвки/свадьбы «без логики»", uz: "«Mantiqsiz» takrorlanuvchi unasin / to‘yning buzilishi" }, w: { sihr: 2, jinn: 0, evil_eye: 1, envy: 2, waswasa: 0, hajim: 0 } },
-        { id: 'rp4', label: { ru: "Бесплодие при «ясной норме» с мирской стороны у обоих супругов", uz: "Ikkala turmush o‘rtog‘i uchun ham dunyoviy jihatdan «ochiq-oydin norma» bo‘lsa ham bolasizlik" }, w: { sihr: 2, jinn: 0, evil_eye: 1, envy: 1, waswasa: 0, hajim: 0 } },
-        { id: 'rp5', label: { ru: "Ревность и фантазии об измене только после начала недуга", uz: "Bu holat boshlangachgina rashk va xiyonat fantaziyalari" }, w: { sihr: 1, jinn: 1, evil_eye: 0, envy: 0, waswasa: 2, hajim: 1 } }
-      ]
-    },
-    {
-      titleKey: 'g7',
-      items: [
-        { id: 'so1', label: { ru: "Конфликты, разлад «без причины», внезапная отчуждённость в паре/семье", uz: "«Sababsiz» nizolar, juftlik / oilada kutilmaganda yiroqlashish" }, w: { sihr: 2, jinn: 0, evil_eye: 0, envy: 1, waswasa: 0, hajim: 1 } },
-        { id: 'so2', label: { ru: "Потери, поломки, ссоры, повторяющийся «чёрный» сценарий", uz: "Yo‘qotishlar, buzilishlar, urishishlar, takrorlanuvchi «qora» ssenariy" }, w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 2, waswasa: 0, hajim: 0 } },
-        { id: 'so3', label: { ru: "Проблемы в доме, ощущение тяжести в дому, беспокойство детей", uz: "Uyda muammolar, uyda og‘irlik hissi, bolalarning xavotiri" }, w: { sihr: 2, jinn: 1, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'so4', label: { ru: "Срывы сделок, «ломается» работа после периода успеха", uz: "Bitimlar buzilishi, muvaffaqiyat davridan keyin ish «buziladi»" }, w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 2, waswasa: 0, hajim: 0 } },
-        { id: 'so5', label: { ru: "Дети плачут, боятся углов, не хотят спать в комнате без видимой причины", uz: "Bolalar yig‘laydi, burchaklardan qo‘rqadi, sabab ko‘rinmasa ham xonada uxlamoqchi emas" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'so6', label: { ru: "Конфликт с родственником сразу после вашего успеха или покупки", uz: "Muvaffaqiyatingiz yoki xaridingizdan keyin darhol qarindosh bilan ziddiyat" }, w: { sihr: 0, jinn: 0, evil_eye: 1, envy: 3, waswasa: 0, hajim: 0 } },
-        { id: 'so7', label: { ru: "Череда поломок техники и вещей «подряд»", uz: "Texnika va buyumlarning ketma-ket buzilishi" }, w: { sihr: 1, jinn: 0, evil_eye: 0, envy: 1, waswasa: 0, hajim: 0 } },
-        { id: 'so8', label: { ru: "Перестали ходить в мечеть/джамаат после регулярности без объяснения", uz: "Tushuntirisiz muntazam masjid / jamoatga borishni to‘xtatish" }, w: { sihr: 1, jinn: 2, evil_eye: 0, envy: 0, waswasa: 1, hajim: 2 } },
-        { id: 'so9', label: { ru: "Финансовые потери после контакта с конкретным человеком", uz: "Ma’lum odam bilan aloqadan keyin moliyaviy yo‘qotishlar" }, w: { sihr: 1, jinn: 0, evil_eye: 1, envy: 2, waswasa: 0, hajim: 0 } },
-        { id: 'so10', label: { ru: "Сплетни и нападки «с нуля» в учёбе или на работе", uz: "O‘qish yoki ishda «noldan» g‘iybat va hujumlar" }, w: { sihr: 0, jinn: 0, evil_eye: 1, envy: 2, waswasa: 1, hajim: 0 } }
-      ]
-    },
-    {
-      titleKey: 'g8',
-      items: [
-        { id: 'tr1', label: { ru: "Ухудшение после похвалы, взгляда, внимания (айн, «сглаз»)", uz: "Maqtov, qarash, e’tibordan keyin yomonlashish (ayn, «ko‘z tegishi»)" }, w: { sihr: 0, jinn: 0, evil_eye: 3, envy: 0, waswasa: 0, hajim: 0 } },
-        { id: 'tr2', label: { ru: "Усиление после удач других людей, зависти, обсуждения чужого благополучия", uz: "Boshqalarning omadlari, hasad, begona farovonlik haqida suhbatdan keyin kuchayish" }, w: { sihr: 0, jinn: 0, evil_eye: 0, envy: 3, waswasa: 0, hajim: 0 } },
-        { id: 'tr3', label: { ru: "Связь с подозрительным предметом, пищей, «наведением»", uz: "Shubhali buyum, ovqat, «tilovot» bilan bog‘liqlik" }, w: { sihr: 2, jinn: 0, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'tr4', label: { ru: "Ухудшение после свадьбы или начала интимной жизни в браке", uz: "To‘y yoki nikohda yaqin hayot boshlangach yomonlashish" }, w: { sihr: 2, jinn: 0, evil_eye: 0, envy: 1, waswasa: 0, hajim: 1 } },
-        { id: 'tr5', label: { ru: "После ночи вне дома, дороги или поездки", uz: "Uy tashqarisida tun, yo‘l yoki safardan keyin" }, w: { sihr: 0, jinn: 2, evil_eye: 0, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'tr6', label: { ru: "После принятия подарка от малознакомого", uz: "Yomon tanishdan sovg‘a qabul qilgach" }, w: { sihr: 2, jinn: 0, evil_eye: 1, envy: 0, waswasa: 0, hajim: 2 } },
-        { id: 'tr7', label: { ru: "После публикации фото/успехов в соцсетях", uz: "Ijtimoiy tarmoqlarda foto / muvaffaqiyat e’lon qilingach" }, w: { sihr: 0, jinn: 0, evil_eye: 2, envy: 1, waswasa: 0, hajim: 0 } },
-        { id: 'tr8', label: { ru: "После смены города, работы, резкой жизненной перемены (как начало, не как обычное привыкание)", uz: "Shahar, ish, keskin hayotiy o‘zgarishdan keyin (boshlanish sifatida, oddiy moslashish emas)" }, w: { sihr: 0, jinn: 0, evil_eye: 0, envy: 0, waswasa: 2, hajim: 0 } },
-        { id: 'tr9', label: { ru: "После ссоры с родителем или старшим в семье", uz: "Ota-ona yoki oiladagi katta bilan janjalidan keyin" }, w: { sihr: 0, jinn: 0, evil_eye: 0, envy: 1, waswasa: 1, hajim: 0 } },
-        { id: 'tr10', label: { ru: "Симптомы совпали с конкретной датой/событием «как по часам» (субъективно)", uz: "Alomatlar ma’lum sana / voqe bilan «soat bo‘yicha» mos keldi (subyektiv)" }, w: { sihr: 1, jinn: 1, evil_eye: 1, envy: 0, waswasa: 1, hajim: 1 } }
-      ]
-    }
+  var RUKYA_QUICK_FIELD_ROWS = [
+    { sec: 'k1', key: 'story', response: 'text', ru: 'Коротко своими словами: что беспокоит, с чего началось, как менялось (можно 3–5 предложений).', uz: 'Qisqacha: nima bezovta qilyapti, qachon boshlangan, qanday o‘zgargan (3–5 jumla).', w: mkW(1, 1, 1, 1, 1, 1) },
+    { sec: 'k1', key: 'urgent', response: 'choice', choices: CH_YNU, ru: 'Сейчас ощущается срочно (нужна помощь в ближайшее время)?', uz: 'Hozir shoshilinch (yaqin yordam) kerakdekmi?', w: mkW(1, 1, 1, 1, 2, 1) },
+    { sec: 'k2', key: 'waves', response: 'choice', choices: CH_WAVES, ru: 'Симптомы постоянные или волнообразные (лучше — снова хуже)?', uz: 'Alomatlar doimiy yoki to‘lqinsimon (yaxshi — yana yomon)?', w: mkW(2, 2, 1, 1, 1, 1) },
+    { sec: 'k2', key: 'food', response: 'choice', choices: CH_YNU, ru: 'Резкое ухудшение после еды/питья у кого-то или в гостях?', uz: 'Birovning uyida ovqat/ichimlikdan keyin keskin yomonlashish bo‘ldimi?', w: mkW(3, 0, 0, 0, 0, 1) },
+    { sec: 'k2', key: 'praise', response: 'choice', choices: CH_YNU, ru: 'Ухудшение после встречи с кем-то или после похвалы / завистливых слов?', uz: 'Uchrashuv yoki maqtov / hasad so‘zlaridan keyin yomonlashish bormi?', w: mkW(0, 0, 3, 1, 0, 0) },
+    { sec: 'k2', key: 'stress', response: 'choice', choices: CH_YNU, ru: 'Связь со стрессом, ссорой, переездом, событием в семье/работе (если релевантно)?', uz: 'Stress, janjal, ko‘chish, oila/ishdagi voqea bilan bog‘liq bo‘lgan yomonlashish bormi?', w: mkW(2, 1, 0, 1, 2, 1) },
+    { sec: 'k3', key: 'body', response: 'text', ru: 'Где в теле тяжесть/боль, что ещё по телу и снам (коротко)?', uz: 'Tanada qayerda og‘irlik/og‘riq, uyqu bilan nima (qisqacha)?', w: mkW(1, 1, 1, 0, 1, 2) },
+    { sec: 'k3', key: 'dreams', response: 'choice', choices: CH_YNU, ru: 'Тревожные, повторяющиеся сны, погони, вода, узлы, чужие лица — заметны?', uz: 'Xavfli, takrorlanuvchi tushlar, quvish, suv, begona yuzlar — bormi?', w: mkW(1, 3, 0, 0, 1, 2) },
+    { sec: 'k3', key: 'mind', response: 'choice', choices: CH_YNU, ru: 'Навязчивые мысли, сомнения, плохо в намазе / внимании?', uz: 'Majburiy fikr, shubha, namozda diqqat yo‘qligi bormi?', w: mkW(1, 1, 0, 0, 3, 0) },
+    { sec: 'k4', key: 'home', response: 'choice', choices: CH_HOME_ROOM, ru: 'Сильнее дома / в отдельной комнате, чем вне дома?', uz: 'Uyda / ayrim xonada ko‘chada emas, kuchayadimi?', w: mkW(2, 2, 0, 0, 1, 2) },
+    { sec: 'k4', key: 'night', response: 'choice', choices: CH_YNU, ru: 'Ночью: стуки, шаги, тени, ощущение «не один»?', uz: 'Tunda shovqin, qadam, soya, «bir o‘zim emasman» hissi bormi?', w: mkW(2, 3, 0, 0, 0, 2) },
+    { sec: 'k4', key: 'quran', response: 'choice', choices: CH_YNU, ru: 'Давление / дискомфорт при чтении Корана, зикре, поминании Аллаха?', uz: 'Qur’on, zikr, Alloh zikrida bosim yoki noqulaylik bormi?', w: mkW(2, 3, 0, 0, 0, 2) },
+    { sec: 'k4', key: 'seizure', response: 'choice', choices: CH_YNU, ru: 'Сильные приступы, смена голоса, агрессия, падения?', uz: 'Kuchli tutqunlik, ovoz o‘zgarishi, agressiya, yiqilish bormi?', w: mkW(1, 0, 0, 0, 0, 3) },
+    { sec: 'k4', key: 'ayn', response: 'choice', choices: CH_YNU, ru: 'После взгляда / похвалы / зависти — заметно хуже (айн, сглаз)?', uz: 'Nazar / maqtov / hasaddan keyin aniq yomonlashish bormi?', w: mkW(0, 0, 3, 0, 0, 0) },
+    { sec: 'k4', key: 'ayn_source', response: 'choice', choices: CH_AYN_SOURCE, ru: 'Знаете источник сглаза (человек) или нет?', uz: 'Ko‘z tegizish manbasini bilsangiz (inson) yoki yo‘qmi?', w: mkW(0, 0, 2, 0, 0, 0) },
+    { sec: 'k4', key: 'knots', response: 'choice', choices: CH_YNU, ru: 'Ощущение «узлов» в груди, оков, стеснения?', uz: 'Ko‘krakda «tugun», kishan, siqilish hissi bormi?', w: mkW(3, 0, 0, 0, 0, 2) },
+    { sec: 'k4', key: 'place', response: 'choice', choices: CH_YNU, ru: 'Сильнее в конкретном месте (угол, двор, при ношении вещи)?', uz: 'Ma’lum joyda (burchak, hovli, buyum) kuchayadimi?', w: mkW(3, 1, 0, 0, 0, 1) },
+    { sec: 'k5', key: 'emotion', response: 'choice', choices: CH_EMOTIONAL, ru: 'Как эмоционально сейчас: спокойно / страх / измотанность?', uz: 'Hozir: tinch / qo‘rquv / charchash?', w: mkW(1, 1, 1, 0, 2, 1) },
+    { sec: 'k5', key: 'hope', response: 'text', ru: 'Одна строка: что укрепляет надежду (по чести).', uz: 'Bir qator: nima umid bag‘ishlaydi (halol).', w: mkW(0, 0, 0, 0, 0, 0) }
   ];
+
+  var RUKYA_ROW_BY_ID = {};
+  RUKYA_QUICK_FIELD_ROWS.forEach(function (row) {
+    RUKYA_ROW_BY_ID[row.sec + '_' + row.key] = row;
+  });
+
+  /** id чекбокса (s2_current_state) → русская подпись для DeepSeek / clinical.complaints RU fallback */
+  var QUICK_FIELD_ID_TO_RU = {};
+  RUKYA_QUICK_FIELD_ROWS.forEach(function (row) {
+    QUICK_FIELD_ID_TO_RU[row.sec + '_' + row.key] = row.ru;
+  });
+
+  var RUKYA_QUICK_EXPORT_KIND = 'rukya_quick_analysis_v2';
+  var RUKYA_SURVEY_ID = 'patient_quick_2026';
+  var QUESTION_GROUPS = (function () {
+    var order = ['k1', 'k2', 'k3', 'k4', 'k5'];
+    var map = {};
+    order.forEach(function (s) { map[s] = { sec: s, items: [] }; });
+    RUKYA_QUICK_FIELD_ROWS.forEach(function (row) {
+      var g = map[row.sec];
+      if (!g) return;
+      g.items.push({
+        id: row.sec + '_' + row.key,
+        label: { ru: row.ru, uz: row.uz },
+        w: row.w,
+        response: row.response || 'text',
+        choices: row.choices || null
+      });
+    });
+    return order.map(function (s) { return map[s]; }).filter(function (g) { return g.items.length; });
+  })();
 
   function collectAllItems() {
     var out = [];
@@ -1464,6 +1535,84 @@
       g.items.forEach(function (it) { out.push(it); });
     });
     return out;
+  }
+
+  function itemIsTextResponse(it) {
+    return !it || !it.response || it.response === 'text';
+  }
+
+  function choiceLabelForValue(qid, value) {
+    if (!value) return '';
+    var row = RUKYA_ROW_BY_ID[qid];
+    if (!row || !row.choices) return String(value);
+    for (var i = 0; i < row.choices.length; i++) {
+      if (row.choices[i].value === value) {
+        return currentLang === 'uz' ? row.choices[i].uz : row.choices[i].ru;
+      }
+    }
+    return String(value);
+  }
+
+  function domItemCountsForScore(qid) {
+    var row = RUKYA_ROW_BY_ID[qid];
+    if (!row || !row.response || row.response === 'text') {
+      var cb = document.querySelector('#questionnaireRoot input[type="checkbox"][data-qid="' + qid + '"]');
+      return !!(cb && cb.checked);
+    }
+    var rname = 'qchoice_' + qid;
+    var sel = document.querySelector('#questionnaireRoot input[name="' + rname + '"]:checked');
+    if (!sel) return false;
+    var val = sel.value;
+    if (!row.choices) return false;
+    for (var j = 0; j < row.choices.length; j++) {
+      if (row.choices[j].value === val) return !!row.choices[j].countsForScore;
+    }
+    return false;
+  }
+
+  function getScoredIds() {
+    var set = {};
+    collectAllItems().forEach(function (it) {
+      if (domItemCountsForScore(it.id)) set[it.id] = true;
+    });
+    return set;
+  }
+
+  function collectAnswersObject() {
+    var o = {};
+    var root = document.getElementById('questionnaireRoot');
+    if (!root) return o;
+    root.querySelectorAll('textarea[data-answer-qid]').forEach(function (el) {
+      var id = el.getAttribute('data-answer-qid');
+      o[id] = el.value == null ? '' : String(el.value);
+    });
+    root.querySelectorAll('input.qchoice-inp:checked').forEach(function (el) {
+      var id = el.getAttribute('data-choice-qid');
+      if (id) o[id] = el.value;
+    });
+    return o;
+  }
+
+  function formatObservationLine(it, rawAnswer) {
+    var line = itemLbl(it);
+    if (!rawAnswer || !String(rawAnswer).trim()) return line;
+    if (itemIsTextResponse(it)) {
+      return line + ' — ' + String(rawAnswer).trim();
+    }
+    return line + ' — ' + choiceLabelForValue(it.id, rawAnswer);
+  }
+
+  function formatObservationLineRu(id, rawAnswer) {
+    var row = RUKYA_ROW_BY_ID[id];
+    var base = row ? row.ru : id;
+    if (!rawAnswer || !String(rawAnswer).trim()) return base;
+    if (!row || !row.response || row.response === 'text') {
+      return base + ' — ' + String(rawAnswer).trim();
+    }
+    for (var k = 0; k < row.choices.length; k++) {
+      if (row.choices[k].value === rawAnswer) return base + ' — ' + row.choices[k].ru;
+    }
+    return base + ' — ' + String(rawAnswer);
   }
 
   function computeMaxScores() {
@@ -1486,7 +1635,8 @@
   }
 
   function scoreNow() {
-    var checked = getCheckedIds();
+    var checked = getScoredIds();
+    var answers = collectAnswersObject();
     var current = { sihr: 0, jinn: 0, evil_eye: 0, envy: 0, waswasa: 0, hajim: 0 };
     collectAllItems().forEach(function (it) {
       if (!checked[it.id]) return;
@@ -1494,7 +1644,7 @@
         current[c] += (it.w && it.w[c]) ? it.w[c] : 0;
       });
     });
-    return { checked: checked, current: current };
+    return { checked: checked, current: current, answers: answers };
   }
 
   function percentage(current, max) {
@@ -1540,7 +1690,10 @@
   function computeReportData(s) {
     var name = (document.getElementById('f_name').value || '').trim() || '—';
     var age = (document.getElementById('f_age').value || '').trim() || '—';
+    var gender = (document.getElementById('f_gender').value || '').trim() || '—';
     var city = (document.getElementById('f_city').value || '').trim() || '—';
+    var phone = (document.getElementById('f_phone').value || '').trim() || '—';
+    var referral = (document.getElementById('f_referral').value || '').trim() || '—';
     var date = document.getElementById('f_date').value;
     var mult = practiceAilmentDisplayMult();
     var practiceVal = parseInt(document.getElementById('f_practice').value, 10) || 0;
@@ -1553,26 +1706,36 @@
     });
     rows.sort(function (a, b) { return b.p - a.p; });
     var top = topTwo(rows);
-    var conf = Math.min(100, Math.round(40 + top[0].p * 0.4 + (top[1] ? top[1].p * 0.15 : 0)));
+    var t0 = top[0] || { p: 0, label: '', key: 'sihr' };
+    var t1 = top[1] || null;
+    var conf = top.length
+      ? Math.min(100, Math.round(40 + t0.p * 0.4 + (t1 ? t1.p * 0.15 : 0)))
+      : 0;
 
-    var symptomsList = collectAllItems().filter(function (it) { return s.checked[it.id]; }).map(function (it) { return itemLbl(it); });
+    var symptomsList = collectAllItems().filter(function (it) { return s.checked[it.id]; }).map(function (it) {
+      return formatObservationLine(it, s.answers && s.answers[it.id]);
+    });
 
     var summary;
-    if (top[0].p < 8) {
+    if (t0.p < 8 || !top.length) {
       summary = t('summary_low');
     } else {
-      summary = t('summary_hi_start') + top[0].label + (top[1] && top[1].p > 5 ? t('summary_hi_mid') + top[1].label : '') + t('summary_hi_outro');
+      summary = t('summary_hi_start') + t0.label + (t1 && t1.p > 5 ? t('summary_hi_mid') + t1.label : '') + t('summary_hi_outro');
     }
 
     return {
-      name: name, age: age, city: city, date: date, mult: mult, practiceVal: practiceVal,
-      rows: rows, top: top, conf: conf, symptomsList: symptomsList, summary: summary
+      name: name, age: age, gender: gender, city: city, phone: phone, referral: referral, date: date,
+      mult: mult, practiceVal: practiceVal,
+      rows: rows, top: top, conf: conf, symptomsList: symptomsList, summary: summary,
+      answers: s.answers || {}
     };
   }
 
   function plainReportTextFromComputation(cd) {
     return brand() + '\n\n' + t('copy_line_analysis') + '\n' +
-      t('meta_name') + ' ' + cd.name + '\n' + t('meta_age') + ' ' + cd.age + '\n' + t('meta_city') + ' ' + cd.city + '\n' + t('meta_date') + ' ' + cd.date + '\n' +
+      t('meta_name') + ' ' + cd.name + '\n' + t('meta_age') + ' ' + cd.age + '\n' + t('meta_gender') + ' ' + cd.gender + '\n' +
+      t('meta_city') + ' ' + cd.city + '\n' + t('meta_phone') + ' ' + cd.phone + '\n' + t('meta_date') + ' ' + cd.date + '\n' +
+      t('meta_referral') + ' ' + cd.referral + '\n' +
       t('copy_line_summary') + ' ' + cd.summary + '\n\n' +
       t('copy_line_dist') + '\n' + cd.rows.map(function (r) { return r.label + ': ' + r.p + '%'; }).join('\n') +
       '\n\n' + t('copy_line_obs') + '\n- ' + cd.symptomsList.join('\n- ') + '\n\n' + t('copy_line_recs') + '\n\n' + spiritualRecommendationsPlain() +
@@ -1580,17 +1743,111 @@
       '\n\n' + t('report_closing');
   }
 
+  function buildQuestionnaireFromChecked(s) {
+    var q = {};
+    Object.keys(s.checked).sort().forEach(function (id) { q[id] = true; });
+    return q;
+  }
+
+  function buildCheckedItemsDetail(s) {
+    var out = [];
+    Object.keys(s.checked).sort().forEach(function (id) {
+      var row = null;
+      for (var i = 0; i < RUKYA_QUICK_FIELD_ROWS.length; i++) {
+        var r = RUKYA_QUICK_FIELD_ROWS[i];
+        if (r.sec + '_' + r.key === id) { row = r; break; }
+      }
+      if (row) {
+        var av = s.answers && s.answers[id] != null ? String(s.answers[id]) : '';
+        out.push({ id: id, section: row.sec, fieldKey: row.key, labelRu: row.ru, labelUz: row.uz, answer: av });
+      }
+    });
+    return out;
+  }
+
+  /** Жалобы для импорта / врача: метаданные + отмеченные пункты на языке интерфейса. */
+  function buildComplaintsStructured(cd, s) {
+    var lines = [];
+    var hdr = currentLang === 'uz' ? 'RUKYA PRO — tezkor so‘rovnoma' : 'RUKYA PRO — быстрая анкета';
+    lines.push('=== ' + hdr + ' (surveyId: ' + RUKYA_SURVEY_ID + ') ===');
+    lines.push('');
+    lines.push(t('meta_name') + ' ' + cd.name);
+    lines.push(t('meta_age') + ' ' + cd.age);
+    lines.push(t('meta_gender') + ' ' + cd.gender);
+    lines.push(t('meta_city') + ' ' + cd.city);
+    lines.push(t('meta_phone') + ' ' + cd.phone);
+    lines.push(t('meta_date') + ' ' + cd.date);
+    if (cd.referral && cd.referral !== '—') lines.push(t('meta_referral') + ' ' + cd.referral);
+    lines.push('');
+    lines.push((currentLang === 'uz' ? 'Amaliyotlar (slayder 0–3): ' : 'Регулярность практик (слайдер 0–3): ') + cd.practiceVal);
+    lines.push((currentLang === 'uz' ? 'Qisqa xulosa: ' : 'Краткое резюме анализа: ') + cd.summary);
+    lines.push((currentLang === 'uz' ? 'Ulushlar: ' : 'Доли (ориентир): ') + cd.rows.map(function (r) { return r.label + ' ' + r.p + '%'; }).join('; '));
+    lines.push('');
+    lines.push(currentLang === 'uz' ? 'Belgilanagan bandlar (ha):' : 'Отмеченные пункты анкеты (да):');
+    var n = 0;
+    collectAllItems().forEach(function (it) {
+      if (!s.checked[it.id]) return;
+      lines.push('- ' + formatObservationLine(it, s.answers && s.answers[it.id]));
+      n++;
+    });
+    if (!n) lines.push(currentLang === 'uz' ? '— hech narsa belgilanmagan' : '— пункты не отмечены');
+    return lines.join('\n');
+  }
+
+  /** Текст пользователя для API DeepSeek (русский, с расшифровкой id). */
+  function buildDeepseekUserMessageRu(cd, checkedIdsSorted) {
+    var answers = cd.answers || {};
+    var qBlock = checkedIdsSorted.length
+      ? checkedIdsSorted.map(function (id) {
+        var a = answers[id];
+        var line = formatObservationLineRu(id, a);
+        return '- ' + line;
+      }).join('\n')
+      : '—';
+    var topTwo = (cd.top || []).slice(0, 2).map(function (r) { return r.label + ' ~' + r.p + '%'; }).join(', ');
+    var parts = [
+      'Пациент: ' + cd.name + ' (' + cd.gender + ', ' + cd.age + '). Город: ' + cd.city + ', т.: ' + cd.phone
+    ];
+    if (cd.referral && cd.referral !== '—') parts.push('Откуда: ' + cd.referral);
+    parts.push('Дата: ' + cd.date);
+    parts.push('Практики 0–3: ' + cd.practiceVal + (topTwo ? '. Топ: ' + topTwo : ''), '');
+    parts.push('Отмеченные пункты (короткая анкета v2, да):', qBlock, '');
+    parts.push('types[0] — главный для программы в приложении; согласуй jinn, дом, айн, приоритет.');
+    parts.push('JSON-диагноз по схеме (prompt_deepseek / быстрый системный промпт).');
+    return parts.join('\n');
+  }
+
+  var DEEPSEEK_SYSTEM_NOTE_SHORT = 'Быстрая анкета v2: см. prompt_deepseek.txt, раздел «Быстрая анкета v2». Ответ — один валидный JSON-объект без markdown (как в обычном RUKYA PRO; пустые поля допустимы — клиент нормализует).';
+
   function buildAnalysisPayload() {
     var s = scoreNow();
     var cd = computeReportData(s);
     var checkedItemIds = Object.keys(s.checked).sort();
+    var questionnaire = buildQuestionnaireFromChecked(s);
+    var checkedItems = buildCheckedItemsDetail(s);
+    var complaints = buildComplaintsStructured(cd, s);
     return {
-      schemaVersion: 1,
+      schemaVersion: 2,
+      exportKind: RUKYA_QUICK_EXPORT_KIND,
       exportedAt: new Date().toISOString(),
       lang: currentLang,
       telegramBot: TELEGRAM_BOT_URL,
       brand: brand(),
-      patient: { name: cd.name, age: cd.age, city: cd.city, date: cd.date },
+      surveyId: RUKYA_SURVEY_ID,
+      checklistNote: 'Short quick form patient_quick_2026; id = k1_story … k5_hope (see RUKYA_QUICK_FIELD_ROWS in quick_analysis.html). response=text: checkbox+textarea; response=choice: radio. See answers and checkedItemIds.',
+      patient: {
+        fullName: cd.name !== '—' ? cd.name : '',
+        name: cd.name, age: cd.age !== '—' ? cd.age : '', gender: cd.gender !== '—' ? cd.gender : '',
+        city: cd.city !== '—' ? cd.city : '', phone: cd.phone !== '—' ? cd.phone : '',
+        referral: cd.referral !== '—' ? cd.referral : '', date: cd.date
+      },
+      answers: cd.answers || {},
+      clinical: {
+        complaints: complaints
+      },
+      complaints: complaints,
+      questionnaire: questionnaire,
+      checkedItems: checkedItems,
       practiceSlider: { value: cd.practiceVal, ailmentDisplayMult: Math.round(cd.mult * 1000) / 1000 },
       checkedItemIds: checkedItemIds,
       scoresRaw: s.current,
@@ -1602,7 +1859,11 @@
       }),
       confidence: cd.conf,
       summaryText: cd.summary,
-      reportPlainText: plainReportTextFromComputation(cd)
+      reportPlainText: plainReportTextFromComputation(cd),
+      deepseek: {
+        userMessage: buildDeepseekUserMessageRu(cd, checkedItemIds),
+        systemNote: DEEPSEEK_SYSTEM_NOTE_SHORT
+      }
     };
   }
 
@@ -1635,11 +1896,25 @@
 
   var doctorModalPrevFocus = null;
 
-  function onDoctorModalKeydown(ev) {
-    if (ev.key === 'Escape') {
-      ev.preventDefault();
-      closeDoctorModal();
+  var FOCUSABLE_SELECTOR = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+
+  function trapFocus(modal, ev) {
+    var focusables = Array.prototype.slice.call(modal.querySelectorAll(FOCUSABLE_SELECTOR));
+    if (!focusables.length) return;
+    var first = focusables[0];
+    var last = focusables[focusables.length - 1];
+    if (ev.key === 'Tab') {
+      if (ev.shiftKey) {
+        if (document.activeElement === first) { ev.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { ev.preventDefault(); first.focus(); }
+      }
     }
+  }
+
+  function onDoctorModalKeydown(ev) {
+    if (ev.key === 'Escape') { ev.preventDefault(); closeDoctorModal(); return; }
+    trapFocus(document.getElementById('doctorModal'), ev);
   }
 
   function openDoctorModal() {
@@ -1667,10 +1942,8 @@
   var launchHintPrevFocus = null;
 
   function onLaunchHintKeydown(ev) {
-    if (ev.key === 'Escape') {
-      ev.preventDefault();
-      closeLaunchHintModal();
-    }
+    if (ev.key === 'Escape') { ev.preventDefault(); closeLaunchHintModal(); return; }
+    trapFocus(document.getElementById('launchHintModal'), ev);
   }
 
   function openLaunchHintModal() {
@@ -1886,9 +2159,14 @@
     var cd = computeReportData(s);
     var name = cd.name;
     var age = cd.age;
+    var gender = cd.gender;
     var city = cd.city;
+    var phone = cd.phone;
+    var referral = cd.referral;
     var rows = cd.rows;
     var top = cd.top;
+    var top0 = top[0] || { p: 0, key: 'sihr' };
+    var top1 = top[1] || null;
     var conf = cd.conf;
     var symptomsList = cd.symptomsList;
     var summary = cd.summary;
@@ -1899,7 +2177,9 @@
     html += '<div class="report-sub">' + esc(t('report_sub')) + '</div>';
     html += '<div class="report-meta">';
     html += '<div><strong>' + esc(t('meta_name')) + '</strong> ' + esc(name) + '</div><div><strong>' + esc(t('meta_age')) + '</strong> ' + esc(age) + '</div>';
-    html += '<div><strong>' + esc(t('meta_city')) + '</strong> ' + esc(city) + '</div><div><strong>' + esc(t('meta_date')) + '</strong> ' + esc(document.getElementById('f_date').value) + '</div>';
+    html += '<div><strong>' + esc(t('meta_gender')) + '</strong> ' + esc(gender) + '</div><div><strong>' + esc(t('meta_city')) + '</strong> ' + esc(city) + '</div>';
+    html += '<div><strong>' + esc(t('meta_phone')) + '</strong> ' + esc(phone) + '</div><div><strong>' + esc(t('meta_date')) + '</strong> ' + esc(document.getElementById('f_date').value) + '</div>';
+    html += '<div style="grid-column:1/-1"><strong>' + esc(t('meta_referral')) + '</strong> ' + esc(referral) + '</div>';
     html += '</div>';
 
     html += '<div class="sec-title">' + esc(t('sec_summary')) + '</div><div class="sec-body"><p>' + esc(summary) + '</p><p>' + esc(t('conf')) + conf + esc(t('conf_tail')) + '</p></div>';
@@ -1909,9 +2189,9 @@
       html += '<div class="bar-row"><span class="bar-label">' + esc(r.label) + '</span><div class="bar-bg"><div class="bar-fg" style="width:' + Math.min(100, r.p) + '%"></div></div><span class="bar-pct">' + r.p + '%</span></div>';
     });
 
-    html += '<div class="sec-title">' + esc(t('sec_hints')) + '</div><div class="sec-body"><p><strong>' + esc(t('hint_main')) + '</strong> ' + esc(catLabel(top[0].key)) + ' (≈ ' + top[0].p + esc(t('hint_pct')) + '</p>';
-    if (top[1] && top[1].p > 0) {
-      html += '<p><strong>' + esc(t('hint_extra')) + '</strong> ' + esc(catLabel(top[1].key)) + ' (≈ ' + top[1].p + esc(t('hint_pct')) + '</p>';
+    html += '<div class="sec-title">' + esc(t('sec_hints')) + '</div><div class="sec-body"><p><strong>' + esc(t('hint_main')) + '</strong> ' + esc(catLabel(top0.key)) + ' (≈ ' + top0.p + esc(t('hint_pct')) + '</p>';
+    if (top1 && top1.p > 0) {
+      html += '<p><strong>' + esc(t('hint_extra')) + '</strong> ' + esc(catLabel(top1.key)) + ' (≈ ' + top1.p + esc(t('hint_pct')) + '</p>';
     }
     html += '</div>';
 
@@ -1949,15 +2229,20 @@
     out.innerHTML = r.html;
   }
 
+  var toastTimer = null;
   function showToast(msg) {
-    var t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(function () { t.classList.remove('show'); }, 2200);
+    var toastEl = document.getElementById('toast');
+    toastEl.textContent = msg;
+    if (toastTimer) { clearTimeout(toastTimer); toastTimer = null; }
+    toastEl.classList.add('show');
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove('show');
+      toastTimer = null;
+    }, 2600);
   }
 
   function isReportReady() {
-    return Object.keys(getCheckedIds()).length > 0;
+    return Object.keys(getScoredIds()).length > 0;
   }
 
   function getReportElement() {
@@ -2000,7 +2285,9 @@
       },
       restrictedInApp: isRestrictedInAppBrowser(),
       questionnaire: {
-        checkedCount: Object.keys(getCheckedIds()).length,
+        surveyId: RUKYA_SURVEY_ID,
+        checkedCount: Object.keys(getScoredIds()).length,
+        fieldCount: collectAllItems().length,
         practiceSlider: practiceVal
       },
       entries: techLogEntries.slice()
@@ -2400,7 +2687,7 @@
   }
 
   function copyText() {
-    if (Object.keys(getCheckedIds()).length === 0) {
+    if (!isReportReady()) {
       showToast(t('toast_check'));
       return;
     }
@@ -2432,8 +2719,9 @@
 
   function buildQuestionnaire() {
     var root = document.getElementById('questionnaireRoot');
-    var fromDom = getCheckedIds();
-    var saved = Object.keys(fromDom).length ? fromDom : loadDraft().checks;
+    var d = loadDraft();
+    var savedChecks = d.checks && typeof d.checks === 'object' ? d.checks : {};
+    var savedAnswers = d.answers && typeof d.answers === 'object' ? d.answers : {};
     root.textContent = '';
     var frag = document.createDocumentFragment();
     var fl = document.createElement('div');
@@ -2448,21 +2736,77 @@
       h3.textContent = groupTitle(g);
       block.appendChild(h3);
       g.items.forEach(function (it) {
-        var lab = document.createElement('label');
-        lab.className = 'cbx';
-        var inp = document.createElement('input');
-        inp.type = 'checkbox';
-        inp.setAttribute('data-qid', it.id);
-        if (saved[it.id]) inp.checked = true;
-        var span = document.createElement('span');
-        span.textContent = itemLbl(it);
-        lab.appendChild(inp);
-        lab.appendChild(span);
-        block.appendChild(lab);
+        var wrap = document.createElement('div');
+        wrap.className = 'q-item';
+        if (itemIsTextResponse(it)) {
+          var lab = document.createElement('label');
+          lab.className = 'cbx';
+          var inp = document.createElement('input');
+          inp.type = 'checkbox';
+          inp.setAttribute('data-qid', it.id);
+          if (savedChecks[it.id]) inp.checked = true;
+          var span = document.createElement('span');
+          span.textContent = itemLbl(it);
+          lab.appendChild(inp);
+          lab.appendChild(span);
+          wrap.appendChild(lab);
+          var ta = document.createElement('textarea');
+          ta.className = 'q-answer';
+          ta.setAttribute('data-answer-qid', it.id);
+          ta.setAttribute('rows', '3');
+          ta.setAttribute('placeholder', t('answer_placeholder'));
+          var tval = savedAnswers[it.id];
+          if (tval != null) ta.value = tval;
+          wrap.appendChild(ta);
+        } else {
+          var p = document.createElement('div');
+          p.className = 'q-prompt';
+          p.textContent = itemLbl(it);
+          wrap.appendChild(p);
+          var fs = document.createElement('fieldset');
+          fs.className = 'q-choice';
+          var fsLeg = document.createElement('legend');
+          fsLeg.className = 'sr-only';
+          fsLeg.textContent = itemLbl(it);
+          fs.appendChild(fsLeg);
+          var rname = 'qchoice_' + it.id;
+          var opts = document.createElement('div');
+          opts.className = 'q-choice-opts';
+          var prev = savedAnswers[it.id];
+          (it.choices || []).forEach(function (ch) {
+            var olab = document.createElement('label');
+            olab.className = 'q-choice-opt';
+            var r = document.createElement('input');
+            r.type = 'radio';
+            r.className = 'qchoice-inp';
+            r.setAttribute('name', rname);
+            r.setAttribute('value', ch.value);
+            r.setAttribute('data-choice-qid', it.id);
+            if (prev === ch.value) r.checked = true;
+            olab.appendChild(r);
+            var sp = document.createElement('span');
+            sp.textContent = currentLang === 'uz' ? ch.uz : ch.ru;
+            olab.appendChild(sp);
+            opts.appendChild(olab);
+          });
+          fs.appendChild(opts);
+          wrap.appendChild(fs);
+        }
+        block.appendChild(wrap);
       });
       frag.appendChild(block);
     });
     root.appendChild(frag);
+  }
+
+  var questionnaireInputTimer = null;
+  function onQuestionnaireInput() {
+    clearTimeout(questionnaireInputTimer);
+    questionnaireInputTimer = setTimeout(function () {
+      updatePracticeLabel();
+      render();
+      saveDraft();
+    }, 200);
   }
 
   function onAnyChange() {
@@ -2526,11 +2870,17 @@
   function bootstrapApp() {
     try {
       techReport.breadcrumb('bootstrap:start');
-      document.getElementById('questionnaireRoot').addEventListener('change', onAnyChange);
+      var qRoot = document.getElementById('questionnaireRoot');
+      qRoot.addEventListener('change', onAnyChange);
+      qRoot.addEventListener('input', onQuestionnaireInput);
       document.getElementById('f_practice').addEventListener('input', onAnyChange);
       document.getElementById('f_name').addEventListener('input', onAnyChange);
       document.getElementById('f_age').addEventListener('input', onAnyChange);
+      document.getElementById('f_gender').addEventListener('input', onAnyChange);
       document.getElementById('f_city').addEventListener('input', onAnyChange);
+      document.getElementById('f_phone').addEventListener('input', onAnyChange);
+      document.getElementById('f_referral').addEventListener('input', onAnyChange);
+      document.getElementById('f_date').addEventListener('input', onAnyChange);
       document.getElementById('btnRun').addEventListener('click', onAnyChange);
       document.getElementById('btnCopyText').addEventListener('click', copyText);
       document.getElementById('btnPrint').addEventListener('click', function () { window.print(); });
