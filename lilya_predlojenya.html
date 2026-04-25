@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕯️ Анализ — Лилия</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI','Noto Naskh Arabic',sans-serif;background:linear-gradient(135deg,#faf5eb,#f0e6d2);min-height:100vh;padding:2rem;padding-bottom:5rem;color:#3d2e1e}
+        .container{max-width:800px;margin:0 auto}
+        .card{background:rgba(255,252,245,0.95);border-radius:20px;padding:2rem;margin-bottom:1.5rem;box-shadow:0 4px 20px rgba(60,40,10,0.08);border:1px solid #e8dcc4}
+        .card .section-title{page-break-inside:avoid}
+        h1{color:#b37b2e;font-size:1.6rem;margin-bottom:.5rem}
+        .meta{color:#7a5f3a;font-size:.9rem;margin-bottom:1rem}
+        .section-title{color:#b37b2e;font-size:1.1rem;font-weight:700;margin:1rem 0 .5rem;border-bottom:2px solid #e8dcc4;padding-bottom:.3rem}
+        p,li{line-height:1.7;margin-bottom:.5rem}
+        ul{padding-left:1.5rem}
+        .back-link{display:inline-block;margin-bottom:1rem;color:#b37b2e;text-decoration:none;font-weight:600}
+        .back-link:hover{text-decoration:underline}
+        .export-toolbar{position:fixed;left:0;right:0;bottom:0;z-index:9999;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px 12px;background:rgba(61,46,30,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid #e8dcc4}
+        .exp-btn{padding:10px 16px;border-radius:12px;border:1px solid #e8dcc4;background:#fffcf5;color:#3d2e1e;font-weight:600;cursor:pointer;font:inherit;font-size:.9rem}
+        .exp-btn:hover{background:#faf5eb}
+        .exp-btn:disabled{opacity:.55;cursor:not-allowed}
+        @media print{
+            .no-print{display:none!important}
+            body{background:#fff!important;padding:8mm!important;padding-bottom:8mm!important}
+            .container{max-width:100%}
+            .card{box-shadow:none;border:1px solid #ccc;background:#fff}
+        }
+        @page{margin:12mm}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://kingboob8880-pixel.github.io/ankets/index.html" class="back-link no-print">← Назад к архиву</a>
+        <div class="card" id="patientCard">
+            <h1>🕯️ Анализ: Лилия</h1>
+            <div class="meta">📅 Дата: 25.04.2026</div>
+
+            <div class="section-title">📋 Общая информация</div>
+            <p>Имя: Лилия</p>
+            <p>Возраст: </p>
+            <p>Жалобы: </p>
+
+            <div class="section-title">🔍 Анализ</div>
+            <p>Опишите здесь результаты анализа...</p>
+
+            <div class="section-title">📝 Рекомендации</div>
+            <ul>
+                <li>Рекомендация 1</li>
+                <li>Рекомендация 2</li>
+                <li>Рекомендация 3</li>
+            </ul>
+
+            <div class="section-title">🤲 Заключение</div>
+            <p>Да исцелит Аллах.</p>
+        </div>
+    </div>
+    <div class="export-toolbar no-print" role="toolbar" aria-label="Экспорт">
+        <button type="button" class="exp-btn" id="btnPrintPdf">Сохранить как PDF (печать)</button>
+        <button type="button" class="exp-btn" id="btnSavePng" disabled>Сохранить PNG</button>
+    </div>
+    <script>
+    (function(){
+        function safeFileName(){
+            var t=document.title||'page';
+            var out='';
+            for(var i=0;i<t.length;i++){
+                var c=t.charAt(i);
+                if(c==='\\'||c==='/'||c===':'||c==='*'||c==='?'||c==='"'||c==='<'||c==='>'||c==='|') out+='-';
+                else out+=c;
+            }
+            return out.replace(/\s+/g,' ').trim().slice(0,120)||'export';
+        }
+        function waitForFontsReady(timeoutMs){
+            if(!document.fonts || !document.fonts.ready) return Promise.resolve();
+            return Promise.race([
+                document.fonts.ready,
+                new Promise(function(resolve){ setTimeout(resolve, timeoutMs || 2500); })
+            ]).catch(function(){});
+        }
+        function exportNodeAsPng(target, fileName, backgroundColor){
+            return waitForFontsReady(2500).then(function(){
+                var holder=document.createElement('div');
+                holder.style.position='fixed';
+                holder.style.left='-100000px';
+                holder.style.top='0';
+                holder.style.padding='0';
+                holder.style.margin='0';
+                holder.style.background=backgroundColor||'#fff';
+
+                var clone=target.cloneNode(true);
+                clone.style.maxHeight='none';
+                clone.style.height='auto';
+                clone.style.overflow='visible';
+                clone.style.transform='none';
+                clone.style.width=Math.ceil(target.getBoundingClientRect().width)+'px';
+
+                holder.appendChild(clone);
+                document.body.appendChild(holder);
+                return html2canvas(clone,{
+                    scale:2,
+                    useCORS:true,
+                    logging:false,
+                    backgroundColor:backgroundColor||'#fff'
+                }).then(function(canvas){
+                    var a=document.createElement('a');
+                    a.download=fileName;
+                    a.href=canvas.toDataURL('image/png');
+                    a.click();
+                }).finally(function(){
+                    holder.remove();
+                });
+            });
+        }
+        var btnPdf=document.getElementById('btnPrintPdf');
+        var btnPng=document.getElementById('btnSavePng');
+        if(btnPdf) btnPdf.onclick=function(){ window.print(); };
+        if(btnPng) btnPng.onclick=function(){
+            if(typeof html2canvas!=='function'){
+                alert('Не удалось загрузить модуль для PNG. Проверьте подключение к интернету.');
+                return;
+            }
+            var el=document.getElementById('patientCard');
+            if(!el) return;
+            btnPng.disabled=true;
+            exportNodeAsPng(el,safeFileName()+'.png','#fffcf5').then(function(){
+            }).catch(function(e){
+                console.error(e);
+                alert('Ошибка при создании PNG.');
+            }).finally(function(){ btnPng.disabled=false; });
+        };
+        var s=document.createElement('script');
+        s.src='https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+        s.onload=function(){ if(btnPng) btnPng.disabled=false; };
+        s.onerror=function(){ alert('Не удалось загрузить библиотеку для PNG (CDN).'); };
+        document.head.appendChild(s);
+    })();
+    </script>
+</body>
+</html>
