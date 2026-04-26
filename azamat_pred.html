@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Рукья · Диагноз для брата Азамата | Лекарь Абу Мухаммад</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #eef2f0 0%, #e2e4dc 100%);
+      font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Noto Sans', 'Helvetica Neue', sans-serif;
+      padding: 20px 16px 48px;
+      color: #1f2c1d;
+    }
+
+    .container {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* карточки */
+    .card {
+      background: #fffffffa;
+      border-radius: 32px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #d9e0cf;
+      transition: all 0.2s;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #2a5f3e;
+      color: #fef7e8;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.25rem 0.8rem;
+      border-radius: 40px;
+      letter-spacing: 0.4px;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1f543b, #bc7a3c);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.25rem;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 1rem 0 0.75rem 0;
+      color: #2c4828;
+      border-left: 4px solid #b97f4b;
+      padding-left: 14px;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 1.2rem 0 0.5rem 0;
+      color: #4a6238;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .patient-chip {
+      background: #e8f0e3;
+      border-radius: 60px;
+      padding: 0.5rem 1rem;
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 0.5rem 0 1rem 0;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #2b4520;
+    }
+
+    .patient-chip span {
+      background: white;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .analysis-text {
+      line-height: 1.58;
+      font-size: 0.98rem;
+      color: #252e21;
+      text-align: justify;
+    }
+
+    .quote {
+      background: #f3f7ed;
+      padding: 1rem 1.2rem;
+      border-radius: 24px;
+      margin: 1rem 0;
+      border-left: 5px solid #b97f4b;
+      font-size: 0.95rem;
+      color: #3f5434;
+    }
+
+    .symptom-list {
+      list-style-type: none;
+      margin: 1rem 0;
+    }
+
+    .symptom-list li {
+      padding: 0.6rem 0;
+      padding-left: 1.8rem;
+      position: relative;
+      border-bottom: 1px solid #e2e8d8;
+      font-size: 0.95rem;
+    }
+
+    .symptom-list li:before {
+      content: "⚠️";
+      position: absolute;
+      left: 0;
+      color: #bc7a3c;
+      font-weight: 500;
+    }
+
+    .verdict {
+      background: #e2ecdb;
+      border-radius: 28px;
+      padding: 1.2rem;
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 700;
+      color: #1a472a;
+    }
+
+    .pricing-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.8rem 0 0.5rem;
+    }
+
+    .offer-card {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      border: 1px solid #dbdccf;
+    }
+
+    .offer-card.full {
+      background: linear-gradient(135deg, #fffaf2, #fff5e6);
+      border: 1px solid #d8b48c;
+    }
+
+    .price-tag {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #b4622a;
+      margin: 0.5rem 0;
+    }
+
+    .price-tag small {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #7f6a4f;
+    }
+
+    .offer-title {
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .offer-desc {
+      font-size: 0.8rem;
+      color: #5e694c;
+      margin: 0.5rem 0 1rem;
+      line-height: 1.35;
+    }
+
+    .btn-telegram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #2a6e46;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 10px 16px;
+      border-radius: 100px;
+      width: 100%;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-telegram:hover {
+      background: #1e5536;
+    }
+
+    .footer-note {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #9b8b70;
+      margin-top: 2rem;
+      border-top: 1px solid #dfe2cf;
+      padding-top: 1rem;
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: none;
+      height: 1px;
+      background: #e0e2cf;
+    }
+
+    .signature {
+      font-family: 'Courier New', monospace;
+      margin-top: 1rem;
+      text-align: right;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: #7c8f66;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 14px 12px 32px;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+      .price-tag {
+        font-size: 1.6rem;
+      }
+    }
+
+    .warning-highlight {
+      background: #fef0dd;
+      border-radius: 20px;
+      padding: 0.7rem;
+      font-weight: 500;
+      margin: 1rem 0;
+      text-align: center;
+      color: #b44f1a;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <!-- карта анализов для брата Азамата -->
+  <div class="card">
+    <span class="badge">📿 Рукья шаръия · Специализированная диагностика</span>
+    <h1>Анализ состояния <br>брата Азамата</h1>
+    <div style="font-size: 0.85rem; color: #577a3c; margin-bottom: 0.5rem;">🕌 Заключение лекаря Абу Мухаммад (исламский экзорцист)</div>
+    
+    <div class="patient-chip">
+      <span>👤 Брат Азамат</span>
+      <span>♂ Мужчина</span>
+      <span>📆 Симптомы: активный сихр, васвас 'акыды</span>
+      <span>⚠️ Тяжёлое состояние</span>
+    </div>
+
+    <div class="analysis-text">
+      <p><strong>Бисмиллахи Рахмани Рахим.</strong> Дорогой брат Азамат, твоё признание — «мне сделали сихр, не могу избавиться от васвас, состояние тяжелое» — уже показывает степень духовной агрессии. Я, Абу Мухаммад, на основе твоих жалоб провёл глубочайшее шариатское исследование. Твои симптомы указывают на <strong>комбинированный сихр с элементом мас (джинн, воздействующий на разум) и магию на 'акыду</strong> — это один из самых тяжёлых видов колдовства, цель которого — лишить человека веры.</p>
+      
+      <h3>🔍 Детальная картина поражения</h3>
+      <ul class="symptom-list">
+        <li><strong>Невыносимые васвасы и невозможность говорить об 'акыде</strong> — классический признак «сихр-асвад» (чёрная магия на вероубеждение). Когда человек хочет произнести слова истины или объяснить основы веры, внутри возникает блок, шепот, сомнение. Это прямое действие шайтана через подселенного джинна, который питает куфр мысли.</li>
+        <li><strong>Тело дрожит при слушании Рукьи</strong> — сильнейшая реакция на аяты Корана. Дрожь, судороги либо озноб во время чтения — явный признак присутствия джинна внутри тела (мас). Он сопротивляется, потому что Слово Аллаха причиняет ему муку. Это не нервы, это духовная борьба.</li>
+        <li><strong>Приход мыслей куфра (неверия)</strong> — самый опасный маркер. Такие мысли возникают против воли человека, заставляя его мучиться и отчаиваться. Это их цель — вывести из Ислама. Тот факт, что ты переживаешь и ищешь помощи, доказывает, что вера в сердце теплится, но враг (сихр) пытается погасить её.</li>
+        <li><strong>Невозможность избавиться от васваса даже после попыток.</strong> Обычные зикры и дуа не берут, потому что корень — завязанный сихр на язык, на мысли, на органы речи. Я встречал подобное — требуется длительная рукья и разрушение узлов магии.</li>
+      </ul>
+
+      <div class="quote">
+        📖 Передается от Ибн Аббаса (да будет доволен им Аллах): «Пророк ﷺ говорил: Шайтан садится на сердце сына Адама. Когда он поминает Аллаха, шайтан отступает, а когда небрежён, он шепчет (васваса)». В твоём случае шайтан подкреплён магическим договором (сихра), и обычное поминание блокируется.
+      </div>
+
+      <h3>⚡ Почему традиционные способы не помогают?</h3>
+      <p>Ты ощущаешь, что чтение утром и вечером не убирает «приход куфра». Это говорит о том, что <strong>сильные узлы сихра</strong> находятся на твоем подсознании и речевом центре. Дрожь при рукье — это освобождение, но без специалиста, который читает по канону и выводит джинна, процесс затянется. Сихр на 'акыду часто делают через грязные предметы, магические шнуры, привороты на отвращение к религии. Твоя задача — срочно пройти полный курс шариатского лечения.</p>
+
+      <div class="warning-highlight">
+        🚨 Срочность: мысль куфра, если её не пресечь лечением, может привести к совершению большого греха или оставлению Ислама — упаси Аллах. Но с дозволения Аллаха, лечение у опытного раки снимает это полностью.
+      </div>
+
+      <div class="verdict">
+        🕋 <strong>Вердикт лекаря Абу Мухаммад:</strong> Сихр муаккаль (с джинном-исполнителем) + сихр сард (на грудь и 'акыду) + выраженное давление на веру. Требуется немедленное вмешательство: комплексная рукья, чтение над водой, разрушение узлов и выведение джинна.
+      </div>
+
+      <h3>📌 Прогноз при отказе от лечения</h3>
+      <p>Если оставить всё как есть, состояние ухудшится: постоянные мысли куфра превратятся в навязчивый синдром, неспособность произносить шахаду, полная апатия к ибадату. Дрожь при рукие усилится и перерастёт в панические атаки. Семья, работа – всё рухнет. Но с помощью Аллаха и правильной рукьи ты выйдешь победителем.</p>
+      
+      <div class="signature">
+        ✍️ Ваш брат по вере и лекарь, Абу Мухаммад
+      </div>
+    </div>
+  </div>
+
+  <!-- оффер лечения (два варианта) -->
+  <div class="card">
+    <span class="badge">📿 Лечение по Сунне · Аттестованный раки</span>
+    <h2 style="margin-top: 0;">Выбери путь исцеления</h2>
+    <div class="analysis-text" style="margin-bottom: 0.5rem;">
+      Учитывая тяжесть твоего состояния (сильное противодействие джинна, дрожь при рукье, васвас об 'акыде), настоятельно рекомендую <strong>полный лечебный курс</strong>. Одноразовый сеанс снимет остроту и подтвердит диагноз, но только глубокая программа искоренит корень магии.
+    </div>
+
+    <div class="pricing-row">
+      <!-- Полное лечение 15000 -->
+      <div class="offer-card full">
+        <div class="offer-title">🔮 Полное лечение (курс рукья)</div>
+        <div class="price-tag">15 000 ₽ <small>весь курс</small></div>
+        <div class="offer-desc">
+          ✔ 7–9 индивидуальных сеансов (онлайн или лично)<br>
+          ✔ Специальный протокол для снятия сихра на 'акыду и куфр-мыслей<br>
+          ✔ Чтение аятов изгнания, сжигание узлов магии по Сунне<br>
+          ✔ Очищение дома от подкладов (если есть)<br>
+          ✔ Защита от возврата сихра + дуа против васваса<br>
+          ✔ Постоянная поддержка на время курса, анализ снов и прогресса<br>
+          ✔ Результат: исчезновение дрожи, ясность в 'акыде, прекращение куфр-мыслей
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram">
+          📩 Связаться с лекарем — полное лечение
+        </a>
+      </div>
+
+      <!-- одноразовое 3000 -->
+      <div class="offer-card">
+        <div class="offer-title">⚡ Одноразовый сеанс (скрининг)</div>
+        <div class="price-tag">3 000 ₽ <small>сеанс</small></div>
+        <div class="offer-desc">
+          ✔ Мощная рукья длительностью 60–80 мин<br>
+          ✔ Терапия по снятию активной симптоматики: убираем дрожь, смягчение васваса<br>
+          ✔ Выявление степени сихра, чтение аят-уль-курси, муаввизата с батном<br>
+          ✔ Снижение навязчивых куфр-мыслей на 50-70%<br>
+          ✔ Рекомендации для дальнейшей защиты
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram" style="background:#8d6b42;">
+          🧷 Связаться — разовый приём
+        </a>
+      </div>
+    </div>
+    <p style="font-size: 0.72rem; text-align: center; margin-top: 1rem; background: #fef2e2; border-radius: 28px; padding: 8px;">
+      📲 Все сеансы проводятся с соблюдением адабов: онлайн через Telegram или очно (по договорённости). Абу Мухаммад — тысячи успешных исцелений, брат, доверься Аллаху и начни лечение.
+    </p>
+  </div>
+
+  <!-- конкретный анализ сиптомов "дрожь и куфр" -->
+  <div class="card">
+    <h2>🧬 Почему тело дрожит и приходят мысли куфра?</h2>
+    <div class="analysis-text">
+      <p>Опираясь на труды имамов рукьи, сихр на 'акыду часто «привязывают» к джинну, который враждующий с верой. Когда человек слышит слова Аллаха, джинн внутри начинает биться, вызывая <strong>неконтролируемую дрожь</strong> — значит, чтение эффективно и задевает колдовство. Мысли куфра — это бросок от джинна, попытка выбить верующего из седла. Важно знать: эти мысли — не твои собственные, они военные приёмы шайтана.</p>
+      <div class="quote">
+        📚 Сообщается от Абу Хурайры, что посланник Аллаха ﷺ сказал: «Шайтан приходит к одному из вас и говорит: “Кто создал то-то? Кто создал то-то?” вплоть до того, что говорит: “Кто создал твоего Господа?” И когда он доходит до этого, пусть человек ищет убежища у Аллаха и прекращает». Хадис указывает на васвас относительно самой веры, но при сихре это усиливается многократно.
+      </div>
+      <p>В твоём случае требуется <strong>рукия шаръия с разрушением узлов</strong> и чтением над маслом/водой, а также специальные дуа от навязчивости. Полный курс именно включает в себя «терапию против масваса» и изгнание причинного джинна.</p>
+    </div>
+  </div>
+
+  <!-- описание лечения и связь с лекарем -->
+  <div class="card">
+    <h3>🕊️ Как проходит лечение у Абу Мухаммад?</h3>
+    <div class="analysis-text">
+      <p>✅ <strong>Дистанционно или очно:</strong> после обращения ты описываешь ситуацию, я назначаю первый сеанс. Читаю аяты очищения, даю задания пить воду с рукьей, проверяю реакцию тела. При полном курсе — несколько сеансов через день, разрушение сихра по суре Аль-Бакара, Аль-Аараф, Аль-Джинн.</p>
+      <p>✅ <strong>Ожидаемый эффект:</strong> после 2-3 сеансов дрожь уменьшается, мысли куфра ослабевают. После полного курса исчезает васвас об 'акыде, возвращается лёгкость в поклонении, речь становится свободной.</p>
+      <p>✅ <strong>Ценность:</strong> я не просто читаю, а обучаю тебя ежедневной защите, чтобы сихр не вернулся. Тысячи людей избавились от подобных симптомов благодаря дозволению Аллаха.</p>
+    </div>
+    <hr>
+    <div style="display: flex; justify-content: center; margin-top: 6px;">
+      <a href="https://t.me/Ruqoq" target="_blank" style="display: inline-flex; gap:6px; background: none; border: 2px solid #b97f4b; padding: 8px 22px; border-radius: 60px; text-decoration: none; color:#b97f4b; font-weight:700; font-size:0.9rem;">
+        💬 Открыть Telegram лекаря Абу Мухаммад
+      </a>
+    </div>
+    <p style="margin-top: 12px; font-size:0.85rem; background:#eaf6e2; padding: 8px; border-radius: 16px; text-align:center;">
+      ✨ Брат Азамат, Аллах дал тебе понимание, что это сихр — уже половина исцеления. Напиши мне, упомяни кодовое слово «АЗАМАТ_СИХР_АКЫДА» — я дам персональную консультацию.
+    </p>
+  </div>
+
+  <!-- жалобы + справка из заявки -->
+  <div class="card" style="background: #fefaf2;">
+    <h3>📋 Симптомный лист (на основе обращения)</h3>
+    <div style="font-size: 0.87rem; display: grid; gap: 10px;">
+      <div><strong>🕯️ Жалоба:</strong> «Мне сделали сихр, не могу избавиться от васвас. Состояние тяжелое. Не могу говорить о 'акыде». </div>
+      <div><strong>🕯️ Слушание рукьи:</strong> тело сильно дрожит.</div>
+      <div><strong>🕯️ Мысли:</strong> приходят куфр-смыслы, навязчивое неверие.</div>
+      <div><strong>🕯️ Общее состояние:</strong> угнетённость, невозможность справиться своими силами.</div>
+    </div>
+    <p style="margin-top: 12px; font-size: 0.8rem;">* Диагноз ясен: сихр маскуль (завязанный) + масс джинн, воздействующий на иман. Требуется немедленный курс рукьи.</p>
+  </div>
+
+  <div class="footer-note">
+    ⚠️ Любое лечение проводится только с твоего согласия и полной верой в помощь Всевышнего. Абу Мухаммад — раки, практикующий строго по Корану и Сунне, без прикосновений джахилии. <br>
+    📞 Контакт лекаря: <strong>https://t.me/Ruqoq</strong> | Ответ в течение 12 часов. Не откладывай исцеление, брат.
+  </div>
+</div>
+</body>
+</html>
