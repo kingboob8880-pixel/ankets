@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Рукья · Диагностика ребёнка | Лекарь Абу Мухаммад</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f4efe7 0%, #e8e0d5 100%);
+      font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Noto Sans', 'Helvetica Neue', sans-serif;
+      padding: 20px 16px 48px;
+      color: #2c241a;
+    }
+
+    .container {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(255, 253, 250, 0.97);
+      border-radius: 36px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+      padding: 1.6rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.2s;
+      border: 1px solid #f1e4d6;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #dcc9ae;
+      color: #2c241a;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.25rem 0.85rem;
+      border-radius: 40px;
+      letter-spacing: 0.4px;
+      margin-bottom: 0.8rem;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #2c5e3a, #aa7a42);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.25rem;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 1rem 0 0.8rem 0;
+      color: #3d2b1c;
+      border-left: 4px solid #c49662;
+      padding-left: 14px;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 1.2rem 0 0.5rem;
+      color: #5c3f2a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .subhead {
+      font-size: 0.85rem;
+      color: #8b6e4b;
+      margin: 0.5rem 0 0.2rem;
+      border-bottom: 1px dashed #eedfcb;
+      padding-bottom: 6px;
+    }
+
+    .patient-chip {
+      background: #faf3ea;
+      border-radius: 60px;
+      padding: 0.5rem 1rem;
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #5e401f;
+    }
+
+    .patient-chip span {
+      background: white;
+      padding: 0.2rem 0.75rem;
+      border-radius: 40px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    .analysis-text {
+      line-height: 1.55;
+      font-size: 0.97rem;
+      color: #2c241a;
+      text-align: justify;
+    }
+
+    .quote {
+      background: #f7efe6;
+      padding: 1rem 1.2rem;
+      border-radius: 24px;
+      margin: 1rem 0;
+      border-right: 3px solid #ba8b54;
+      border-left: 3px solid #ba8b54;
+      font-size: 0.92rem;
+      color: #4c3824;
+      font-weight: 500;
+    }
+
+    .symptom-list {
+      list-style-type: none;
+      margin: 1rem 0;
+    }
+
+    .symptom-list li {
+      padding: 0.5rem 0;
+      padding-left: 1.8rem;
+      position: relative;
+      border-bottom: 1px solid #f0e2d2;
+      font-size: 0.94rem;
+    }
+
+    .symptom-list li:before {
+      content: "✨";
+      position: absolute;
+      left: 0;
+      color: #c29667;
+      font-weight: 500;
+    }
+
+    .verdict {
+      background: #e7dccf;
+      border-radius: 28px;
+      padding: 1.2rem;
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 600;
+      color: #2b4f35;
+      font-size: 0.95rem;
+    }
+
+    .pricing-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.8rem 0 0.5rem;
+    }
+
+    .offer-card {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid #ebddce;
+      transition: all 0.2s;
+    }
+
+    .offer-card.full {
+      background: linear-gradient(145deg, #fffbf5, #fef6ed);
+      border: 1px solid #dbbd9b;
+    }
+
+    .price-tag {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #b76e2e;
+      margin: 0.5rem 0;
+    }
+
+    .price-tag small {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: #7f684b;
+    }
+
+    .offer-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .offer-desc {
+      font-size: 0.78rem;
+      color: #6f5a44;
+      margin: 0.5rem 0 1rem;
+      line-height: 1.35;
+    }
+
+    .btn-telegram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #2c6e3c;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 10px 16px;
+      border-radius: 100px;
+      width: 100%;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .btn-telegram:hover {
+      background: #1f552d;
+    }
+
+    .btn-telegram:active {
+      transform: scale(0.97);
+    }
+
+    .footer-note {
+      font-size: 0.68rem;
+      text-align: center;
+      color: #9c846a;
+      margin-top: 2rem;
+      border-top: 1px solid #e2d4c4;
+      padding-top: 1rem;
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: none;
+      height: 1px;
+      background: #eaddce;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 16px 12px 32px;
+      }
+      .card {
+        padding: 1.3rem;
+      }
+      .offer-card {
+        padding: 1rem;
+      }
+      .price-tag {
+        font-size: 1.7rem;
+      }
+    }
+
+    .signature {
+      margin-top: 1rem;
+      text-align: right;
+      font-style: italic;
+      font-size: 0.82rem;
+      color: #8f765a;
+      border-top: 1px solid #ede0d0;
+      padding-top: 0.8rem;
+    }
+
+    .highlight {
+      background: #f7ebdb;
+      padding: 0.1rem 0.3rem;
+      border-radius: 12px;
+      font-weight: 500;
+      color: #9b5e2c;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <!-- основная карточка с анализом лекаря -->
+  <div class="card">
+    <span class="badge">📿 Исламская духовная медицина · Детская рукья</span>
+    <h1>Диагностика мальчика, 8 лет</h1>
+    <div class="subhead">Углублённый анализ состояния | Абу Мухаммад, лекарь по Рукье</div>
+    
+    <div class="patient-chip">
+      <span>👦 Мальчик, 8 лет</span>
+      <span>🏙️ Город — квартира</span>
+      <span>🌿 В деревне — здоров</span>
+      <span>👨 Отсутствие отца = боль</span>
+      <span>📞 Направление: Сагибат</span>
+    </div>
+
+    <div class="analysis-text">
+      <p><strong>Бисмиллахир Рахманир Рахим.</strong> Ассаляму алейкум, уважаемая сестра. Я, лекарь Абу Мухаммад, с особым вниманием изучил историю вашего сына. Благодарю за доверие и за рекомендацию от Сагибат (да исцелит Аллах её дочь). Вы обратились именно тогда, когда необходима <strong>шариатская дифференциальная диагностика</strong> — разграничение между соматическим недугом и духовной причиной. Ин шаа Аллах, я дам ясное заключение.</p>
+      
+      <h3>🔎 Ключевые признаки (что сразу привлекло моё внимание)</h3>
+      <ul class="symptom-list">
+        <li><strong>Головная боль строго в отсутствии отца (мужчин):</strong> «Болит только когда папы нет рядом» — <span class="highlight">критический маркер</span>. В его присутствии боль исчезает даже без лечения. Это не может объяснить ни неврология, ни остеопатия.</li>
+        <li><strong>Локализация — макушка (верхушка головы):</strong> в духовно-медицинской традиции область «верхнего родничка» часто бывает точкой входа при сихре на разлучение или при ‘айн от завистника, который метит в защитника семьи (отца).</li>
+        <li><strong>Временной ритм:</strong> начинается вечером, усиливается к утру, держится до обеда. Вечерне-утренняя активность — классическое окно для джиннов и магических воздействий.</li>
+        <li><strong>Пространственная привязка:</strong> болит только в <strong>городе, в вашей квартире</strong> — в деревне боль исчезает. Это указывает на «привязанный» фактор: возможно, подклад (сихр) находится именно в городском жилище, либо влияние соседей/завистников из города.</li>
+        <li><strong>Отсутствие эффекта от медицины:</strong> курс в неврологии, остеопат, МРТ (киста в голове) — всё это не убирает боль. Невролог подтвердил: киста не должна давать таких симптомов. Значит, физиологическая причина маловероятна.</li>
+      </ul>
+
+      <div class="quote">
+        🌙 <strong>Пророческое указание:</strong> «Когда болезнь ребёнка привязана к присутствию или отсутствию одного из родителей, особенно отца — это почти всегда признак сглаза, сихра или джинна, которые активируются в уязвимые моменты» (с опорой на опыт сподвижников).
+        <br><br>
+        Ваш случай уникален тем, что даже <strong>слово отца «завтра заберу из школы»</strong> мгновенно убирает боль. Это сила дуа и моральной защиты, которую нечисть не может преодолеть, но при реальном отсутствии мужчины — нападает на ребёнка.
+      </div>
+
+      <h3>🕯️ Диагностическое заключение (Ташхис)</h3>
+      <p><strong>Первичный диагноз:</strong> Сихр ‘ала ат-тафрик (колдовство на разлучение / ослабление мужской опоры) + сопутствующий сильный ‘айн (дурной глаз) от окружения, который бьёт именно по мальчику в отсутствие отца. Также вероятен <strong>джинн-муваккиль</strong>, приставленный к квартире в городе, который активируется, когда мужская защита уходит.</p>
+      <p>Почему не чисто медицинское? Медицина бессильна перед симптомами, которые исчезают в деревне и при одном обещании отца. Ваш сын не симулирует — Аллах свидетель, это реальная боль, но её триггер — духовный. Киста в голове и щитовидке могут быть фоновыми находками, но они не вызывают описанную картину.</p>
+      <p><strong>Оценка тяжести:</strong> средняя, но с риском усугубления. Ребёнок уже не может ходить в школу (пропуски, страх), страдает социализация. Если вовремя не начать лечение по Сунне, возможны вторичные психосоматические наслоения и прогрессирование зависимости боли от «энергетического вакуума».</p>
+
+      <div class="verdict">
+        ⚖️ <strong>Вердикт лекаря Абу Мухаммад:</strong> Духовная патология с преобладанием сихра на разлуку и ‘айн от завистников (возможно, среди соседей или родственников). Требуется полный курс рукьи для ребёнка + очищение городской квартиры от подклада/скверны + укрепление защиты через дуа и рукъя над водой.
+      </div>
+
+      <h3>📌 Почему не помогает обычное врачевание?</h3>
+      <p>Остеопатия и неврология работают с телом, но не затрагивают джинна или магическую связь. Ваш случай — классический ответ на вопрос «медицина или духовное?». Когда боль исчезает при смене географии (деревня) или при появлении мужской фигуры — это прямое указание на <strong>‘алака рухия</strong> (духовная причинность). Сихр на развод/разлучение может быть направлен на подрыв авторитета отца в семье, и ребёнок становится «индикатором».</p>
+      <p>Сагибат правильно направила вас: её дочь исцелилась после рукьи, потому что там была похожая динамика — боль в отсутствие отца. Доверьтесь опыту, ин шаа Аллах.</p>
+
+      <div class="signature">
+        ✍️ Ваш лекарь, Абу Мухаммад<br>
+        специалист по детской рукье и снятию сихра
+      </div>
+    </div>
+  </div>
+
+  <!-- предложения по лечению (оффер) -->
+  <div class="card">
+    <span class="badge">💎 Лечебный оффер для вашего сына</span>
+    <h2 style="margin-top: 0;">Пути исцеления — выберите то, что подходит</h2>
+    <p style="font-size: 0.9rem; margin-bottom: 0.25rem;">На основе полной картины я рекомендую <strong>полный курс</strong>, так как болезнь закрепилась и влияет на учёбу, семью и психику ребёнка. Однако вы можете начать с разовой мощной сессии, чтобы снять острую боль и убедиться в правильности диагноза.</p>
+
+    <div class="pricing-row">
+      <!-- Полное лечение 15000 ₽ -->
+      <div class="offer-card full">
+        <div class="offer-title">📖 Полное лечение (курс рукья)</div>
+        <div class="price-tag">15 000 ₽ <small>весь курс</small></div>
+        <div class="offer-desc">
+          ✔ Глубокая диагностика (выявление места подклада / источника сихра)<br>
+          ✔ 5–7 сеансов чтения Корана над ребёнком с батн-рукья<br>
+          ✔ Очищение городской квартиры (поиск и нейтрализация возможного подклада)<br>
+          ✔ Защита для мальчика на каждый день (рукия + дуа от отца)<br>
+          ✔ Лечение от ‘айн и сихра тафрик — специальные аяты и азкары<br>
+          ✔ Индивидуальная программа для укрепления имана, чтобы джинн не возвращался<br>
+          ✔ Месяц поддержки (ответы на вопросы, корректировка)
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram">
+          ✨ Связаться с лекарем ✨
+        </a>
+      </div>
+
+      <!-- Одноразовое лечение 3000 ₽ -->
+      <div class="offer-card">
+        <div class="offer-title">⚡ Одноразовый сеанс</div>
+        <div class="price-tag">3 000 ₽ <small>сеанс</small></div>
+        <div class="offer-desc">
+          ✔ Мощная дистанционная или очная рукья (на ваше усмотрение)<br>
+          ✔ Снятие головной боли и тяжести в макушке (ин шаа Аллах, уже после 1-2 дней)<br>
+          ✔ Выявление причины — подтверждение сихра или джинна<br>
+          ✔ Дуа и рукъя на воду для питья и купания<br>
+          ✔ Рекомендации для мужа (как усилить защитную ауру)<br>
+          ✔ Базовые азкары для ребёнка от возврата симптомов
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram" style="background:#8a6f4b;">
+          📞 Связаться с лекарем
+        </a>
+      </div>
+    </div>
+    <p style="font-size: 0.72rem; text-align: center; margin-top: 1rem; background: #fbf5ec; padding: 0.5rem; border-radius: 28px;">
+      🕌 Работаю как дистанционно (видеозвонок, аудио-рукья), так и в Москве по договорённости. Лечение строго по Корану и Сунне.
+    </p>
+  </div>
+
+  <!-- развернутая оценка и личные наставления -->
+  <div class="card">
+    <h2>🧾 Почему именно полный курс — лучшее решение для мальчика?</h2>
+    <div class="analysis-text">
+      <p>Сестра, ситуация вашего сына имеет все черты застарелого духовного нападения. Сихр (или сильный сглаз) был сделан с намерением подорвать мужскую защиту в семье. Ребёнок стал «мишенью», потому что он наиболее уязвим, когда отец уезжает. Одноразовый сеанс принесёт облегчение на 1-2 недели, но без чистки жилища и общего курса джинн-муваккиль может вернуться.</p>
+      <div class="quote">
+        💎 <strong>Совет от Абу Мухаммад:</strong> Начните с полной диагностики (входит в полное лечение) — я проверю квартиру на предмет подклада, сделаю рукъю вашему сыну и обучу вас и мужа ежедневным укрепляющим дуа. После этого, с дозволения Аллаха, боль при отсутствии отца исчезнет, и ребёнок спокойно будет ходить в школу.
+      </div>
+      <p>Также обратите внимание на <strong>слова мужа</strong>: он не верит, потому что не видит боли. Это часть плана шайтана — посеять недоверие. Как только вы начнёте лечение, снять сихр, муж сам заметит перемены: мальчик станет спокойнее, перестанет жаловаться, появится энергия. Тавфик от Аллаха.</p>
+      <p><strong>Медицинский аспект:</strong> кисты в голове и щитовидной железе — не причина для паники. После очищения рукьей они могут уменьшиться (бывали прецеденты), но даже если останутся, они не будут беспокоить. Невролог прав — эти кисты не вызывают описанную вами боль.</p>
+    </div>
+    <hr>
+    <div style="display: flex; justify-content: center; margin-top: 0.2rem;">
+      <a href="https://t.me/Ruqoq" target="_blank" style="background: none; border: 2px solid #b6895c; padding: 10px 22px; border-radius: 60px; text-decoration: none; color:#b6895c; font-weight:600; font-size: 0.85rem;">💬 Написать лечащему врачу (Telegram)</a>
+    </div>
+  </div>
+
+  <!-- дополнительная памятка из анкеты (короткое резюме) -->
+  <div class="card" style="background: #fffaf2;">
+    <h3>📋 Квинтэссенция случая (для напоминания)</h3>
+    <div style="font-size: 0.85rem; display: grid; gap: 8px;">
+      <div><strong>🧒 Ребёнок:</strong> 8 лет, голова (макушка) болит только без отца, с вечера до обеда, только в городе/квартире. В деревне — здоров.</div>
+      <div><strong>🩺 Медицина:</strong> МРТ — киста в голове (не болит), киста щитовидки. Невролог, остеопат, стационар — безрезультатно.</div>
+      <div><strong>👨 Отец:</strong> При нём боль не проявляется. Стоит ему пообещать прийти — ребёнок идёт в школу здоровым.</div>
+      <div><strong>💡 Направление:</strong> от Сагибат (мать девочки с подобным случаем, исцелена рукьей).</div>
+      <div><strong>📌 Вывод Абу Мухаммад:</strong> Сихр тафрик + ‘айн/джинн, привязанный к отсутствию мужской фигуры и к городской квартире. Требуется рукья и очищение дома.</div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    ⚠️ Данная диагностика проведена на основании вашего описания. Для точного исцеления необходима живая рукья и, возможно, осмотр жилища. Полное лечение включает все этапы и гарантирует защиту после курса.<br>
+    Связь с лекарем Абу Мухаммад: <strong>https://t.me/Ruqoq</strong> (отвечаю лично, конфиденциально).
+  </div>
+</div>
+</body>
+</html>
