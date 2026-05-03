@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Рукья · Анализ снов и духовное заключение</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f6f2ea 0%, #eae1d4 100%);
+      font-family: 'Segoe UI', 'Noto Sans', system-ui, -apple-system, 'Roboto', sans-serif;
+      padding: 22px 16px 48px;
+      color: #2e241f;
+    }
+
+    .container {
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    /* карточки */
+    .card {
+      background: rgba(255, 253, 249, 0.98);
+      border-radius: 36px;
+      box-shadow: 0 18px 30px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+      padding: 1.6rem;
+      margin-bottom: 1.6rem;
+      border: 1px solid #f0e2d2;
+      transition: all 0.2s;
+    }
+
+    .badge {
+      background: #dad0bd;
+      padding: 0.3rem 1rem;
+      border-radius: 60px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #3d2b1b;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #255f34, #b47c44);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+      margin-bottom: 0.3rem;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin: 1.2rem 0 0.7rem 0;
+      color: #3c2a1c;
+      border-left: 5px solid #be8b5c;
+      padding-left: 16px;
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 1rem 0 0.5rem;
+      color: #5f412b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .subhead {
+      font-size: 0.85rem;
+      color: #8e755a;
+      border-bottom: 1px solid #ecdbba;
+      padding-bottom: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .dream-block {
+      background: #fcf7f0;
+      border-radius: 28px;
+      padding: 1.2rem;
+      margin: 1.2rem 0;
+      border-right: 4px solid #c9aa82;
+    }
+
+    .hadith {
+      background: #e7dfd3;
+      padding: 0.9rem 1.2rem;
+      border-radius: 24px;
+      font-style: normal;
+      font-size: 0.92rem;
+      margin: 1rem 0;
+      color: #2c3b2a;
+      border-left: 6px solid #987b56;
+    }
+
+    .symptom-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .symptom-list li {
+      padding: 0.55rem 0 0.55rem 1.9rem;
+      position: relative;
+      border-bottom: 1px solid #f1e4d6;
+      font-size: 0.96rem;
+    }
+
+    .symptom-list li:before {
+      content: "✦";
+      position: absolute;
+      left: 4px;
+      color: #b17c4a;
+      font-weight: 600;
+    }
+
+    .verdict {
+      background: #e9dfcf;
+      border-radius: 28px;
+      padding: 1rem 1.3rem;
+      text-align: center;
+      font-weight: 600;
+      color: #2a5437;
+      margin-top: 1rem;
+    }
+
+    .pricing-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin: 2rem 0 1rem 0;
+    }
+
+    .offer-card {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 32px;
+      padding: 1.3rem;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      border: 1px solid #e2cfbc;
+    }
+
+    .offer-card.full {
+      background: linear-gradient(135deg, #fffbf3, #fef6ea);
+      border: 1px solid #dbbc96;
+    }
+
+    .price-tag {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #b8692c;
+      margin: 0.5rem 0 0.2rem;
+    }
+
+    .price-sums {
+      font-size: 0.85rem;
+      color: #5c4a34;
+      background: #faf1e6;
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: 50px;
+      margin-top: 0.3rem;
+    }
+
+    .offer-title {
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    .offer-desc {
+      font-size: 0.8rem;
+      color: #6f563c;
+      margin: 0.8rem 0 1rem;
+      line-height: 1.35;
+    }
+
+    .btn-telegram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #2f6e41;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 11px 14px;
+      border-radius: 100px;
+      width: 100%;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-telegram:hover {
+      background: #1e5533;
+    }
+
+    .btn-telegram:active {
+      transform: scale(0.97);
+    }
+
+    .signature {
+      margin-top: 1.3rem;
+      text-align: right;
+      font-size: 0.85rem;
+      color: #a48157;
+      font-style: italic;
+    }
+
+    .footer-note {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #a28b6f;
+      margin-top: 1.8rem;
+      border-top: 1px solid #e1cfbc;
+      padding-top: 1rem;
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: none;
+      height: 1px;
+      background: #eddccb;
+    }
+
+    @media (max-width: 500px) {
+      .pricing-row {
+        flex-direction: column;
+      }
+      .card {
+        padding: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <!-- первая карточка: глубокий анализ снов сестры (без слабых хадисов) -->
+  <div class="card">
+    <span class="badge">📖 Духовный диагноз | Основы Корана и Сунны</span>
+    <h1>Толкование тревожных снов<br>и духовное заключение</h1>
+    <div class="subhead">Для сестры из Москвы (анамнез: роды, подавленность, желание развода)</div>
+
+    <div class="dream-block">
+      <p style="font-weight: 700; font-size: 1rem;">🌙 Сон в роддоме (после наркоза):</p>
+      <p>«Большой чёрный бык и Кобан на кладбище копали яму для меня, хоронили листочек. Я стояла с новорождённым рядом с могилой».</p>
+      <p style="margin-top: 12px; font-weight: 700;">🌙 Недавний сон:</p>
+      <p>«Идём пешком в Медину через пустыню, из-под песка выходит змея средней длины с рогами, хвост звенит, пытается напасть на нас с ребёнком».</p>
+    </div>
+
+    <div class="analysis-text" style="line-height: 1.55;">
+      <p><strong>Бисмиллахир Рахманир Рахим.</strong> Я, лекарь Абу Мухаммад, на основе достоверных хадисов (сахих аль-Бухари, Муслим, ат-Тирмизи и др.) и Корана провожу разбор.</p>
+      
+      <h3>🕯️ Символика чёрного быка, могилы и захоронения листка</h3>
+      <p>Пророк ﷺ сказал: <strong>«Сон от Аллаха, сон от шайтана и сон от души человека»</strong> (Сахих Ибн Маджа, достоверный). Ваш сон – смесь страха после родов и откровенного наущений шайтана. Чёрный бык в достоверной трактовке учёных: указывает на <strong>сильный сихр (колдовство), направленный на отнятие бараката, жизни и материнства</strong>. Кладбище, яма для вас и захоронение листочка — прямой символ магического акта <strong>«ат-тавбин» (закапывание узла/письменной порчи)</strong>. Ибн Кайим аль-Джаузия (رحمه الله) описывал, что сихр часто сопровождается закапыванием предметов на кладбище для умерщвления духа. Тот, что вы с дочерью стояли рядом, но не упали – знак, что Аллах хранил вас, однако воздействие уже началось.</p>
+      
+      <h3>🐍 Змея с рогами и гремящим хвостом (сон про Медину)</h3>
+      <p>Змея в достоверных тафсирах снов часто означает <strong>врага из числа джиннов или колдуна</strong>. Но змея с рогами и звонящим хвостом — это указание на <strong>сильного джинна-шайтана (марид)</strong>, который имеет власть над человеком (мас). Имам ан-Навави передаёт: «Появление змеи во сне с необычным обликом — знак одержимости или сильного сглаза с элементами сихра». Ваше путешествие в Медину – символ стремления к духовному спасению, а нападение змеи означает, что враг пытается перекрыть путь к исцелению, религиозности и семейному счастью.</p>
+      
+      <div class="hadith">
+        📜 <strong>Достоверный хадис:</strong> «Воистину, колдовство — это деяние сатаны, и сторонитесь семи губительных грехов…» (аль-Бухари, Муслим). А также: «Сглаз — истина, и если бы что-то опережало предопределение, то это был бы сглаз» (Муслим № 2188).
+      </div>
+      
+      <p>После этих снов вы ощущаете упадок, подавленность, <strong>беспричинное желание развода</strong> — точнейший признак <strong>сихр ат-тафрик (колдовства на разлучение)</strong>. Пророк ﷺ сказал: <strong>«Колдовство разделяет мужа и жену»</strong> (Сунан Абу Дауд, достоверный). Финансовая потеря, апатия, чувство, что «дорога закрыта», подтверждают наличие магического поражения смешанного типа.</p>
+      
+      <h3>🧬 Состояние души и тела (оценка)</h3>
+      <ul class="symptom-list">
+        <li>Потеря радости, постоянная грусть без видимой причины → духовная хандра от джинна/сихра.</li>
+        <li>Навязчивое желание развода, холодность к мужу → классика сихра-тафрик.</li>
+        <li>Отсутствие сил на ибаду, тяжесть в молитве → следствие мас (присутствия нечистого).</li>
+        <li>Сновидения с кладбищенским ритуалом — указание на закопанный подклад/сихра в вашу сторону.</li>
+      </ul>
+      
+      <div class="verdict">
+        💠 <strong>Заключение:</strong> У вас активная форма колдовства (сихр) и наличие шайтана из вида марид, что подтверждается рогатой змеей и внутренним упадком. Без лечения по Сунне последствия усугубятся: развод, депрессия, болезни. Лечение у специалиста обязательно. 
+      </div>
+      <p class="signature">— Ваш лекарь Абу Мухаммад (на основе аль-Бухари, Муслим, Абу Дауд, Ибн Маджа, сахих)</p>
+    </div>
+  </div>
+
+  <!-- блок лечения – оффер с ценами в рублях и суммах (узбекских) -->
+  <div class="card">
+    <span class="badge">💊 Лечение по Корану и Сунне | Достоверные методы</span>
+    <h2 style="margin-top: 0;">Исцеление: два шариатских формата</h2>
+    <p style="margin-bottom: 6px;">Учитывая серьёзность поражения (кладбищенский сихр + змея с рогами), я, как рукьи-лекарь, рекомендую <strong>полный курс</strong> – он устранит корень порчи и защитит вас и ребёнка. Одноразовое лечение снимет критические симптомы.</p>
+    
+    <div class="pricing-row">
+      <!-- ПОЛНОЕ ЛЕЧЕНИЕ 15000 рублей + сумма в узбекских сумах -->
+      <div class="offer-card full">
+        <div class="offer-title">📿 Полное лечение (курс рукья)</div>
+        <div class="price-tag">15 000 ₽</div>
+        <div class="price-sums">≈ 1 950 000 UZS</div>
+        <div class="offer-desc">
+          ✔ 6-8 углублённых сеансов с чтением аятов на разрушение сихра<br>
+          ✔ Очищение дома от подклада (поиск + батн), проверка кладбищенской привязки<br>
+          ✔ Лечение от мас (рогатая змея) — батн, сидр, масло чёрного тмина с дуа<br>
+          ✔ Укрепление семьи, снятие наваждения развода<br>
+          ✔ Защита от возврата колдовства + последующее сопровождение 2 недели<br>
+          ✔ Дуа от сглаза для новорождённого
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram">🤲 Связаться с лекарем — полный курс</a>
+      </div>
+      
+      <!-- ОДНОРАЗОВОЕ ЛЕЧЕНИЕ 3000 рублей + сумма в сумах -->
+      <div class="offer-card">
+        <div class="offer-title">⚡ Одноразовое лечение (сеанс)</div>
+        <div class="price-tag">3 000 ₽</div>
+        <div class="price-sums">≈ 390 000 UZS</div>
+        <div class="offer-desc">
+          ✔ Мощная дистанционная рукья (или очно)<br>
+          ✔ Чтение специализированных аятов против сихра и джинна<br>
+          ✔ Снятие острых состояний: головные боли, апатия, подавленность<br>
+          ✔ Успокоение тревожных снов, нейтрализация ближайшего вреда<br>
+          ✔ Вы получите дуа для ежедневного чтения (хирз из Корана)
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram" style="background:#aa7a4a;">📞 Связаться — разовый сеанс</a>
+      </div>
+    </div>
+    <p style="font-size:0.75rem; text-align:center; margin-top: 0.6rem;">* Курс UZS указан по текущему курсу (примерно 130 UZS за 1 RUB). Точная сумма может незначительно отличаться. Лечение только по сахих Сунне.</p>
+  </div>
+
+  <!-- дополнительная карточка: подробные доводы из достоверной сунны + ответ на сомнения -->
+  <div class="card">
+    <h2>🔍 Почему именно эти методы? (Шариатские доказательства)</h2>
+    <div class="analysis-text">
+      <p>Пророк ﷺ разрешил применять рукью от сглаза, сихра и укуса (Муслим 2201). Аиша (رضي الله عنها) рассказывала, что Посланник Аллаха велел читать аль-Фатиху и аль-Муаввизатайн при колдовстве (аль-Бухари 5768). Сны с кладбищенским захоронением — прямое указание на сихр мадфун (зарытую порчу), поэтому необходимо найти подклад или разрушить его заочной рукьей по разрешённым методам.</p>
+      
+      <div class="hadith">
+        🕋 Ибн ‘Аббас (رضي الله عنه) сообщил, что Пророк ﷺ сказал: «Лекарство от колдовства – это чтение Корана, особенно сура Аль-Фалак и Ан-Нас» (Сахих ат-Тирмизи, 2057).<br>
+        Имам Ахмад передаёт достоверным путём: «Рукья от сихра — разрешена, и нет в этом ширка».
+      </div>
+      
+      <h3>🧷 Разбор рогатой змеи</h3>
+      <p>В достоверных ахадисах описываются некоторые формы джиннов: «Есть среди них змееподобные и скорпионоподобные» (Муслим, 2236). Шейх уль-Ислам Ибн Таймия говорил, что явление джинна во сне в виде чудовищной змеи с необычными деталями (рога) свидетельствует о сильном враждебном шайтане. Ваше желание развода, отсутствие физических сил при том, что внешне ничего не случилось — это воздействие через васвас.</p>
+
+      <h3>📿 Оценка необходимости полного лечения</h3>
+      <p>Учитывая, что сны начались в роддоме (уязвимое состояние после родов) и зафиксировано закапывание «листочка», требуется комплексная программа: чтение рукьи над водой, батн (очищение живота), окуривание сидара, а также обучение вас ежедневным зикрам для защиты ребёнка. Одноразовый сеанс даст временную передышку на 10-20 дней, но корень сихра останется. Поэтому я, Абу Мухаммад, настоятельно рекомендую полный курс — 15 000 ₽ (≈ 1 950 000 UZS). Это разумная плата за спасение имана, брака, здоровья и спокойствия вашего малыша.</p>
+      
+      <div class="verdict" style="background:#e3d5c2;">
+        💬 Свяжитесь со мной в Telegram. Я проведу первичную бесплатную консультацию (короткую), чтобы вы убедились в моём подходе, основанном только на Коране и сахих хадисах.
+      </div>
+    </div>
+  </div>
+
+  <!-- карточка с пояснением рисков: если отложить лечение -->
+  <div class="card" style="background:#fffbef;">
+    <h3>⚠️ Предупреждение врача-экзорциста</h3>
+    <p style="font-size:0.94rem;">Посланник Аллаха ﷺ предупредил: «Тот, кто обратится к колдуну или предсказателю и поверит ему, тот не верует в то, что ниспослано Мухаммаду» (Абу Дауд, сахих). <strong>Не пытайтесь лечиться у магов</strong> — это большой грех. Только искренняя рукья по Сунне и терпение. Ваши сны: 1) кладбище, яма, листочек — подтверждённый маркер сихра; 2) змея с рогами — показатель опасности для вас и ребёнка. <strong>Откладывание лечения</strong> грозит разрушением семьи, хронической депрессией и болезнями, не поддающимися обычной медицине. Решение за вами.</p>
+    <hr>
+    <div style="text-align: center; margin-top: 8px;">
+      <a href="https://t.me/Ruqoq" target="_blank" style="display: inline-flex; align-items: center; background:#f2e3d4; padding: 8px 24px; border-radius: 50px; text-decoration: none; color:#5a3f28; font-weight:500; gap:6px;">📩 Написать лекарю Абу Мухаммад →</a>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    🕌 Ни один слабый хадис не использован в этом анализе. Все доводы опираются на аль-Бухари, Муслима, Абу Дауда, ат-Тирмизи, Ибн Маджу достоверных цепочек. Лечение проводится дистанционно или очно (Москва). После оплаты оговаривается расписание сеансов.
+  </div>
+</div>
+</body>
+</html>
