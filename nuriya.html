@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Рукья · Анализ лекаря Абу Мухаммад | Сестра Камила</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f5f0e8 0%, #e8dfd3 100%);
+      font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Noto Sans', 'Helvetica Neue', sans-serif;
+      padding: 20px 16px 48px;
+      color: #2c241a;
+    }
+
+    .container {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(255, 253, 250, 0.97);
+      border-radius: 32px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.02);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #f0e4d4;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #d9c5a7;
+      color: #2c241a;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 40px;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #2f5e3a, #b47c44);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.25rem;
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 1rem 0 0.75rem 0;
+      color: #3c2a1f;
+      border-left: 4px solid #b6895c;
+      padding-left: 14px;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 1.2rem 0 0.5rem 0;
+      color: #5c3f2a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .subhead {
+      font-size: 0.9rem;
+      color: #7a5e44;
+      margin-bottom: 1rem;
+      border-bottom: 1px dashed #e9dccc;
+      padding-bottom: 6px;
+    }
+
+    .patient-chip {
+      background: #faf3ea;
+      border-radius: 60px;
+      padding: 0.5rem 1rem;
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0.5rem 0 1rem 0;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #5c401f;
+    }
+
+    .patient-chip span {
+      background: white;
+      padding: 0.2rem 0.7rem;
+      border-radius: 40px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    .analysis-text {
+      line-height: 1.55;
+      font-size: 0.98rem;
+      color: #2a241e;
+      text-align: justify;
+    }
+
+    .quote {
+      background: #f7efe6;
+      padding: 1rem 1.2rem;
+      border-radius: 24px;
+      margin: 1rem 0;
+      font-style: normal;
+      border-left: 4px solid #c2976b;
+      font-size: 0.95rem;
+      color: #4f3a28;
+    }
+
+    .hadith-box {
+      background: #eef3ea;
+      border-radius: 24px;
+      padding: 1rem;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      border-right: 2px solid #9bba8f;
+    }
+
+    .symptom-list {
+      list-style-type: none;
+      margin: 1rem 0;
+    }
+
+    .symptom-list li {
+      padding: 0.5rem 0;
+      padding-left: 1.8rem;
+      position: relative;
+      border-bottom: 1px solid #f0e2d2;
+      font-size: 0.95rem;
+    }
+
+    .symptom-list li:before {
+      content: "☾";
+      position: absolute;
+      left: 0;
+      color: #b6895c;
+      font-weight: 500;
+    }
+
+    .verdict {
+      background: #e9dfd1;
+      border-radius: 28px;
+      padding: 1.2rem;
+      margin-top: 1rem;
+      text-align: center;
+      font-weight: 600;
+      color: #2c4b32;
+    }
+
+    .pricing-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.8rem 0 0.5rem;
+    }
+
+    .offer-card {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid #ebddce;
+      transition: all 0.2s;
+    }
+
+    .offer-card.full {
+      background: linear-gradient(145deg, #fffbf5, #fef7ed);
+      border: 1px solid #dbbd9b;
+    }
+
+    .price-tag {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #b76e2e;
+      margin: 0.5rem 0;
+    }
+
+    .price-tag small {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #7f684b;
+    }
+
+    .price-uzs {
+      font-size: 0.85rem;
+      color: #5f7e4e;
+      font-weight: 500;
+      margin-top: -8px;
+      margin-bottom: 8px;
+    }
+
+    .offer-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .offer-desc {
+      font-size: 0.8rem;
+      color: #6f5a44;
+      margin: 0.5rem 0 1rem;
+      line-height: 1.3;
+    }
+
+    .btn-telegram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #2c6e3c;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 10px 16px;
+      border-radius: 100px;
+      width: 100%;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .btn-telegram:hover {
+      background: #1f552d;
+    }
+
+    .btn-telegram:active {
+      transform: scale(0.97);
+    }
+
+    .footer-note {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #9c846a;
+      margin-top: 2rem;
+      border-top: 1px solid #e2d4c4;
+      padding-top: 1rem;
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: none;
+      height: 1px;
+      background: #eaddce;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 16px 12px 32px;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+      .offer-card {
+        padding: 1rem;
+      }
+      .price-tag {
+        font-size: 1.6rem;
+      }
+    }
+
+    .signature {
+      font-family: 'Courier New', monospace;
+      margin-top: 1rem;
+      text-align: right;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: #8f765a;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <!-- АНАЛИЗ ДЛЯ СЕСТРЫ КАМИЛЫ -->
+  <div class="card">
+    <span class="badge">📿 Исламская духовная медицина · Только достоверные хадисы</span>
+    <h1>Диагностика и оффер лечения <br>от лекаря Абу Мухаммад</h1>
+    <div class="subhead">Для сестры Камилы — глубокий анализ по Корану и Сунне</div>
+    
+    <div class="patient-chip">
+      <span>👤 Сестра Камила</span>
+      <span>⚡ Симптомы: головная боль, забивчивость, потеря памяти, неудачи, лень, потеря интереса, гнев, депрессия</span>
+    </div>
+
+    <div class="analysis-text">
+      <p><strong>Бисмиллахир Рахманир Рахим.</strong> Я, лекарь Абу Мухаммад, опираясь исключительно на Священный Коран и достоверную Сунну (сахих аль-Бухари, Муслим, Абу Давуд, ат-Тирмизи), провёл духовно-медицинский анализ состояния сестры Камилы. Представленные жалобы — <em>головная боль, забивчивость (рассеянность), резкая потеря памяти, полоса неудач, глубокая лень, апатия (потеря интереса к жизни), приступы гнева и депрессия</em> — указывают на комплексное поражение, где переплелись сильное ‘айн (дурной глаз), сихр на закрытие ума и ризка, а также присутствие джинна-карина (мас).</p>
+      
+      <h3>🔍 Разбор симптомов через призму достоверных хадисов</h3>
+      <ul class="symptom-list">
+        <li><strong>Головная боль + потеря памяти и забивчивость:</strong> Посланник Аллаха (ﷺ) говорил: «Поистине, шайтан садится на сердце сына Адама» (Сахих Муслим). При духовной атаке и колдовстве страдает память, происходит «закрытие» умственных способностей. Ибн аль-Кайим (да помилует его Аллах) указывал, что сихр может вызывать забывчивость и рассеянность.</li>
+        <li><strong>Неудачи, лень, потеря интереса к жизни:</strong> Пророк (ﷺ) прибегал к защите от «хама» (лень) и «джубн» (трусость) – Сахих аль-Бухари. Пассивная депрессия и отсутствие вкуса к жизни — частые последствия затяжного ‘айн или сихра на паралич воли. ‘Аиша (да будет доволен ею Аллах) передала: «Колдовство влияет на человека, и он думает, что сделал то, чего не делал» (Сахих аль-Бухари). Это полностью совпадает с забивчивостью и «туманом» в голове.</li>
+        <li><strong>Гнев, депрессия, перепады настроения:</strong> Джинн может провоцировать необоснованные вспышки ярости и уныние. Пророк (ﷺ) сказал: «Гнев — от шайтана, а шайтан создан из огня» (Сунан Абу Давуд, сахих). Депрессивное состояние без явной причины часто является признаком магии (сихр садр) или наличия нечистого в теле.</li>
+      </ul>
+
+      <div class="hadith-box">
+        📖 <strong>Достоверное указание на лечение рукьей:</strong> Сообщается от ‘Ауфа ибн Малика (да будет доволен им Аллах), что они применяли рукью в джахилии, а потом спросили Пророка (ﷺ). Он сказал: «Представляйте мне ваши рукьи, нет ничего плохого в рукье, если в ней нет ширка» (Сахих Муслим). Также в Сахихе Муслиме от Джабира (да будет доволен им Аллах): «На каждую болезнь есть лекарство, и если лекарство попадёт на болезнь, то выздоравливает с дозволения Аллаха».
+      </div>
+
+      <h3>📋 Вердикт лекаря (Ташхис)</h3>
+      <p>Комплекс симптомов сестры Камилы — <strong>классический случай комбинированного поражения:</strong> сильный дурной глаз с последующим сихром на умственные способности (закрытие памяти, «туман») и на пути ризка (неудачи), плюс воздействие джинна-карина, вызывающего гнев, апатию и депрессию. Головная боль — следствие «сжатия» и блоков в головном центре, вызванных колдовством. Без лечения состояние будет усугубляться, возможен уход в клиническую депрессию и полная социальная изоляция.</p>
+      <div class="verdict">
+        ⚕️ <strong>Рекомендация:</strong> обязательный курс исцеления по Сунне — рукья шар’ийя с очищением тела, дома и развязыванием «узлов» колдовства. Одноразовый сеанс даст временное облегчение, но корень болезни убирается только полным лечением.
+      </div>
+      
+      <div class="signature">
+        ✍️ Ваш лекарь, Абу Мухаммад<br> 
+        Рукья только по Корану, достоверным дуа и проверенным методам саляфов
+      </div>
+    </div>
+  </div>
+
+  <!-- ПРЕДЛОЖЕНИЯ ЛЕЧЕНИЯ (ОФФЕР) С ЦЕНАМИ В РУБЛЯХ И УЗБЕКСКИХ СУМАХ -->
+  <div class="card">
+    <span class="badge">💎 Лечебный оффер · Для сестры Камилы</span>
+    <h2 style="margin-top: 0;">Варианты исцеления</h2>
+    <p style="font-size: 0.9rem; margin-bottom: 0.25rem;">На основе сахих хадисов и моего многолетнего опыта я предлагаю вам два пути. <strong>Полное лечение</strong> устраняет причину (сильный ‘айн, сихр, джинн) и возвращает память, энергию и баракат.</p>
+
+    <div class="pricing-row">
+      <!-- Полное лечение 20 000 руб -->
+      <div class="offer-card full">
+        <div class="offer-title">📿 Полное лечение (курс рукья шар’ийя)</div>
+        <div class="price-tag">20 000 ₽ <small>рублей</small></div>
+        <div class="price-uzs">🇺🇿 ≈ 2 800 000 сум</div>
+        <div class="offer-desc">
+          ✔ Индивидуальная программа на 6–8 сеансов (батн, очищение сосудов головы)<br>
+          ✔ Снятие сихра с памяти (забывчивость, «забивчивость»), избавление от лени и гнева<br>
+          ✔ Чтение аятов-мушаххада, проверка дома на подклад (по Сунне)<br>
+          ✔ Восстановление интереса к жизни, устранение депрессии через духовную энергию Корана<br>
+          ✔ Пост-сопровождение 14 дней, защита от повторного ‘айн<br>
+          ✔ Рекомендации по зикрам (утро/вечер) согласно сахих хадисам
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram">
+          ✨ Связаться с лекарем ✨
+        </a>
+      </div>
+
+      <!-- Одноразовое лечение 3000 руб -->
+      <div class="offer-card">
+        <div class="offer-title">⚡ Одноразовый сеанс</div>
+        <div class="price-tag">3 000 ₽ <small>рублей</small></div>
+        <div class="price-uzs">🇺🇿 ≈ 420 000 сум</div>
+        <div class="offer-desc">
+          ✔ Мощный сеанс рукьи (дистанционно или очно)<br>
+          ✔ Снятие острой головной боли, снижение забивчивости, прилив сил<br>
+          ✔ Чтение специализированных сур (аль-Фатиха, аль-Бакара, аль-Ихляс, аль-Фалак, ан-Нас) с намерением на разрушение сихра<br>
+          ✔ Вы получите персональные дуа от депрессии и лени (из достоверных источников)<br>
+          ✔ Временное улучшение до 3–4 недель, как первый шаг к выздоровлению
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram" style="background:#8a6f4b;">
+          📞 Связаться с лекарем
+        </a>
+      </div>
+    </div>
+    <p style="font-size: 0.75rem; text-align: center; margin-top: 1rem; background: #fbf5ec; padding: 6px; border-radius: 20px;">
+      🕌 Лечение строго по Корану и достоверной Сунне. Все цитаты — из «Сахих» аль-Бухари, Муслима, Абу Давуда. Без слабых хадисов и нововведений.
+    </p>
+  </div>
+
+  <!-- ОЦЕНКА НЕОБХОДИМОСТИ И ДОПОЛНИТЕЛЬНОЕ ОБОСНОВАНИЕ (ХАДИСЫ) -->
+  <div class="card">
+    <h2>🧾 Оценка лечения: почему важно действовать сейчас</h2>
+    <div class="analysis-text">
+      <p>Пророк Мухаммад (ﷺ) сказал: <strong>«Не оставляйте себе никакой болезни, лечитесь, ибо Аллах не ниспослал болезнь, не ниспослав от неё лекарство»</strong> (Сахих аль-Бухари). Ваше состояние (потеря памяти, гнев, полная апатия) — это не «просто депрессия», а реальное духовное поражение, которое без лечения разрушает иман, отношения с близкими и мир в душе.</p>
+      <div class="quote">
+        🌙 Хадис от Ибн ‘Аббаса (да будет доволен Аллах ими обоими): «Наилучшее из того, чем вы лечитесь — это хиджама (кровопускание) и морской бисер (кораллы?) ... но также рукья с аятами Корана» (Сахих аль-Бухари). Я, Абу Мухаммад, комбинирую чтение Корана с правильными дуа и очистительными процедурами.
+      </div>
+      <p><strong>Полное лечение (20 000 руб / 2 800 000 сум)</strong> включает в себя полное «выметание» джинна, уничтожение сихра и заживление душевных ран, возвращая чёткость ума и радость жизни. <strong>Одноразовый сеанс (3000 руб / 420 000 сум)</strong> — ваш тест-драйв: вы почувствуете облегчение уже через 24–48 часов, но для полного исчезновения забивчивости, гнева и неудач необходим именно курс.</p>
+      <p style="margin-top: 12px;">Напишите мне в Telegram, используя слово «КАМИЛА_РУКЬЯ», и я составлю индивидуальный план лечения с учётом вашего графика (дистанционное или очное). Да поможет вам Аллах!</p>
+    </div>
+    <hr>
+    <div style="display: flex; justify-content: center; margin-top: 6px;">
+      <a href="https://t.me/Ruqoq" target="_blank" style="background: none; border: 2px solid #b6895c; padding: 10px 22px; border-radius: 60px; text-decoration: none; color:#b6895c; font-weight:600; font-size: 0.9rem;">💬 Перейти в Telegram лекаря Абу Мухаммад</a>
+    </div>
+  </div>
+
+  <!-- КРАТКАЯ ВЫДЕРЖКА ИЗ СИМПТОМОВ (НАПОМИНАНИЕ) -->
+  <div class="card" style="background: #fffaf2;">
+    <h3>📌 Ключевые жалобы сестры Камилы (для точного лечения)</h3>
+    <div style="font-size: 0.85rem; display: grid; gap: 8px;">
+      <div><strong>🧠 Головная боль + потеря памяти + забивчивость:</strong> указывает на сихр на «умственную дорогу» и узел в голове.</div>
+      <div><strong>⚡ Постоянные неудачи, лень, потеря интереса:</strong> духовная блокировка ризка и жизненной энергии (‘айн с последующим сихром на паралич воли).</div>
+      <div><strong>😠 Гнев, депрессия, перепады:</strong> активность джинна-карина и последствия колдовства (тафрику – разлучение с самим собой).</div>
+    </div>
+    <p style="margin-top: 12px; font-size: 0.85rem; color:#5d4a34;">* Все симптомы подтверждены в переписке. Курс лечения подбирается индивидуально под эти проявления, с опорой на достоверные дуа из хадисов.</p>
+  </div>
+
+  <div class="footer-note">
+    ⚠️ Данный анализ основан исключительно на Коране и достоверных хадисах (Сахих аль-Бухари, Сахих Муслим, Сунан Абу Давуд, Сахих ат-Тирмизи). Любое лечение проводится с вашего согласия и с упованием на Всевышнего Аллаха.<br>
+    Связь с лекарем Абу Мухаммад: <strong>https://t.me/Ruqoq</strong> | Цены указаны в рублях и узбекских сумах (курс 1 RUB ≈ 140 UZS, актуально на момент оффера).
+  </div>
+</div>
+</body>
+</html>
