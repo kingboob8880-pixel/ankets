@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark" data-fontsize="1.0">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <meta name="theme-color" content="#0a0a1a">
+  <title>Экспресс-марафон: 5 ключевых зажимов души</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================
+       DESIGN SYSTEM TOKENS & RESET
+       ========================================= */
+    :root {
+      --radius: 16px;
+      --transition: 0.4s cubic-bezier(.4,0,.2,1);
+      --shadow: 0 8px 32px rgba(0,0,0,0.3);
+      --glass-fill: rgba(255,255,255,0.05);
+      --glass-border: rgba(255,255,255,0.1);
+      --backdrop-blur: 16px;
+      --line-height: 1.7;
+      --font-ui: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-arabic: 'Amiri', 'Traditional Arabic', serif;
+      --font-scale: 1.0;
+      --header-height: 72px;
+      --accent-gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-1));
+    }
+
+    /* THEMES */
+    [data-theme="dark"] {
+      --bg-1: #0a0a1a; --bg-2: #12122a; --bg-3: #1a1a3a;
+      --text-1: #f0f0ff; --text-2: #b0b0cc; --text-3: #8888aa;
+      --accent-1: #6c5ce7; --accent-2: #a29bfe; --accent-3: #fd79a8;
+      --success: #00b894; --warning: #fdcb6e; --danger: #e17055;
+    }
+    [data-theme="ocean"] {
+      --bg-1: #0a192f; --bg-2: #112240; --bg-3: #1d3557;
+      --text-1: #ccd6f6; --text-2: #8892b0; --text-3: #5a6a8a;
+      --accent-1: #64ffda; --accent-2: #00b4d8; --accent-3: #48bfe3;
+      --success: #00e676; --warning: #f1c40f; --danger: #e74c3c;
+    }
+    [data-theme="ember"] {
+      --bg-1: #1a0a0a; --bg-2: #2d1b1b; --bg-3: #4a2c2c;
+      --text-1: #ffede0; --text-2: #d4a59c; --text-3: #a07068;
+      --accent-1: #ff6b35; --accent-2: #f7c59f; --accent-3: #e07a5f;
+      --success: #2ecc71; --warning: #f39c12; --danger: #c0392b;
+    }
+    [data-theme="forest"] {
+      --bg-1: #0a1a0a; --bg-2: #1a2e1a; --bg-3: #2d4a2d;
+      --text-1: #e8f5e9; --text-2: #a5d6a7; --text-3: #66bb6a;
+      --accent-1: #00e676; --accent-2: #69f0ae; --accent-3: #b9f6ca;
+      --success: #4caf50; --warning: #ffca28; --danger: #f44336;
+    }
+    [data-theme="royal"] {
+      --bg-1: #1a0a2e; --bg-2: #2d1b4e; --bg-3: #4a2d7a;
+      --text-1: #f3e8ff; --text-2: #c9a0dc; --text-3: #9a6bb0;
+      --accent-1: #b388ff; --accent-2: #ea80fc; --accent-3: #e040fb;
+      --success: #00e676; --warning: #ffca28; --danger: #ff5252;
+    }
+
+    /* BASE & RESET */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: calc(100% * var(--font-scale)); }
+    body {
+      font-family: var(--font-ui);
+      color: var(--text-1);
+      background-color: var(--bg-1);
+      line-height: var(--line-height);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      padding-top: var(--header-height);
+      scroll-padding-top: calc(var(--header-height) + 20px);
+      font-size: 1rem;
+    }
+    h1, h2, h3 { font-weight: 600; line-height: 1.3; margin-bottom: 0.6em; }
+    h1 { font-size: 1.8rem; } h2 { font-size: 1.5rem; } h3 { font-size: 1.25rem; }
+    p { margin-bottom: 1em; color: var(--text-2); }
+    ul, ol { padding-left: 1.4em; margin-bottom: 1em; } li { margin-bottom: 0.4em; color: var(--text-2); }
+    a { color: var(--accent-2); text-decoration: none; border-bottom: 1px dotted var(--accent-2); transition: var(--transition); }
+    a:hover { color: var(--text-1); border-bottom-style: solid; }
+    img, svg { max-width: 100%; height: auto; }
+
+    /* ACCESSIBILITY */
+    :focus-visible { outline: 2px dashed var(--accent-2); outline-offset: 2px; border-radius: 4px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
+
+    /* =========================================
+       LAYOUT & COMPONENTS
+       ========================================= */
+    .container { max-width: 480px; margin: 0 auto; padding: 20px 16px 48px; position: relative; z-index: 2; }
+    
+    .card {
+      background: var(--glass-fill); backdrop-filter: blur(var(--backdrop-blur)); -webkit-backdrop-filter: blur(var(--backdrop-blur));
+      border: 1px solid var(--glass-border); border-radius: var(--radius); box-shadow: var(--shadow);
+      padding: 24px; margin-bottom: 20px; position: relative; overflow: hidden; transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--accent-gradient); background-size: 200% 200%; animation: gradientShift 8s ease infinite;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+
+    /* STEP CARDS */
+    .step-card { cursor: pointer; position: relative; }
+    .step-card.locked { opacity: 0.4; pointer-events: none; filter: grayscale(0.8) blur(1px); }
+    .step-card.unlocked { opacity: 1; pointer-events: auto; filter: none; }
+    .step-card .lock-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; opacity: 0.6; }
+    .step-card.unlocked .lock-icon { display: none; }
+    .step-card .step-number {
+      position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%;
+      background: var(--accent-gradient); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.9rem;
+    }
+    .step-card .status { font-size: 0.8rem; font-weight: 500; margin-top: 8px; display: block; }
+    .step-card.locked .status { color: var(--text-3); }
+    .step-card.unlocked .status { color: var(--accent-2); }
+
+    /* PROGRESS BAR */
+    .progress-track { display: flex; gap: 8px; margin: 20px 0; justify-content: center; }
+    .progress-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: var(--transition); }
+    .progress-dot.active { background: var(--accent-1); transform: scale(1.3); box-shadow: 0 0 8px var(--accent-1); }
+    .progress-dot.completed { background: var(--success); }
+
+    /* MODAL */
+    #modal-overlay {
+      position: fixed; inset: 0; z-index: 900; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      display: flex; align-items: flex-end; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition);
+    }
+    #modal-overlay.open { opacity: 1; visibility: visible; }
+    .modal-sheet {
+      width: 100%; max-width: 480px; background: var(--bg-2); border-top-left-radius: 20px; border-top-right-radius: 20px;
+      padding: 24px; transform: translateY(100%); transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+      max-height: 85vh; overflow-y: auto; border: 1px solid var(--glass-border);
+    }
+    #modal-overlay.open .modal-sheet { transform: translateY(0); }
+    .modal-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 4px; margin: 0 auto 16px; }
+    .close-modal { position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text-2); font-size: 1.5rem; cursor: pointer; }
+
+    /* DUA CARD (in modal) */
+    .dua-box {
+      background: rgba(0,0,0,0.25); border: 1px solid var(--glass-border); border-radius: 12px; padding: 16px; margin: 16px 0; text-align: center;
+    }
+    .dua-box .arabic { font-family: var(--font-arabic); font-size: 1.5rem; direction: rtl; color: var(--text-1); line-height: 1.4; }
+    .dua-box .translit { color: var(--accent-2); font-size: 0.9rem; margin: 6px 0; }
+    .dua-box .translation { color: var(--text-3); font-size: 0.85rem; font-style: italic; }
+
+    /* BUTTONS */
+    .btn { display: block; width: 100%; padding: 14px; border-radius: 12px; text-align: center; font-weight: 600; cursor: pointer; transition: var(--transition); border: none; margin-top: 12px; }
+    .btn-primary { background: var(--accent-gradient); background-size: 200% 200%; animation: gradientShift 10s ease infinite; color: #fff; }
+    .btn-primary:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+    .btn-outline { background: transparent; border: 1px solid var(--accent-2); color: var(--accent-2); }
+    .btn-success { background: var(--success); color: #000; }
+
+    /* TOP BAR */
+    .top-bar {
+      position: fixed; top: 0; left: 0; right: 0; height: 64px; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
+      background: rgba(10,10,26,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border);
+      padding-top: env(safe-area-inset-top);
+    }
+    .brand-pill { background: var(--accent-gradient); background-size: 200% 200%; animation: gradientShift 8s ease infinite; padding: 6px 12px; border-radius: 99px; font-weight: 600; color: #fff; font-size: 0.85rem; }
+    .controls { display: flex; gap: 10px; align-items: center; }
+    .control-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--glass-border); width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-1); transition: 0.2s; font-size: 0.9rem; }
+    .control-btn:hover { background: rgba(255,255,255,0.2); }
+    .theme-dots { display: flex; gap: 6px; align-items: center; }
+    .dot { width: 16px; height: 16px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+    .dot:hover, .dot.active { border-color: #fff; transform: scale(1.2); }
+    .lang-switch {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.03em;
+      padding: 6px 12px; border: none; border-radius: 8px; cursor: pointer;
+      background: rgba(255,255,255,0.92); color: #16162e; transition: 0.2s;
+    }
+    .lang-switch:hover { background: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+
+    /* SPLASH */
+    #splash {
+      position: fixed; inset: 0; z-index: 9999; background: var(--bg-1);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s;
+    }
+    #splash.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .splash-logo { font-size: 2rem; font-weight: 700; color: var(--text-1); margin-bottom: 8px; text-align: center; }
+    .splash-sub { font-size: 1rem; color: var(--text-3); margin-bottom: 28px; }
+    .loader { width: 140px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 4px; overflow: hidden; }
+    .loader-bar { width: 30%; height: 100%; background: var(--accent-gradient); background-size: 200% 200%; animation: gradientShift 2s ease infinite, loaderMove 1.5s ease infinite; border-radius: 4px; }
+
+    /* BACKGROUND & ORBS */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: -2;
+      background: linear-gradient(-45deg, var(--bg-1), var(--bg-2), var(--bg-3), var(--bg-1));
+      background-size: 400% 400%; animation: gradientShift 15s ease infinite;
+    }
+    .orb { position: fixed; border-radius: 50%; filter: blur(70px); z-index: -1; opacity: 0.35; pointer-events: none; }
+    .orb-1 { width: 320px; height: 320px; background: var(--accent-1); top: -15%; left: -10%; animation: orbFloat 20s ease-in-out infinite alternate; }
+    .orb-2 { width: 280px; height: 280px; background: var(--accent-2); bottom: 5%; right: -5%; animation: orbFloat 15s ease-in-out infinite alternate-reverse; }
+    .orb-3 { width: 220px; height: 220px; background: var(--accent-3); top: 45%; left: 35%; animation: orbFloat 18s ease-in-out infinite alternate; }
+
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes loaderMove { 0% { transform: translateX(-50%); } 100% { transform: translateX(300%); } }
+    @keyframes orbFloat { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(20px, 30px) scale(1.05); } }
+
+    .credits { text-align: center; padding: 32px 16px 48px; font-size: 0.9rem; color: var(--text-3); }
+    .credits strong { color: var(--accent-2); font-weight: 600; }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 1.6rem; } h2 { font-size: 1.35rem; }
+      .card, .modal-sheet { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="splash" role="dialog" aria-label="Загрузка">
+    <div class="splash-logo">🌿 Экспресс-марафон</div>
+    <div class="splash-sub">5 ключевых зажимов души</div>
+    <div class="loader"><div class="loader-bar"></div></div>
+  </div>
+
+  <div class="bg-layer"></div>
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
+
+  <header class="top-bar">
+    <div class="brand-pill">Лекарь Абу Мухаммад</div>
+    <div class="controls">
+      <div class="theme-dots">
+        <div class="dot active" style="background:#6c5ce7" data-theme="dark"></div>
+        <div class="dot" style="background:#64ffda" data-theme="ocean"></div>
+        <div class="dot" style="background:#ff6b35" data-theme="ember"></div>
+        <div class="dot" style="background:#00e676" data-theme="forest"></div>
+        <div class="dot" style="background:#b388ff" data-theme="royal"></div>
+      </div>
+      <button class="control-btn" id="fontDown" type="button" aria-label="Уменьшить шрифт">A-</button>
+      <button class="control-btn" id="fontUp" type="button" aria-label="Увеличить шрифт">A+</button>
+      <button class="lang-switch" id="langToggle" type="button" data-lang="ru" aria-label="Сменить язык / Tilni almashtirish">RU</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="intro" class="card">
+      <h1>Экспресс-марафон: 5 ключевых зажимов души</h1>
+      <p>Устал(а) носить в себе страх, обиду, гнев или невыраженную печаль? Они не просто «в голове» — это застрявшие импульсы, которые оседают в фасциях, мышцах и нервных путях.</p>
+      <p><strong>Правило марафона:</strong> Выполняйте шаги последовательно. Каждый следующий откроется только после завершения предыдущего. Не спешите. Дышите. Слушайте тело.</p>
+    </section>
+
+    <div class="progress-track" id="progress">
+      <div class="progress-dot active"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+      <div class="progress-dot"></div>
+    </div>
+
+    <div id="steps-container">
+      <!-- Steps injected via JS -->
+    </div>
+
+    <div id="final-cta" class="card" style="display:none; text-align:center; border: 2px solid var(--success);">
+      <h2>🎉 Вы прошли все 5 ступеней!</h2>
+      <p>Ваше тело начало отпускать то, что давно не принадлежит вам. Это лишь начало пути. Впереди — глубокая трансформация всех 30 состояний, тонкое духовно-визуальное очищение и система ежедневной духовной гигиены.</p>
+      <p style="font-weight:600; color:var(--text-1); margin: 16px 0;">Готовы закрепить результат и стать по-настоящему свободным?</p>
+      <button type="button" class="btn btn-primary" onclick="openPaidModal()">📖 Перейти к курсу «Особенный»</button>
+    </div>
+  </main>
+
+  <div id="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <button type="button" class="close-modal" onclick="closeModal()" aria-label="Закрыть">✕</button>
+      <div id="modal-content"></div>
+      <button type="button" id="complete-btn" class="btn btn-primary" onclick="completeStep()">✅ Завершить практику и открыть следующий шаг</button>
+    </div>
+  </div>
+
+  <footer class="credits">
+    <p>🌙 Курс «Особенный»</p>
+    <p><strong>Лекарь Абу Мухаммад</strong></p>
+  </footer>
+
+  <script>
+    // === DATA ===
+    const stepsData = [
+      { id:1, title:"1. Страх (Аль-Хауф)", zone:"Поясница, низ живота, колени. Ощущение «холодного камня», сжатие в паху.",
+        method:"Протирайте и похлопывайте поясницу и низ живота. Надавливайте костяшками вдоль L1-L5. Дышите в живот.",
+        arabic:"بِسْمِ اللَّهِ أَرْقِي مِنَ الْخَوْفِ", translit:"Бисмилляхи арки мин аль-хауф", trans:"С именем Аллаха заклинаю от страха" },
+      { id:2, title:"2. Обида (Аль-Хикд)", zone:"Грудная клетка, горло, диафрагма. «Ком», сжатие за грудиной, тяжёлые ключицы.",
+        method:"Похлопывайте грудину и солнечное сплетение. Выщипывайте кожу над ключицами. При выдохе расправляйте плечи.",
+        arabic:"بِسْمِ اللَّهِ أَرْقِي مِنَ الْحِقْدِ", translit:"Бисмилляхи арки мин аль-хикд", trans:"С именем Аллаха заклинаю от обиды" },
+      { id:3, title:"3. Печаль (Аль-Хузн)", zone:"Лопатки, плечевой пояс, верх спины. «Опущенные крылья», вялость в руках, желание свернуться.",
+        method:"Энергично протирайте верхнюю часть спины от шеи до лопаток. Хлопайте по плечам и рукам. При выдохе разводите плечи.",
+        arabic:"بِسْمِ اللَّهِ أَرْقِي مِنَ الْحُزْنِ", translit:"Бисмилляхи арки мин аль-хузн", trans:"С именем Аллаха заклинаю от печали" },
+      { id:4, title:"4. Гнев (Аль-Гадаб)", zone:"Правое подреберье, челюсти, виски, кисти. Жар, пульсация, сжатые зубы, «кипение».",
+        method:"Надавливайте на жевательные мышцы и виски. Протирайте правый бок. Сжимайте/разжимайте кулаки. Допускается тихий рык на выдохе.",
+        arabic:"بِسْمِ اللَّهِ أَرْقِي مِنَ الْغَضَبِ", translit:"Бисмилляхи арки мин аль-гадаб", trans:"С именем Аллаха заклинаю от гнева" },
+      { id:5, title:"5. Высокомерие (Аль-Кибр)", zone:"Шея, затылок, подбородок. «Жёсткая раковина», напряжённая задняя поверхность шеи.",
+        method:"Протирайте заднюю часть шеи и основание черепа. Надавливайте на верхнегрудной отдел (T1-T4). При выдохе опустите подбородок, расслабляя взгляд.",
+        arabic:"بِسْمِ اللَّهِ أَرْقِي مِنَ الْكِبْرِ", translit:"Бисмилляхи арки мин аль-кибр", trans:"С именем Аллаха заклинаю от высокомерия" }
+    ];
+
+    let currentStepIndex = 0;
+    const totalSteps = 5;
+
+    // === ЯЗЫК: RU / UZ (полный перевод по текстовым узлам) ===
+    const langBtn = document.getElementById('langToggle');
+    let currentLang = 'ru';
+    try { currentLang = localStorage.getItem('osobenniy-lang') || 'ru'; } catch (e) {}
+    const UZ = {
+      // Splash / шапка / футер
+      "🌿 Экспресс-марафон":"🌿 Ekspress-marafon",
+      "5 ключевых зажимов души":"Qalbning 5 ta asosiy qisilishi",
+      "Лекарь Абу Мухаммад":"Tabib Abu Muhammad",
+      "🌙 Курс «Особенный»":"🌙 «Особенный» kursi",
+      // Интро
+      "Экспресс-марафон: 5 ключевых зажимов души":"Ekspress-marafon: qalbning 5 ta asosiy qisilishi",
+      "Устал(а) носить в себе страх, обиду, гнев или невыраженную печаль? Они не просто «в голове» — это застрявшие импульсы, которые оседают в фасциях, мышцах и нервных путях.":"Ichingizda qo'rquv, xafagarchilik, g'azab yoki ifoda etilmagan g'amni ko'tarishdan charchadingizmi? Ular shunchaki «boshda» emas — bu fastsiya, mushaklar va asab yo'llarida cho'kadigan qotib qolgan impulslar.",
+      "Правило марафона:":"Marafon qoidasi:",
+      "Выполняйте шаги последовательно. Каждый следующий откроется только после завершения предыдущего. Не спешите. Дышите. Слушайте тело.":"Qadamlarni izchil bajaring. Har keyingisi faqat oldingisi tugagandan so'ng ochiladi. Shoshmang. Nafas oling. Tanani tinglang.",
+      // Карточки шагов
+      "1. Страх (Аль-Хауф)":"1. Qo'rquv (Al-Xavf)",
+      "2. Обида (Аль-Хикд)":"2. Xafagarchilik (Al-Hiqd)",
+      "3. Печаль (Аль-Хузн)":"3. G'amginlik (Al-Huzn)",
+      "4. Гнев (Аль-Гадаб)":"4. G'azab (Al-G'adab)",
+      "5. Высокомерие (Аль-Кибр)":"5. Kibr (Al-Kibr)",
+      "Нажмите, чтобы начать практику":"Amaliyotni boshlash uchun bosing",
+      "Сначала завершите предыдущий шаг":"Avval oldingi qadamni yakunlang",
+      "✅ Практика завершена":"✅ Amaliyot yakunlandi",
+      // Модалка шага
+      "📍 Где отклик:":"📍 Qayerda javob:",
+      "🤲 Как обрабатывать:":"🤲 Qanday ishlash:",
+      "Поясница, низ живота, колени. Ощущение «холодного камня», сжатие в паху.":"Bel, qorinning pastki qismi, tizzalar. «Sovuq tosh» hissi, chov sohasida qisilish.",
+      "Протирайте и похлопывайте поясницу и низ живота. Надавливайте костяшками вдоль L1-L5. Дышите в живот.":"Bel va qorin pastini ishqalang va shapatilang. Bo'g'imlar bilan L1-L5 bo'ylab bosing. Qoringa nafas oling.",
+      "Грудная клетка, горло, диафрагма. «Ком», сжатие за грудиной, тяжёлые ключицы.":"Ko'krak qafasi, tomoq, diafragma. «Tugun», to'sh ortida qisilish, og'ir o'mrov suyaklari.",
+      "Похлопывайте грудину и солнечное сплетение. Выщипывайте кожу над ключицами. При выдохе расправляйте плечи.":"To'sh va quyosh chigalini shapatilang. O'mrov suyaklari ustidagi terini chimchilang. Nafas chiqarganda yelkalarni yozing.",
+      "Лопатки, плечевой пояс, верх спины. «Опущенные крылья», вялость в руках, желание свернуться.":"Kurak suyaklari, yelka kamari, orqaning yuqori qismi. «Tushgan qanotlar», qo'llardagi sustlik, g'ujanak bo'lish istagi.",
+      "Энергично протирайте верхнюю часть спины от шеи до лопаток. Хлопайте по плечам и рукам. При выдохе разводите плечи.":"Bo'yindan kuraklargacha orqaning yuqori qismini baquvvat ishqalang. Yelka va qo'llarga shapatilang. Nafas chiqarganda yelkalarni yoying.",
+      "Правое подреберье, челюсти, виски, кисти. Жар, пульсация, сжатые зубы, «кипение».":"O'ng qovurg'a osti, jag'lar, chakkalar, kaftlar. Issiqlik, lo'qillash, qisilgan tishlar, «qaynash».",
+      "Надавливайте на жевательные мышцы и виски. Протирайте правый бок. Сжимайте/разжимайте кулаки. Допускается тихий рык на выдохе.":"Chaynov mushaklari va chakkalarga bosing. O'ng yonni ishqalang. Mushtlarni qising/yozing. Nafas chiqarganda sokin bo'kirish mumkin.",
+      "Шея, затылок, подбородок. «Жёсткая раковина», напряжённая задняя поверхность шеи.":"Bo'yin, ensa, iyak. «Qattiq chig'anoq», bo'yinning orqa yuzasidagi taranglik.",
+      "Протирайте заднюю часть шеи и основание черепа. Надавливайте на верхнегрудной отдел (T1-T4). При выдохе опустите подбородок, расслабляя взгляд.":"Bo'yinning orqa qismi va kalla suyagi asosini ishqalang. Yuqori ko'krak bo'limiga (T1-T4) bosing. Nafas chiqarganda iyakni tushiring, nigohni bo'shating.",
+      "С именем Аллаха заклинаю от страха":"Alloh nomi bilan qo'rquvdan panoh tilayman",
+      "С именем Аллаха заклинаю от обиды":"Alloh nomi bilan xafagarchilikdan panoh tilayman",
+      "С именем Аллаха заклинаю от печали":"Alloh nomi bilan g'amdan panoh tilayman",
+      "С именем Аллаха заклинаю от гнева":"Alloh nomi bilan g'azabdan panoh tilayman",
+      "С именем Аллаха заклинаю от высокомерия":"Alloh nomi bilan kibrdan panoh tilayman",
+      "💡 Настройте ниет: «О Аллах, очисти мою душу от этого качества». Произносите формулу на полном выдохе 3–7 раз. Сделайте 3 цикла заземляющего дыхания и примите тёплый душ после практики.":"💡 Niyat qiling: «Yo Alloh, qalbimni bu sifatdan tozala». Formulani to'liq nafas chiqarganda 3–7 marta ayting. 3 ta yerga ulovchi nafas tsiklini bajaring va amaliyotdan keyin iliq dush qabul qiling.",
+      "✅ Завершить практику и открыть следующий шаг":"✅ Amaliyotni yakunlash va keyingi qadamni ochish",
+      // Финальный CTA
+      "🎉 Вы прошли все 5 ступеней!":"🎉 Siz barcha 5 bosqichni o'tdingiz!",
+      "Ваше тело начало отпускать то, что давно не принадлежит вам. Это лишь начало пути. Впереди — глубокая трансформация всех 30 состояний, тонкое духовно-визуальное очищение и система ежедневной духовной гигиены.":"Tanangiz allaqachon sizga tegishli bo'lmagan narsani qo'yib yubora boshladi. Bu yo'lning faqat boshlanishi. Oldinda — barcha 30 holatning chuqur transformatsiyasi, nozik ma'naviy-vizual tozalanish va kundalik ma'naviy gigiyena tizimi.",
+      "Готовы закрепить результат и стать по-настоящему свободным?":"Natijani mustahkamlash va chinakam erkin bo'lishga tayyormisiz?",
+      "📖 Перейти к курсу «Особенный»":"📖 «Особенный» kursiga o'tish",
+      // Платная модалка
+      "Экспресс-марафон — это лишь вступление. Полноценный курс — это":"Ekspress-marafon — bu faqat kirish. To'liq kurs — bu",
+      "2 недели глубокой системной трансформации":"chuqur tizimli transformatsiyaning 2 haftasi",
+      ", где вы пройдёте:":", unda siz quyidagilarni o'tasiz:",
+      "Модуль 1:":"1-modul:","Физическое пробуждение и перезагрузка нервной системы":"Jismoniy uyg'onish va asab tizimini qayta yuklash",
+      "Модуль 2:":"2-modul:","Психосоматическая проработка всех 30 состояний с проверкой противоположными качествами":"Barcha 30 holatni qarama-qarshi fazilatlar bilan tekshirgan holda psixosomatik ishlab chiqish",
+      "Модуль 3:":"3-modul:","Духовно-визуальное очищение через периферическое зрение и цветовые маркеры":"Periferik ko'rish va rang markerlari orqali ma'naviy-vizual tozalanish",
+      "Модуль 4:":"4-modul:","Ежедневная духовная гигиена, выстраивание границ и защита от «чужих тяжестей»":"Kundalik ma'naviy gigiyena, chegaralarni qurish va «o'zga yuklari»dan himoya",
+      "Вы получите рабочие листы, дневники, чёткие критерии прогресса и поддержку до устойчивой внутренней чистоты.":"Siz ish varaqlari, kundaliklar, aniq taraqqiyot mezonlari va barqaror ichki poklikkacha qo'llab-quvvatlashni olasiz.",
+      "📩 Напиши «Особенный» в мой бот, я подключу тебя к моему платному курсу":"📩 Botimga «Особенный» deb yozing, men sizni pullik kursimga ulayman",
+      "Закрыть":"Yopish"
+    };
+    const RU = {};
+    Object.keys(UZ).forEach(k => { RU[UZ[k]] = k; });
+
+    function translateTree(root, lang) {
+      const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(n) {
+          const p = n.parentNode;
+          if (p && (p.nodeName === 'SCRIPT' || p.nodeName === 'STYLE')) return NodeFilter.FILTER_REJECT;
+          return n.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        }
+      });
+      let n;
+      while ((n = tw.nextNode())) {
+        const t = n.nodeValue.trim();
+        if (lang === 'uz' && UZ[t] !== undefined) n.nodeValue = n.nodeValue.replace(t, UZ[t]);
+        else if (lang === 'ru' && RU[t] !== undefined) n.nodeValue = n.nodeValue.replace(t, RU[t]);
+      }
+    }
+
+    function applyLang() {
+      translateTree(document.body, currentLang);
+      document.documentElement.lang = currentLang;
+      if (langBtn) { langBtn.textContent = currentLang.toUpperCase(); langBtn.dataset.lang = currentLang; }
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      try { localStorage.setItem('osobenniy-lang', lang); } catch (e) {}
+      applyLang();
+    }
+
+    if (langBtn) langBtn.addEventListener('click', () => setLang(currentLang === 'ru' ? 'uz' : 'ru'));
+
+    // === INIT ===
+    function initSteps() {
+      const container = document.getElementById('steps-container');
+      container.innerHTML = '';
+      stepsData.forEach((step, i) => {
+        const card = document.createElement('div');
+        card.className = `step-card card ${i === 0 ? 'unlocked' : 'locked'}`;
+        card.id = `step-${i}`;
+        card.onclick = () => openStep(i);
+        card.innerHTML = `
+          <div class="step-number">${step.id}</div>
+          ${i !== 0 ? '<div class="lock-icon">🔒</div>' : ''}
+          <h3>${step.title}</h3>
+          <span class="status">${i === 0 ? 'Нажмите, чтобы начать практику' : 'Сначала завершите предыдущий шаг'}</span>
+        `;
+        container.appendChild(card);
+      });
+      applyLang();
+    }
+    initSteps();
+
+    // === MODAL LOGIC ===
+    function openStep(index) {
+      if (index !== currentStepIndex) return;
+      const step = stepsData[index];
+      document.getElementById('modal-content').innerHTML = `
+        <h2>${step.title}</h2>
+        <p><strong>📍 Где отклик:</strong> ${step.zone}</p>
+        <p><strong>🤲 Как обрабатывать:</strong> ${step.method}</p>
+        <div class="dua-box">
+          <div class="arabic" dir="rtl">${step.arabic}</div>
+          <div class="translit">${step.translit}</div>
+          <div class="translation">${step.trans}</div>
+        </div>
+        <p style="font-size:0.9rem; margin-top:12px; color:var(--text-3);">
+          💡 Настройте ниет: «О Аллах, очисти мою душу от этого качества». Произносите формулу на полном выдохе 3–7 раз. Сделайте 3 цикла заземляющего дыхания и примите тёплый душ после практики.
+        </p>
+      `;
+      applyLang();
+      document.getElementById('modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function completeStep() {
+      closeModal();
+      const currentCard = document.getElementById(`step-${currentStepIndex}`);
+      currentCard.classList.remove('unlocked');
+      currentCard.classList.add('completed');
+      currentCard.style.opacity = '0.7';
+      currentCard.style.pointerEvents = 'none';
+      currentCard.querySelector('.status').textContent = '✅ Практика завершена';
+      currentCard.querySelector('.lock-icon')?.remove();
+      
+      document.getElementById(`progress-dot-${currentStepIndex}`).classList.remove('active');
+      document.getElementById(`progress-dot-${currentStepIndex}`).classList.add('completed');
+      
+      currentStepIndex++;
+      if (currentStepIndex < totalSteps) {
+        const nextCard = document.getElementById(`step-${currentStepIndex}`);
+        nextCard.classList.remove('locked');
+        nextCard.classList.add('unlocked');
+        nextCard.querySelector('.lock-icon')?.remove();
+        nextCard.querySelector('.status').textContent = 'Нажмите, чтобы начать практику';
+        document.getElementById(`progress-dot-${currentStepIndex}`).classList.add('active');
+        applyLang();
+        nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        document.getElementById('final-cta').style.display = 'block';
+        applyLang();
+        document.getElementById('final-cta').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // === PAID MODAL ===
+    function openPaidModal() {
+      document.getElementById('modal-content').innerHTML = `
+        <h2>🌙 Курс «Особенный»</h2>
+        <p>Экспресс-марафон — это лишь вступление. Полноценный курс — это <strong>2 недели глубокой системной трансформации</strong>, где вы пройдёте:</p>
+        <ul>
+          <li>✅ <strong>Модуль 1:</strong> Физическое пробуждение и перезагрузка нервной системы</li>
+          <li>✅ <strong>Модуль 2:</strong> Психосоматическая проработка всех 30 состояний с проверкой противоположными качествами</li>
+          <li>✅ <strong>Модуль 3:</strong> Духовно-визуальное очищение через периферическое зрение и цветовые маркеры</li>
+          <li>✅ <strong>Модуль 4:</strong> Ежедневная духовная гигиена, выстраивание границ и защита от «чужих тяжестей»</li>
+        </ul>
+        <p style="margin:16px 0; font-weight:600; color:var(--text-1);">Вы получите рабочие листы, дневники, чёткие критерии прогресса и поддержку до устойчивой внутренней чистоты.</p>
+        <a href="https://t.me/Lechenya_bot" target="_blank" class="btn btn-success" style="display:inline-block; width:auto; padding:12px 24px;">📩 Напиши «Особенный» в мой бот, я подключу тебя к моему платному курсу</a>
+      `;
+      document.getElementById('complete-btn').textContent = 'Закрыть';
+      document.getElementById('complete-btn').onclick = closeModal;
+      applyLang();
+      document.getElementById('modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // === UTILS (THEME, FONT) ===
+    document.querySelectorAll('.dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        document.documentElement.dataset.theme = dot.dataset.theme;
+        document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        localStorage.setItem('osobenniy-theme', dot.dataset.theme);
+      });
+    });
+
+    const root = document.documentElement;
+    let currentScale = parseFloat(localStorage.getItem('osobenniy-font') || '1.0');
+    root.style.setProperty('--font-scale', currentScale);
+    document.getElementById('fontDown').addEventListener('click', () => { currentScale = Math.max(0.8, currentScale - 0.1); root.style.setProperty('--font-scale', currentScale); localStorage.setItem('osobenniy-font', currentScale); });
+    document.getElementById('fontUp').addEventListener('click', () => { currentScale = Math.min(1.4, currentScale + 0.1); root.style.setProperty('--font-scale', currentScale); localStorage.setItem('osobenniy-font', currentScale); });
+
+    window.addEventListener('load', () => setTimeout(() => document.getElementById('splash').classList.add('hidden'), 1800));
+    const savedTheme = localStorage.getItem('osobenniy-theme');
+    if (savedTheme) {
+      document.documentElement.dataset.theme = savedTheme;
+      document.querySelectorAll('.dot').forEach(d => d.classList.toggle('active', d.dataset.theme === savedTheme));
+    }
+
+    // Add progress dots IDs
+    document.querySelectorAll('.progress-dot').forEach((d, i) => d.id = `progress-dot-${i}`);
+  </script>
+</body>
+</html>
