@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>План лечения — Составил Абу Мухаммад</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;500;700&display=swap');
+
+        :root {
+            --primary: #1a5c3a;
+            --primary-light: #2d8a5e;
+            --primary-dark: #0e3d26;
+            --gold: #c9a84c;
+            --gold-light: #e8d49a;
+            --bg: #f7f4ed;
+            --bg-card: #fffdf7;
+            --text: #2c2c2c;
+            --text-light: #5a5a5a;
+            --arabic-size: 1.55em;
+            --translit-size: 1.05em;
+            --body-size: 1em;
+            --heading-size: 1.3em;
+            --step-heading: 1.15em;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', 'Noto Serif', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            font-size: var(--body-size);
+            min-height: 100vh;
+        }
+
+        /* ===== TOP CONTROL BAR ===== */
+        .control-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .control-bar .logo {
+            color: var(--gold-light);
+            font-family: 'Amiri', serif;
+            font-size: 1.05em;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .ctrl-btn {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 7px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .ctrl-btn:hover, .ctrl-btn:active {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
+        }
+
+        .ctrl-btn .icon {
+            font-size: 1.15em;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(to top, var(--primary-dark), var(--primary));
+            padding: 6px 8px;
+            display: flex;
+            overflow-x: auto;
+            gap: 4px;
+            box-shadow: 0 -3px 15px rgba(0,0,0,0.3);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .nav-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-btn {
+            flex-shrink: 0;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: var(--gold-light);
+            padding: 7px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.78em;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .nav-btn:hover, .nav-btn:active {
+            background: rgba(255,255,255,0.25);
+            color: #fff;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 70px 16px 70px 16px;
+        }
+
+        /* ===== BISMILLAH ===== */
+        .bismillah {
+            text-align: center;
+            font-family: 'Amiri', serif;
+            font-size: 1.8em;
+            color: var(--primary);
+            padding: 20px 0 10px;
+        }
+
+        /* ===== TITLE ===== */
+        .title-block {
+            text-align: center;
+            padding: 15px 20px;
+            margin: 15px 0 30px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary), var(--primary-light));
+            border-radius: 16px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .title-block::before {
+            content: '✦ ✦ ✦';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold-light);
+            font-size: 0.7em;
+            letter-spacing: 8px;
+        }
+
+        .title-block h1 {
+            font-size: 1.35em;
+            font-weight: 700;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        .title-block .author {
+            font-size: 0.95em;
+            color: var(--gold-light);
+            margin-top: 5px;
+            font-weight: 300;
+        }
+
+        /* ===== SECTION HEADINGS ===== */
+        .section-heading {
+            font-size: var(--heading-size);
+            font-weight: 700;
+            color: var(--primary);
+            margin: 35px 0 15px;
+            padding: 12px 18px;
+            background: linear-gradient(90deg, rgba(26,92,58,0.08), transparent);
+            border-left: 4px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .day-heading {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #fff;
+            margin: 40px 0 20px;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(26,92,58,0.3);
+            position: relative;
+        }
+
+        .day-heading .day-num {
+            display: block;
+            font-size: 0.75em;
+            color: var(--gold-light);
+            font-weight: 300;
+            margin-top: 2px;
+        }
+
+        /* ===== STEP ===== */
+        .step {
+            background: var(--bg-card);
+            border: 1px solid rgba(26,92,58,0.12);
+            border-radius: 12px;
+            padding: 18px;
+            margin: 14px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .step-title {
+            font-size: var(--step-heading);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-title .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+
+        /* ===== ARABIC TEXT ===== */
+        .arabic {
+            font-family: 'Amiri', serif;
+            font-size: var(--arabic-size);
+            line-height: 2;
+            text-align: right;
+            direction: rtl;
+            color: var(--primary-dark);
+            padding: 14px 18px;
+            margin: 10px 0;
+            background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(26,92,58,0.04));
+            border-radius: 10px;
+            border: 1px solid rgba(201,168,76,0.15);
+            word-spacing: 3px;
+        }
+
+        .arabic-small {
+            font-family: 'Amiri', serif;
+            font-size: calc(var(--arabic-size) * 0.9);
+            line-height: 1.9;
+            text-align: right;
+            direction: rtl;
+            color: var(--primary-dark);
+            padding: 12px 16px;
+            margin: 8px 0;
+            background: rgba(201,168,76,0.04);
+            border-radius: 8px;
+            border-right: 3px solid var(--gold);
+        }
+
+        /* ===== TRANSLITERATION ===== */
+        .translit {
+            font-style: italic;
+            color: var(--text-light);
+            font-size: var(--translit-size);
+            margin: 8px 0;
+            padding: 8px 14px;
+            border-left: 3px solid var(--gold-light);
+            background: rgba(201,168,76,0.04);
+            border-radius: 0 8px 8px 0;
+            line-height: 1.6;
+        }
+
+        /* ===== TRANSLATION ===== */
+        .translation {
+            color: var(--text);
+            font-size: var(--body-size);
+            margin: 8px 0;
+            padding: 10px 14px;
+            background: rgba(26,92,58,0.03);
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-light);
+            line-height: 1.7;
+        }
+
+        /* ===== INSTRUCTIONS ===== */
+        .instruction {
+            color: var(--text-light);
+            font-size: calc(var(--body-size) * 0.95);
+            margin: 10px 0;
+            padding: 10px 14px;
+            background: rgba(26,92,58,0.05);
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .instruction strong {
+            color: var(--primary);
+        }
+
+        /* ===== ALERT / WARNING ===== */
+        .alert {
+            background: linear-gradient(135deg, #fff8e1, #fff3cd);
+            border: 1px solid var(--gold);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 15px 0;
+            color: #6b5900;
+            line-height: 1.7;
+        }
+
+        .alert strong {
+            color: var(--primary-dark);
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #fde8e8, #fdd);
+            border-color: #c0392b;
+            color: #8b1a1a;
+        }
+
+        /* ===== INTRO TEXT ===== */
+        .intro {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(26,92,58,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            line-height: 1.85;
+        }
+
+        .intro p {
+            margin-bottom: 12px;
+        }
+
+        .intro p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ===== DIAGNOSIS ===== */
+        .diagnosis {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            border: 1px solid rgba(26,92,58,0.1);
+        }
+
+        .diagnosis h3 {
+            color: var(--primary);
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .diagnosis p {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .diagnosis .conclusion {
+            background: rgba(26,92,58,0.06);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        /* ===== HADITH BOX ===== */
+        .hadith-box {
+            background: linear-gradient(135deg, #f0f7f2, #e8f5e9);
+            border: 1px solid var(--primary-light);
+            border-radius: 12px;
+            padding: 18px;
+            margin: 15px 0;
+        }
+
+        .hadith-box .arabic {
+            font-size: var(--arabic-size);
+            background: transparent;
+            border: none;
+            padding: 10px 0;
+        }
+
+        .hadith-box .source {
+            font-size: 0.85em;
+            color: var(--primary);
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        /* ===== VISION BOX ===== */
+        .vision-box {
+            background: linear-gradient(135deg, #f5f0ff, #ede7f6);
+            border: 1px solid #9c7fbf;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+            color: #4a2c6e;
+        }
+
+        .vision-box p {
+            margin-bottom: 8px;
+        }
+
+        /* ===== DIVIDER ===== */
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            color: var(--gold);
+            font-size: 1.2em;
+            letter-spacing: 10px;
+        }
+
+        /* ===== PAIN METHOD BOX ===== */
+        .pain-method {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid #e6a817;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 20px 0;
+        }
+
+        .pain-method h4 {
+            color: #b36b00;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        /* ===== MAINTENANCE ===== */
+        .maintenance {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 2px solid var(--primary-light);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .maintenance h3 {
+            color: var(--primary-dark);
+            font-size: 1.15em;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .maintenance ol, .maintenance ul {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+
+        .maintenance li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        /* ===== CLOSING ===== */
+        .closing {
+            text-align: center;
+            padding: 30px 20px;
+            margin: 30px 0;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-radius: 16px;
+            color: #fff;
+        }
+
+        .closing p {
+            line-height: 1.85;
+            margin-bottom: 10px;
+        }
+
+        .closing .dua {
+            font-family: 'Amiri', serif;
+            font-size: 1.3em;
+            color: var(--gold-light);
+            margin-top: 15px;
+        }
+
+        /* ===== INLINE BOLD ARABIC TERM ===== */
+        .term {
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .term-ar {
+            font-family: 'Amiri', serif;
+            font-size: calc(var(--arabic-size) * 0.85);
+            color: var(--primary);
+            direction: rtl;
+            unicode-bidi: embed;
+        }
+
+        /* ===== SCROLL TO TOP ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 55px;
+            right: 12px;
+            z-index: 999;
+            width: 42px;
+            height: 42px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3em;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+
+        .scroll-top:active {
+            transform: scale(0.9);
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            @page {
+                size: A4;
+                margin: 18mm 15mm;
+            }
+
+            .control-bar, .nav-bar, .scroll-top {
+                display: none !important;
+            }
+
+            body {
+                background: #fff;
+                font-size: 11pt;
+                line-height: 1.5;
+                color: #000;
+            }
+
+            .content {
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .bismillah {
+                font-size: 1.6em;
+                color: #000;
+            }
+
+            .title-block {
+                background: #f0f0f0 !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .title-block .author {
+                color: #333 !important;
+            }
+
+            .day-heading {
+                background: #333 !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .section-heading {
+                color: #000;
+                border-left-color: #666;
+            }
+
+            .arabic, .arabic-small {
+                font-size: 16pt;
+                color: #000;
+                border-color: #ccc;
+            }
+
+            .translit {
+                color: #444;
+            }
+
+            .step {
+                break-inside: avoid;
+                border: 1px solid #ccc;
+            }
+
+            .alert, .hadith-box, .vision-box, .pain-method, .maintenance, .intro, .diagnosis {
+                break-inside: avoid;
+                border: 1px solid #999;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .divider {
+                color: #999;
+            }
+
+            .closing {
+                background: #f0f0f0 !important;
+                color: #000 !important;
+            }
+
+            .closing .dua {
+                color: #333 !important;
+            }
+
+            h1, h2, h3, h4, .step-title {
+                color: #000;
+            }
+
+            a {
+                text-decoration: none;
+                color: #000;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 400px) {
+            .ctrl-btn {
+                padding: 6px 10px;
+                font-size: 0.85em;
+            }
+            .ctrl-btn .icon {
+                font-size: 1em;
+            }
+            .content {
+                padding: 65px 10px 65px 10px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .content {
+                padding: 80px 30px 80px 30px;
+            }
+            .step {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- CONTROL BAR -->
+<div class="control-bar">
+    <div class="logo">📖 План лечения</div>
+    <div class="control-group">
+        <button class="ctrl-btn" onclick="changeFontSize(-1)" aria-label="Уменьшить текст">
+            <span class="icon">A-</span>
+        </button>
+        <button class="ctrl-btn" onclick="changeFontSize(1)" aria-label="Увеличить текст">
+            <span class="icon">A+</span>
+        </button>
+        <button class="ctrl-btn" onclick="window.print()" aria-label="Распечатать">
+            <span class="icon">🖨️</span> Печать
+        </button>
+    </div>
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav-bar">
+    <a href="#intro" class="nav-btn">🏠 Введение</a>
+    <a href="#diagnosis" class="nav-btn">📋 Диагноз</a>
+    <a href="#faith" class="nav-btn">🤲 Вера</a>
+    <a href="#method" class="nav-btn">📖 Метод</a>
+    <a href="#day1" class="nav-btn">День 1</a>
+    <a href="#day2" class="nav-btn">День 2</a>
+    <a href="#day3" class="nav-btn">День 3</a>
+    <a href="#day4" class="nav-btn">День 4</a>
+    <a href="#day5" class="nav-btn">День 5</a>
+    <a href="#day6" class="nav-btn">День 6</a>
+    <a href="#day7" class="nav-btn">День 7</a>
+    <a href="#maint" class="nav-btn">💊 Поддержка</a>
+</div>
+
+<!-- SCROLL TO TOP -->
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- CONTENT -->
+<div class="content">
+
+    <!-- BISMILLAH -->
+    <div class="bismillah">بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ</div>
+
+    <!-- TITLE -->
+    <div class="title-block" id="intro">
+        <h1>ПЛАН ЛЕЧЕНИЯ</h1>
+        <div class="author">Составил Абу Мухаммад</div>
+    </div>
+
+    <!-- INTRO -->
+    <div class="intro">
+        <p>Сестра, да укрепит тебя Аллах и да вознаградит за твоё терпение. Ты прошла через испытание, которое многих бы сломило, но Аллах укрепил тебя через это — ты начала намаз, ты держишься за зикры. Это великое благо, и <strong>АльхамдулиЛлях</strong> за это.</p>
+        <p>Теперь давай разберём, что происходит, и я объясню тебе план лечения — шаг за шагом, чтобы ты понимала каждое действие.</p>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- DIAGNOSIS -->
+    <h2 class="section-heading" id="diagnosis">ЧТО ПРОИСХОДИТ — РАЗБОР ТВОЕГО СОСТОЯНИЯ</h2>
+
+    <div class="diagnosis">
+        <p>На основе того, что ты описала, у тебя комбинированное поражение:</p>
+
+        <h3>Первое — Сихр (колдовство)</h3>
+        <p>То, что ты не могла есть и пить — это сихр, направленный на уничтожение через органы пищеварения. Он был нацелен на желудок, кишечник и всю область живота. Этот сихр действовал 10 лет и за это время нанёс тяжёлый урон репродуктивным органам — матка, яичник. Кровопотеря и удаление органов — это последствия длительного воздействия сихра, который не был полностью разрушен. Аль-хамдулиЛлях, один брат помог тебе рукьей и ты смогла пить воду — значит, часть сихра была ослаблена, но <strong>КОРЕНЬ остался</strong>.</p>
+
+        <h3>Второе — Масс (касание джинна)</h3>
+        <p>Ты видела его своими глазами на животе — он вышел наружу на фалангу пальца, подвигался и исчез обратно. Это прямое подтверждение присутствия джинна в области живота. Он сидит там, скорее всего, как слуга сихра — его задача — поддерживать действие колдовства изнутри. Он «привязан» к сихру и является его исполнителем в теле.</p>
+
+        <h3>Третье — Упадок сил</h3>
+        <p>Отсутствие энергии — это следствие и сихра, и масса одновременно. Джинн потребляет твою энергию, а остатки сихра продолжают разрушать изнутри. То, что зикры поддерживают тебя — подтверждает: духовная сила у тебя есть, и она работает. Значит, полноценный курс рукьи, с дозволения Аллаха, даст мощный результат.</p>
+
+        <div class="conclusion">
+            <strong>Вывод:</strong> Сихр на уничтожение <span class="term-ar">(سحر القتل)</span>, перешедший в хронический сихр с поражением живота, кишечника и репродуктивной системы + масс джинна (таляббус) в области живота, служащий сихру + общее истощение. Сихр, скорее всего, обновляемый (муджаддад) — иначе он бы не продержался 10 лет после частичной рукьи.
+        </div>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- FAITH -->
+    <h2 class="section-heading" id="faith">ВАЖНЕЙШЕЕ НАСТАВЛЕНИЕ ПЕРЕД НАЧАЛОМ ЛЕЧЕНИЯ — ВЕРА И ВНУТРЕННЕЕ ВИДЕНИЕ</h2>
+
+    <div class="intro">
+        <p>Сестра, прежде чем ты начнёшь читать что-либо из этого плана — запомни <strong>главный закон рукьи</strong>. Без него всё остальное — пустые слова.</p>
+    </div>
+
+    <div class="hadith-box">
+        <p>Пророк ﷺ сказал:</p>
+        <div class="arabic">اُدْعُوا اللهَ وَأَنْتُمْ مُوقِنُونَ بِالْإِجَابَةِ</div>
+        <div class="translit">Уд'уллаха ва антум мукинуна биль-иджаба</div>
+        <div class="translation">«Взывайте к Аллаху, будучи убеждёнными в ответе» (Тирмизи 3479)</div>
+        <div class="source">— ат-Тирмизи, хадис 3479</div>
+    </div>
+
+    <div class="intro">
+        <p>Это значит: когда ты читаешь заклинание — ты не просто произносишь слова. Ты <strong>ОБРАЩАЕШЬСЯ</strong> к Аллаху и <strong>ЗНАЕШЬ</strong>, что Он слышит тебя и отвечает тебе в этот самый момент.</p>
+    </div>
+
+    <h3 class="section-heading">Как правильно читать с верой и видением:</h3>
+
+    <div class="intro">
+        <p>Перед каждым сеансом утверди в сердце: <em>«Аллах слышит. Аллах отвечает. Аллах сильнее любого сихра, любого джинна, любого врага. Я обращаюсь к Нему, и Он исцеляет меня. Этот сихр, который мучил меня 10 лет — НИЧТО перед Его мощью.»</em></p>
+    </div>
+
+    <div class="vision-box">
+        <p><strong>Во время чтения — ВИДЬ внутренним взором то, что происходит:</strong></p>
+        <p>🔥 Когда читаешь заклинание от сихра — <strong>ВИДЬ</strong>, как чёрная масса в твоём животе трескается, рассыпается в прах, горит и растворяется. Видь, как корень сихра, который сидел 10 лет, ломается и рассыпается.</p>
+        <p>🏃 Когда читаешь заклинание на изгнание джинна — <strong>ВИДЬ</strong>, как тот, кого ты видела на животе, выходит наружу, убегает и больше не может вернуться. Видь, как он теряет силу и бежит.</p>
+        <p>🛡️ Когда читаешь заклинание на защиту — <strong>ВИДЬ</strong> стены света вокруг своего тела, непроходимую крепость. Ни один враг не может даже приблизиться.</p>
+    </div>
+
+    <div class="alert">
+        <strong>Помни:</strong> один раз с полной убеждённостью сильнее, чем сто раз без веры.
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- METHOD -->
+    <h2 class="section-heading" id="method">КАК ПРАВИЛЬНО ЧИТАТЬ — МЕТОД ВНУТРЕННЕГО ЧТЕНИЯ</h2>
+
+    <div class="intro">
+        <p><strong>«Чтение "в сердце" — это не значит сделать намерение, а потом читать вслух. Это значит читать именно ТАМ, ГДЕ делается намерение — внутри, в сердце, одновременно.</strong> Ты читаешь слова не языком и не губами, а в том самом месте, где формируется твоё намерение. Губы не двигаются, язык не двигается — чтение происходит полностью внутри. Так накапливается сила. Только после того как накопила силу внутренним чтением — переходи к чтению вслух для воздействия.»</p>
+    </div>
+
+    <div class="intro">
+        <p><strong>Фокус внимания:</strong> «Когда читаешь на больное место — не смотри на него в одну точку. Смотри как бы сквозь него, широким лучом, охватывая всё поле зрения. Сила идёт туда, куда направлен твой взгляд.»</p>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ==================== ДЕНЬ 1 ==================== -->
+    <div class="day-heading" id="day1">
+        ДЕНЬ 1 — РАЗРУШЕНИЕ ОБНОВЛЯЕМОГО СИХРА (КОРЕНЬ ПРОБЛЕМЫ)
+        <span class="day-num">Приоритет — уничтожить механизм обновления сихра</span>
+    </div>
+
+    <div class="intro">
+        <p>Если сихр муджаддад (обновляемый), то любое лечение без разрушения этого механизма будет обнуляться. Поэтому начинаем с него.</p>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 1 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">1</span> Зарядка аятами Корана</div>
+        <p>Начни с чтения следующих аятов — целиком, для общей зарядки духовной силой. Читай в сердце 3 раза, затем вслух 3 раза:</p>
+
+        <p><strong>Аятуль-Курси (аль-Бакара, 2:255):</strong></p>
+        <div class="arabic">اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ</div>
+        <div class="translit">Аллаху ля иляха илля хуваль-Хаййуль-Каййум, ля та'хузуху синатун ва ля наум, ляху ма фис-самавати ва ма филь-ард, ман залляди йашфа'у 'индаху илля би-изних, йа'ляму ма байна айдихим ва ма хальфахум, ва ля йухитуна би-шай'ин мин 'ильмихи илля бима ша', васи'а курсиййухус-самавати валь-ард, ва ля йа'удуху хифзухума, ва хуваль-'Алиййуль-'Азым</div>
+        <div class="translation">«Аллах — нет божества, кроме Него, Живого, Вечносущего. Не овладевают Им ни дремота, ни сон. Ему принадлежит то, что на небесах, и то, что на земле. Кто станет заступаться перед Ним без Его дозволения? Он знает их будущее и прошлое. Они постигают из Его знания только то, что Он пожелает. Его Престол объемлет небеса и землю, и не тяготит Его их хранение. Он — Всевышний, Великий.»</div>
+        <div class="instruction"><strong>3 раза в сердце, затем 3 раза вслух.</strong></div>
+
+        <p><strong>Аяты 81–82 из Суры Юнус (10:81–82) — аяты Мусы (мир ему), разрушающие колдовство:</strong></p>
+        <div class="arabic">فَلَمَّا أَلْقَوْا قَالَ مُوسَىٰ مَا جِئْتُم بِهِ السِّحْرُ ۖ إِنَّ اللَّهَ سَيُبْطِلُهُ ۖ إِنَّ اللَّهَ لَا يُصْلِحُ عَمَلَ الْمُفْسِدِينَ ۞ وَيُحِقُّ اللَّهُ الْحَقَّ بِكَلِمَاتِهِ وَلَوْ كَرِهَ الْمُجْرِمُونَ</div>
+        <div class="translit">Фалямма алькау каля Муса ма джи'тум бихис-сихр, инналлаха са-йубтилюх, инналлаха ля йуслиху 'амаляль-муфсидин. Ва йухиккуллахуль-хакка би-калиматихи ва лау карихаль-муджримун.</div>
+        <div class="translation">«Когда они бросили, Муса сказал: "То, что вы сотворили — колдовство. Поистине, Аллах сделает его недействительным. Поистине, Аллах не исправляет деяния сеющих нечестие." И Аллах утверждает истину Своими словами, даже если это ненавистно грешникам.»</div>
+        <div class="instruction"><strong>3 раза в сердце, затем 3 раза вслух.</strong></div>
+
+        <p><strong>Аяты 117–119 из Суры аль-А'раф (7:117–119) — ниспровержение колдовства:</strong></p>
+        <div class="arabic">وَأَوْحَيْنَا إِلَىٰ مُوسَىٰ أَنْ أَلْقِ عَصَاكَ ۖ فَإِذَا هِيَ تَلْقَفُ مَا يَأْفِكُونَ ۞ فَوَقَعَ الْحَقُّ وَبَطَلَ مَا كَانُوا يَعْمَلُونَ ۞ فَغُلِبُوا هُنَالِكَ وَانقَلَبُوا صَاغِرِينَ</div>
+        <div class="translit">Ва аухайна иля Муса ан альки 'асак, фа-иза хийа талькафу ма йа'фикун. Фа-вака'аль-хакку ва баталя ма кану йа'малюн. Фа-гулибу хуналика ван-калябу сагирин.</div>
+        <div class="translation">«И Мы внушили Мусе: "Брось свой посох!" И вот — он поглощает то, что они измыслили. Истина свершилась, и стало тщетным то, что они делали. Они были побеждены там и вернулись униженными.»</div>
+        <div class="instruction"><strong>3 раза в сердце, затем 3 раза вслух.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 2 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">2</span> Прицельное чтение фрагмента аята + заклинание (связка)</div>
+        <p>Теперь переходи к прицельному удару. Из аята 81 Суры Юнус возьми ключевой фрагмент — и <strong>СРАЗУ</strong>, без паузы, соедини с заклинанием.</p>
+
+        <p><strong>Фрагмент аята:</strong></p>
+        <div class="arabic-small">إِنَّ اللَّهَ سَيُبْطِلُهُ</div>
+        <div class="translit">Инналлаха са-йубтилюх — «Поистине, Аллах сделает его недействительным»</div>
+
+        <p><strong>Сразу за ним — заклинание на разрушение обновляемого сихра в животе:</strong></p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي بَطْنِي مِنْ كُلِّ سِحْرٍ مُجَدَّدٍ وَمَخْفِيٍّ لِيَبْطُلَ مَصْدَرُهُ وَيَتَلَاشَى أَثَرُهُ</div>
+        <div class="translit">Бисмилляхи-ллязи йа'лямуль-гайба ваш-шахада, аркий батний мин кулли сихрин муджаддадин ва махфиййин ли-йабтуля масдаруху ва йаталяша асарух</div>
+        <div class="translation">«С именем Аллаха, Который знает сокровенное и явное, заклинаю свой живот от всякого обновляемого и скрытого колдовства — чтобы стал недействительным его источник и исчезли его следы»</div>
+
+        <div class="instruction"><strong>Способ чтения:</strong> Связку (фрагмент аята + заклинание) читать вслух <strong>7 раз</strong>. Положи правую ладонь на живот и дави мягко, но ощутимо, не отпуская между повторениями. <strong>ВИДЬ</strong> внутренним взором, как чёрный корень в животе трескается и рассыпается от каждого повторения.</div>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 3 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">3</span> Заклинание на разрушение сихра аль-катль — поражение кишечника</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي فَالِقُ الْإِصْبَاحِ أَرْقِي أَمْعَائِي مِنْ سِحْرِ الْقَتْلِ لِيَنْفَلِقَ وَيَتَمَزَّقَ وَيَخْرُجَ</div>
+        <div class="translit">Бисмилляхи-ллязи фаликуль-исбах, аркий ам'аий мин сихриль-катль ли-йанфалика ва йатамаззака ва йахрудж</div>
+        <div class="translation">«С именем Аллаха, Расщепляющего рассвет, заклинаю свой кишечник от колдовства на уничтожение — чтобы расщепилось, разорвалось и вышло»</div>
+        <div class="instruction"><strong>Способ:</strong> 7 раз вслух. Ладонь на нижнюю часть живота, давление. ВИДЬ, как сихр в кишечнике разрывается на куски, как рассвет расщепляет тьму.</div>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 4 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">4</span> Заклинание на разрушение сихра — поражение желудка</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي فَالِقُ الْإِصْبَاحِ أَرْقِي مَعِدَتِي مِنْ سِحْرِ الْقَتْلِ وَالْمَنْعِ لِيَنْفَلِقَ وَيَتَمَزَّقَ وَيَزُولَ</div>
+        <div class="translit">Бисмилляхи-ллязи фаликуль-исбах, аркий ма'идатий мин сихриль-катли валь-ман'и ли-йанфалика ва йатамаззака ва йазуль</div>
+        <div class="translation">«С именем Аллаха, Расщепляющего рассвет, заклинаю свой желудок от колдовства на уничтожение и преграду — чтобы расщепилось, разорвалось и исчезло»</div>
+        <div class="instruction"><strong>Способ:</strong> 7 раз вслух. Ладонь на область желудка (верхняя часть живота, под рёбрами), давление. ВИДЬ, как колдовство, которое 10 лет не давало тебе есть, разрывается и растворяется.</div>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 5 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">5</span> Заклинание на разрушение сихра — поражение репродуктивной области</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي أَسْفَلَ بَطْنِي مِنْ كُلِّ سِحْرٍ أَصَابَ رَحِمِي وَمَبَايِضِي لِيَبْطُلَ وَيَتَلَاشَى وَلَا يَبْقَى لَهُ أَثَرٌ</div>
+        <div class="translit">Бисмилляхи-ллязи йа'лямуль-гайба ваш-шахада, аркий асфаля батний мин кулли сихрин асаба рахимий ва мабайидий ли-йабтуля ва йаталяша ва ля йабка ляху асар</div>
+        <div class="translation">«С именем Аллаха, Который знает сокровенное и явное, заклинаю нижнюю часть своего живота от всякого колдовства, поразившего мою матку и яичники — чтобы стало недействительным, исчезло и не осталось от него следа»</div>
+        <div class="instruction"><strong>Способ:</strong> 7 раз вслух. Ладонь на нижнюю часть живота, мягкое давление. Даже если органы удалены — сихр может оставаться в этой области и продолжать воздействовать на оставшийся яичник и окружающие ткани. ВИДЬ, как из этой области выходит тёмная масса и рассеивается.</div>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 6 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">6</span> Заклинание на разрыв связи сихр-джинн</div>
+        <p>Джинн, которого ты видела на животе — он слуга сихра. Прежде чем изгонять его, нужно разорвать его «задание» — связь с сихром:</p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي هُوَ الْحَيُّ الْقَيُّومُ أَرْقِي لِقَطْعِ كُلِّ رَابِطَةٍ بَيْنَ السِّحْرِ وَالْجِنِّيِّ فِي بَطْنِي لِيَنْقَطِعَ الْأَمْرُ وَيَبْطُلَ التَّكْلِيفُ</div>
+        <div class="translit">Бисмилляхи-ллязи хуваль-Хаййуль-Каййум, аркий ли-кат'и кулли рабитатин байнас-сихри валь-джинниййи фи батний ли-йанкати'аль-амру ва йабтулят-таклиф</div>
+        <div class="translation">«С именем Аллаха, Который — Живой, Вечносущий, заклинаю для разрыва всякой связи между колдовством и джинном в моём животе — чтобы прервался приказ и стало недействительным задание»</div>
+        <div class="instruction"><strong>Способ:</strong> 7 раз вслух. Ладонь на середину живота, давление. ВИДЬ, как цепь между сихром и джинном рвётся — как будто разрывается верёвка, и джинн остаётся без приказа, без привязки.</div>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 7 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">7</span> Мольба (Дуа)</div>
+        <p>После завершения заклинаний читай:</p>
+        <div class="arabic">اللَّهُمَّ اشْفِنِي مِنْ كُلِّ سِحْرٍ وَمَسٍّ أَصَابَنِي</div>
+        <div class="translit">Аллахумма-шфиний мин кулли сихрин ва массин асабаний</div>
+        <div class="translation">«О Аллах, исцели меня от всякого колдовства и касания джинна, поразившего меня»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 8 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">8</span> Закрепление</div>
+        <div class="arabic">بِسْمِ اللهِ أَرْقِينِي اللهُ يَشْفِينِي</div>
+        <div class="translit">Бисмилляхи аркыний Аллаху яшфиний</div>
+        <div class="translation">«Именем Аллаха заклинаю себя, Аллах исцеляет меня»</div>
+        <div class="instruction"><strong>20 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 9 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">9</span> Лёгкая ежедневная защита после сеанса (Дни 1–3)</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي هُوَ خَيْرٌ حَافِظًا أَرْقِي لِحِفْظِ بَطْنِي وَسَدٍّ حَوْلَهُ مِنْ سِحْرِ الْقَتْلِ وَمَسِّ الْجِنِّ</div>
+        <div class="translit">Бисмилляхи-ллязи хува хайрун хафизан, аркий ли-хифзи батний ва саддин хауляху мин сихриль-катли ва массиль-джинн</div>
+        <div class="translation">«С именем Аллаха, Который является лучшим Хранителем, заклинаю для охраны моего живота и преграды вокруг него от колдовства на уничтожение и касания джинна»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 1 — ШАГ 10 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">10</span> Общее заклинание на чистку помещения</div>
+        <p>В конце сеанса, стоя в центре комнаты, охвати всё помещение внутренним взором (закрой глаза, представь всю комнату целиком — стены, пол, потолок, углы — как одно целое), и читай:</p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي بَيْتِي مِنْ كُلِّ سِحْرٍ مَخْفِيٍّ وَمَدْفُونٍ وَمَنْثُورٍ وَمُعَلَّقٍ لِيَبْطُلَ وَيَتَلَاشَى</div>
+        <div class="translit">Бисмилляхи-ллязи йа'лямуль-гайба ваш-шахада, аркий байтий мин кулли сихрин махфиййин ва мадфунин ва мансурин ва му'аллякин ли-йабтуля ва йаталяша</div>
+        <div class="translation">«С именем Аллаха, Который знает сокровенное и явное, заклинаю свой дом от всякого колдовства — скрытого, закопанного, рассыпанного и подвешенного — чтобы стало недействительным и исчезло»</div>
+        <div class="instruction"><strong>7 раз в каждой комнате.</strong></div>
+    </div>
+
+    <!-- PAIN METHOD -->
+    <div class="pain-method">
+        <h4>⚠️ ЕСЛИ ВО ВРЕМЯ ЧТЕНИЯ ОЩУТИШЬ БОЛЬ</h4>
+        <p>Если при чтении любого заклинания ты ощутишь боль, тяжесть, жжение или пульсацию в конкретном месте — сразу переходи на <strong>метод чтения на ладонь</strong>: подними раскрытую ладонь перед собой, прочитай то же заклинание 3–7 раз прямо на ладонь, затем приложи ладонь к больному месту, протри и надави. Повторяй, пока боль не ослабнет или не сместится. Если сместилась — следуй за ней.</p>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ==================== ДЕНЬ 2 ==================== -->
+    <div class="day-heading" id="day2">
+        ДЕНЬ 2 — РАЗРУШЕНИЕ ОСНОВНОГО СИХРА И НАЧАЛО ИЗГНАНИЯ ДЖИННА
+        <span class="day-num">Продолжаем разрушение и начинаем изгнание</span>
+    </div>
+
+    <!-- ДЕНЬ 2 — ШАГ 1 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">1</span> Зарядка аятами Корана</div>
+        <p>Читай те же аяты, что в День 1 (Аятуль-Курси + аяты Мусы из Суры Юнус 10:81–82 + аяты из аль-А'раф 7:117–119). По 3 раза в сердце, затем 3 раза вслух.</p>
+        <p>Добавь <strong>аяты 68–69 из Суры Та Ха (20:68–69):</strong></p>
+        <div class="arabic">قُلْنَا لَا تَخَفْ إِنَّكَ أَنتَ الْأَعْلَىٰ ۞ وَأَلْقِ مَا فِي يَمِينِكَ تَلْقَفْ مَا صَنَعُوا ۖ إِنَّمَا صَنَعُوا كَيْدُ سَاحِرٍ ۖ وَلَا يُفْلِحُ السَّاحِرُ حَيْثُ أَتَىٰ</div>
+        <div class="translit">Кульна ля тахаф иннака анталь-а'ля. Ва альки ма фи йаминика талькаф ма сана'у, иннама сана'у кайду сахир, ва ля йуфлихус-сахиру хайсу ата.</div>
+        <div class="translation">«Мы сказали: "Не бойся, ведь ты — выше. Брось то, что в твоей правой руке — оно поглотит то, что они сотворили. Поистине, то, что они сотворили — уловка колдуна, а колдун не преуспеет, откуда бы он ни пришёл."»</div>
+        <div class="instruction"><strong>3 раза в сердце, затем 3 раза вслух.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 2 — ШАГ 2 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">2</span> Прицельная связка — фрагмент аята + заклинание</div>
+        <p><strong>Фрагмент аята:</strong></p>
+        <div class="arabic-small">وَبَطَلَ مَا كَانُوا يَعْمَلُونَ</div>
+        <div class="translit">Ва баталя ма кану йа'малюн — «И стало тщетным то, что они делали»</div>
+
+        <p><strong>Сразу за ним — заклинание на разрушение всего сихра в теле:</strong></p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي فَالِقُ الْإِصْبَاحِ أَرْقِي جَسَدِي مِنْ كُلِّ سِحْرِ قَتْلٍ وَمَنْعٍ وَتَدْمِيرٍ لِيَنْفَلِقَ وَيَبْطُلَ وَلَا يَبْقَى مِنْهُ شَيْءٌ</div>
+        <div class="translit">Бисмилляхи-ллязи фаликуль-исбах, аркий джасадий мин кулли сихри катлин ва ман'ин ва тадмирин ли-йанфалика ва йабтуля ва ля йабка минху шай'</div>
+        <div class="translation">«С именем Аллаха, Расщепляющего рассвет, заклинаю своё тело от всякого колдовства на уничтожение, преграду и разрушение — чтобы расщепилось, стало недействительным и не осталось от него ничего»</div>
+        <div class="instruction"><strong>Способ:</strong> Связку (фрагмент аята + заклинание) читать вслух <strong>7 раз</strong>. Обе ладони на живот, давление. ВИДЬ, как сихр во всём теле разрушается — как рассвет разрывает тьму ночи.</div>
+    </div>
+
+    <!-- ДЕНЬ 2 — ШАГ 3 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">3</span> Заклинание на изгнание джинна из живота</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَهُ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ أَرْقِي بَطْنِي لِخُرُوجِ كُلِّ جِنِّيٍّ مِنْهُ فَلَا يَبْقَى فِيهِ وَلَا يَعُودَ إِلَيْهِ</div>
+        <div class="translit">Бисмилляхи-ллязи ляху мульку-с-самавати валь-ард, аркий батний ли-хуруджи кулли джинниййин минху фаля йабка фихи ва ля йа'уду иляйх</div>
+        <div class="translation">«С именем Аллаха, Которому принадлежит власть над небесами и землёй, заклинаю свой живот для выхода из него каждого джинна — чтобы не остался в нём и не возвращался к нему»</div>
+        <div class="instruction"><strong>Способ:</strong> 7 раз вслух. Ладонь на живот, давление, затем выщипывание — 7 раз с давлением, затем 7 раз с выщипыванием. ВИДЬ, как джинн выходит из живота и убегает.</div>
+    </div>
+
+    <!-- ДЕНЬ 2 — ШАГ 4 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">4</span> Заклинание на изгнание джинна из всего тела</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَهُ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ أَرْقِي جَسَدِي لِخُرُوجِ كُلِّ جِنِّيٍّ ظَالِمٍ وَخَادِمِ سِحْرٍ مِنْهُ فَلَا يَبْقَى فِي جَسَدِي أَحَدٌ مِنْهُمْ</div>
+        <div class="translit">Бисмилляхи-ллязи ляху мульку-с-самавати валь-ард, аркий джасадий ли-хуруджи кулли джинниййин залимин ва хадими сихрин минху фаля йабка фи джасадий ахадун минхум</div>
+        <div class="translation">«С именем Аллаха, Которому принадлежит власть над небесами и землёй, заклинаю своё тело для выхода из него каждого джинна-притеснителя и слуги колдовства — чтобы не остался в моём теле ни один из них»</div>
+        <div class="instruction"><strong>Способ:</strong> 7 раз вслух. ВИДЬ, как джинн покидает тело, и он бессилен перед властью Аллаха.</div>
+    </div>
+
+    <!-- ДЕНЬ 2 — ШАГ 5 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">5</span> Заклинание на восстановление сил</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَا شِفَاءَ إِلَّا شِفَاؤُهُ أَرْقِي جَسَدِي لِعَوْدَةِ الْقُوَّةِ وَالْعَافِيَةِ إِلَيْهِ بِإِذْنِ اللهِ</div>
+        <div class="translit">Бисмилляхи-ллязи ля шифаа илля шифаух, аркий джасадий ли-'аудатиль-куввати валь-'афийати иляйхи би-изниллях</div>
+        <div class="translation">«С именем Аллаха, [при Котором] нет исцеления кроме Его исцеления, заклинаю своё тело для возвращения силы и здоровья к нему с дозволения Аллаха»</div>
+        <div class="instruction"><strong>Способ:</strong> 7 раз вслух. Проведи ладонями по всему телу сверху вниз. ВИДЬ, как тело наполняется светом и энергией.</div>
+    </div>
+
+    <!-- ДЕНЬ 2 — ШАГ 6 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">6</span> Мольба</div>
+        <div class="arabic">اللَّهُمَّ اشْفِنِي شِفَاءً لَا يُغَادِرُ سَقَمًا</div>
+        <div class="translit">Аллахумма-шфиний шифаан ля йугадиру сакаман</div>
+        <div class="translation">«О Аллах, исцели меня исцелением, которое не оставит болезни»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 2 — ШАГ 7 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">7</span> Закрепление</div>
+        <div class="arabic">بِسْمِ اللهِ أَرْقِينِي اللهُ يَشْفِينِي</div>
+        <div class="translit">Бисмилляхи аркыний Аллаху яшфиний</div>
+        <div class="instruction"><strong>20 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 2 — ШАГ 8 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">8</span> Лёгкая защита + чистка помещения</div>
+        <div class="instruction">Как в Дне 1 — те же формулы (Шаг 9 и Шаг 10 из Дня 1).</div>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ==================== ДЕНЬ 3 ==================== -->
+    <div class="day-heading" id="day3">
+        ДЕНЬ 3 — ГЛУБОКАЯ ЧИСТКА И ИЗВЛЕЧЕНИЕ ОСТАТКОВ
+        <span class="day-num">Извлечение разрушенных остатков</span>
+    </div>
+
+    <!-- ДЕНЬ 3 — ШАГ 1 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">1</span> Зарядка аятами Корана</div>
+        <p>Те же аяты, что в Дни 1–2.</p>
+        <p>Добавь <strong>последние три аята Суры аль-Хашр (59:22–24):</strong></p>
+        <div class="arabic">هُوَ اللَّهُ الَّذِي لَا إِلَٰهَ إِلَّا هُوَ ۖ عَالِمُ الْغَيْبِ وَالشَّهَادَةِ ۖ هُوَ الرَّحْمَٰنُ الرَّحِيمُ ۞ هُوَ اللَّهُ الَّذِي لَا إِلَٰهَ إِلَّا هُوَ الْمَلِكُ الْقُدُّوسُ السَّلَامُ الْمُؤْمِنُ الْمُهَيْمِنُ الْعَزِيزُ الْجَبَّارُ الْمُتَكَبِّرُ ۚ سُبْحَانَ اللَّهِ عَمَّا يُشْرِكُونَ ۞ هُوَ اللَّهُ الْخَالِقُ الْبَارِئُ الْمُصَوِّرُ ۖ لَهُ الْأَسْمَاءُ الْحُسْنَىٰ ۚ يُسَبِّحُ لَهُ مَا فِي السَّمَاوَاتِ وَالْأَرْضِ ۖ وَهُوَ الْعَزِيزُ الْحَكِيمُ</div>
+        <div class="translit">Хуваллахуллязи ля иляха илля хув, 'алимуль-гайби ваш-шахада, хуварр-Рахманурр-Рахим. Хуваллахуллязи ля иляха илля хуваль-Маликуль-Куддусус-Салямуль-Му'минуль-Мухайминуль-'Азизуль-Джаббаруль-Мутакаббир, субханаллахи 'амма йушрикун. Хуваллахуль-Халикуль-Бари'уль-Мусаввир, ляхуль-Асмауль-Хусна, йусаббиху ляху ма фис-самавати валь-ард, ва хуваль-'Азизуль-Хаким.</div>
+        <div class="instruction"><strong>3 раза в сердце, затем 3 раза вслух.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 3 — ШАГ 2 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">2</span> Комбинированный метод чистки — давление + выщипывание на каждый орган</div>
+
+        <p><strong>На живот (кишечник + место, где был джинн):</strong></p>
+        <p><em>Формула при давлении (разрушение):</em></p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي فَالِقُ الْإِصْبَاحِ أَرْقِي بَطْنِي مِنْ كُلِّ بَقِيَّةِ سِحْرٍ وَمَسٍّ لِيَنْفَلِقَ وَيَتَمَزَّقَ</div>
+        <div class="translit">Бисмилляхи-ллязи фаликуль-исбах, аркий батний мин кулли бакиййати сихрин ва массин ли-йанфалика ва йатамаззак</div>
+        <div class="translation">«С именем Аллаха, Расщепляющего рассвет, заклинаю свой живот от всякого остатка колдовства и касания джинна — чтобы расщепилось и разорвалось»</div>
+        <div class="instruction"><strong>7 раз с давлением ладонью.</strong></div>
+
+        <p><em>Формула при выщипывании (извлечение):</em></p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي فَالِقُ الْإِصْبَاحِ أَرْقِي لِإِخْرَاجِ كُلِّ بَقِيَّةِ سِحْرٍ وَأَثَرِ جِنٍّ مِنْ بَطْنِي</div>
+        <div class="translit">Бисмилляхи-ллязи фаликуль-исбах, аркий ли-ихраджи кулли бакиййати сихрин ва асари джиннин мин батний</div>
+        <div class="translation">«С именем Аллаха, Расщепляющего рассвет, заклинаю для извлечения всякого остатка колдовства и следа джинна из моего живота»</div>
+        <div class="instruction"><strong>7 раз с выщипыванием</strong> — захватывай кожу на животе двумя пальцами, тяни вверх, отпускай. Двигайся по всей области живота. ВИДЬ, как разрушенные остатки сихра вытягиваются наружу, как грязь из раны.</div>
+
+        <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+
+        <p><strong>На верхнюю часть живота (желудок):</strong></p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَا شِفَاءَ إِلَّا شِفَاؤُهُ أَرْقِي مَعِدَتِي مِنْ كُلِّ أَثَرِ سِحْرٍ بَقِيَ فِيهَا لِيَخْرُجَ وَتَعُودَ الْعَافِيَةُ</div>
+        <div class="translit">Бисмилляхи-ллязи ля шифаа илля шифаух, аркий ма'идатий мин кулли асари сихрин бакийа фиха ли-йахруджа ва та'удаль-'афийа</div>
+        <div class="translation">«С именем Аллаха, [при Котором] нет исцеления кроме Его исцеления, заклинаю свой желудок от всякого следа колдовства, оставшегося в нём — чтобы вышел и вернулось здоровье»</div>
+        <div class="instruction"><strong>7 раз с давлением, затем 7 раз с выщипыванием.</strong></div>
+
+        <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+
+        <p><strong>На нижнюю часть живота (репродуктивная область):</strong></p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَا شِفَاءَ إِلَّا شِفَاؤُهُ أَرْقِي أَسْفَلَ بَطْنِي مِنْ كُلِّ أَثَرِ سِحْرٍ بَقِيَ فِي مَوْضِعِ رَحِمِي لِيَخْرُجَ وَلَا يَبْقَى لَهُ أَثَرٌ</div>
+        <div class="translit">Бисмилляхи-ллязи ля шифаа илля шифаух, аркий асфаля батний мин кулли асари сихрин бакийа фи мауди'и рахимий ли-йахруджа ва ля йабка ляху асар</div>
+        <div class="translation">«С именем Аллаха, [при Котором] нет исцеления кроме Его исцеления, заклинаю нижнюю часть своего живота от всякого следа колдовства, оставшегося на месте моей матки — чтобы вышел и не осталось от него следа»</div>
+        <div class="instruction"><strong>7 раз с давлением, затем 7 раз с выщипыванием.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 3 — ШАГ 3 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">3</span> Мольба, закрепление, защита, чистка помещения</div>
+        <div class="instruction">Как в предыдущие дни (Мольба 7 раз → Закрепление 20 раз → Лёгкая защита 7 раз → Чистка помещения 7 раз в каждой комнате).</div>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ==================== ДЕНЬ 4 ==================== -->
+    <div class="day-heading" id="day4">
+        ДЕНЬ 4 — ЗАКРЕПЛЕНИЕ И ЗАКРЫТИЕ ДВЕРЕЙ ТЕЛА
+        <span class="day-num">Запечатывание после изгнания</span>
+    </div>
+
+    <!-- ДЕНЬ 4 — ШАГ 1 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">1</span> Зарядка аятами Корана</div>
+        <div class="instruction">Те же аяты, что в предыдущие дни. По 3 раза в сердце, 3 раза вслух.</div>
+    </div>
+
+    <!-- ДЕНЬ 4 — ШАГ 2 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">2</span> Лёгкая финальная чистка (проверочная)</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي جَسَدِي مِنْ كُلِّ بَقِيَّةِ سِحْرٍ وَمَسٍّ وَأَثَرٍ لِيَبْطُلَ وَيَتَلَاشَى</div>
+        <div class="translit">Бисмилляхи-ллязи йа'лямуль-гайба ваш-шахада, аркий джасадий мин кулли бакиййати сихрин ва массин ва асарин ли-йабтуля ва йаталяша</div>
+        <div class="translation">«С именем Аллаха, Который знает сокровенное и явное, заклинаю своё тело от всякого остатка колдовства, касания джинна и следа — чтобы стало недействительным и исчезло»</div>
+        <div class="instruction"><strong>7 раз вслух.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 4 — ШАГ 3 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">3</span> Закрытие дверей живота</div>
+        <div class="alert"><strong>ВАЖНО:</strong> это делается ПОСЛЕ изгнания и чистки. Сначала выгнала — теперь закрываешь дверь за ним.</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي جَعَلَ حِفْظًا مِنْ كُلِّ شَيْطَانٍ مَارِدٍ أَرْقِي لِإِغْلَاقِ أَبْوَابِ بَطْنِي وَسَدِّ كُلِّ مَنْفَذٍ فِيهِ أَمَامَ الْجِنِّ وَالسِّحْرِ الْمُجَدَّدِ فَلَا يَنْفُذُ إِلَيْهِ شَيْءٌ</div>
+        <div class="translit">Бисмилляхи-ллязи джа'аля хифзан мин кулли шайтанин марид, аркий ли-иглаки абваби батний ва садди кулли манфазин фихи амамаль-джинни вас-сихриль-муджаддади фаля йанфузу иляйхи шай'</div>
+        <div class="translation">«С именем Аллаха, Который установил защиту от всякого шайтана марида, заклинаю для закрытия дверей моего живота и заграждения каждого прохода в нём перед джиннами и обновляемым колдовством — чтобы ничто не проникло к нему»</div>
+        <div class="instruction"><strong>7 раз.</strong> ВИДЬ, как каждая дверь в животе захлопывается, запирается на замок, запечатывается светом.</div>
+    </div>
+
+    <!-- ДЕНЬ 4 — ШАГ 4 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">4</span> Закрытие дверей желудка и кишечника</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي جَعَلَ حِفْظًا مِنْ كُلِّ شَيْطَانٍ مَارِدٍ أَرْقِي لِإِغْلَاقِ أَبْوَابِ مَعِدَتِي وَأَمْعَائِي وَسَدِّ كُلِّ مَنْفَذٍ فِيهِمَا أَمَامَ الْجِنِّ وَالسِّحْرِ فَلَا يَنْفُذُ إِلَيْهِمَا شَيْءٌ</div>
+        <div class="translit">Бисмилляхи-ллязи джа'аля хифзан мин кулли шайтанин марид, аркий ли-иглаки абваби ма'идатий ва ам'аий ва садди кулли манфазин фихима амамаль-джинни вас-сихри фаля йанфузу иляйхима шай'</div>
+        <div class="translation">«С именем Аллаха, Который установил защиту от всякого шайтана марида, заклинаю для закрытия дверей моего желудка и кишечника и заграждения каждого прохода в них перед джиннами и колдовством — чтобы ничто не проникло к ним»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 4 — ШАГ 5 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">5</span> Закрытие дверей нижней части живота (репродуктивная область)</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي جَعَلَ حِفْظًا مِنْ كُلِّ شَيْطَانٍ مَارِدٍ أَرْقِي لِإِغْلَاقِ أَبْوَابِ أَسْفَلِ بَطْنِي وَسَدِّ كُلِّ مَنْفَذٍ فِيهِ أَمَامَ الْجِنِّ وَالسِّحْرِ فَلَا يَنْفُذُ إِلَيْهِ شَيْءٌ</div>
+        <div class="translit">Бисмилляхи-ллязи джа'аля хифзан мин кулли шайтанин марид, аркий ли-иглаки абваби асфали батний ва садди кулли манфазин фихи амамаль-джинни вас-сихри фаля йанфузу иляйхи шай'</div>
+        <div class="translation">«С именем Аллаха, Который установил защиту от всякого шайтана марида, заклинаю для закрытия дверей нижней части моего живота и заграждения каждого прохода в ней перед джиннами и колдовством — чтобы ничто не проникло к ней»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 4 — ШАГ 6 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">6</span> Полное закрытие всего тела</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ أَرْقِي لِإِغْلَاقِ كُلِّ بَابٍ وَسَدِّ كُلِّ طَرِيقٍ وَقَفْلِ كُلِّ مَنْفَذٍ لِلْجِنِّ فِي جَسَدِي فَلَا يَدْخُلُونَ وَلَا يَنْفُذُونَ وَلَا يَقْتَرِبُونَ</div>
+        <div class="translit">Бисмилляхи-ллязи хуваль-Хаййуль-Каййуму ля та'хузуху синатун ва ля наум, аркий ли-иглаки кулли бабин ва садди кулли тарикин ва кафли кулли манфазин лиль-джинни фи джасадий, фаля йадхулюна ва ля йанфузуна ва ля йактарибун</div>
+        <div class="translation">«С именем Аллаха, Который — Живой, Вечносущий, не овладевает Им ни дремота, ни сон, заклинаю для закрытия каждой двери, заграждения каждого пути и запирания каждого прохода для джиннов в моём теле — чтобы не входили, не проникали и не приближались»</div>
+        <div class="instruction"><strong>7 раз.</strong> ВИДЬ: каждая дверь в теле захлопывается, запирается, запечатывается. Ни одной щели. Свет Аллаха запечатывает каждый проход.</div>
+    </div>
+
+    <!-- ДЕНЬ 4 — ШАГ 7 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">7</span> Ослепление врага от тела</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي جَعَلَ مِنْ بَيْنِ أَيْدِيهِمْ سَدًّا وَمِنْ خَلْفِهِمْ سَدًّا فَأَغْشَاهُمْ فَهُمْ لَا يُبْصِرُونَ أَرْقِي لِسَدِّ كُلِّ مَنْفَذٍ لِلْجِنِّ فِي جَسَدِي وَإِغْشَائِهِمْ عَنْهُ فَلَا يَجِدُونَ إِلَيْهِ سَبِيلًا</div>
+        <div class="translit">Бисмилляхи-ллязи джа'аля мин байни айдихим саддан ва мин хальфихим саддан фа-агшахум фахум ля йубсирун, аркий ли-садди кулли манфазин лиль-джинни фи джасадий ва игшаихим 'анху фаля йаджидуна иляйхи сабилян</div>
+        <div class="translation">«С именем Аллаха, Который воздвиг перед ними преграду и позади них преграду и ослепил их и они не видят, заклинаю для заграждения каждого прохода для джиннов в моём теле и ослепления их от него — чтобы не находили к нему пути»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 4 — ШАГ 8 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">8</span> Мольба, закрепление</div>
+        <div class="instruction">Как в предыдущие дни.</div>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ==================== ДЕНЬ 5 ==================== -->
+    <div class="day-heading" id="day5">
+        ДЕНЬ 5 — ЗАКРЫТИЕ ДВЕРЕЙ ДОМА + ПОЛНАЯ ЧИСТКА ПОМЕЩЕНИЯ
+        <span class="day-num">Очищение и защита дома</span>
+    </div>
+
+    <!-- ДЕНЬ 5 — ШАГ 1 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">1</span> Зарядка аятами Корана</div>
+        <div class="instruction">Как в предыдущие дни.</div>
+    </div>
+
+    <!-- ДЕНЬ 5 — ШАГ 2 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">2</span> Полная чистка помещения — все три этапа</div>
+        <p>Стоя в центре комнаты, охвати всё помещение внутренним взором (закрой глаза, представь комнату целиком), и читай последовательно:</p>
+
+        <p><strong>Этап 1 — Разрушение сихра в помещении:</strong></p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي بَيْتِي مِنْ كُلِّ سِحْرٍ مَخْفِيٍّ وَمَدْفُونٍ وَمَنْثُورٍ وَمُعَلَّقٍ لِيَبْطُلَ وَيَتَلَاشَى</div>
+        <div class="translation">«С именем Аллаха, Который знает сокровенное и явное, заклинаю свой дом от всякого колдовства — скрытого, закопанного, рассыпанного и подвешенного — чтобы стало недействительным и исчезло»</div>
+        <div class="instruction"><strong>7 раз в каждой комнате.</strong></div>
+
+        <p>Затем — чистка конкретных зон (по <strong>3 раза</strong> на каждую):</p>
+
+        <div class="arabic-small">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي عَتَبَةَ بَيْتِي مِنَ السِّحْرِ وَأَثَرِ الْجِنِّ لِيَبْطُلَ وَيَتَلَاشَى</div>
+        <div class="translation">«С именем Аллаха, Который знает сокровенное и явное, заклинаю порог моего дома от колдовства и следов джиннов — чтобы стало недействительным и исчезло» — <strong>3 раза.</strong></div>
+
+        <div class="arabic-small">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي جُدْرَانَ بَيْتِي مِنَ السِّحْرِ وَأَثَرِ الْجِنِّ لِيَبْطُلَ وَيَتَلَاشَى</div>
+        <div class="translation">«…заклинаю стены моего дома…» — <strong>3 раза.</strong></div>
+
+        <div class="arabic-small">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي زَوَايَا بَيْتِي مِنَ السِّحْرِ وَأَثَرِ الْجِنِّ لِيَبْطُلَ وَيَتَلَاشَى</div>
+        <div class="translation">«…заклинаю углы моего дома…» — <strong>3 раза.</strong></div>
+
+        <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+
+        <p><strong>Этап 2 — Изгнание джиннов из помещения:</strong></p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَهُ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ أَرْقِي بَيْتِي لِخُرُوجِ كُلِّ جِنِّيٍّ ظَالِمٍ وَشَيْطَانٍ مَارِدٍ وَعَامِرٍ مُفْسِدٍ مِنْهُ فَلَا يَبْقَى فِيهِ أَحَدٌ مِنْهُمْ</div>
+        <div class="translation">«С именем Аллаха, Которому принадлежит власть над небесами и землёй, заклинаю свой дом для выхода из него каждого джинна-притеснителя, шайтана марида и вредящего обитателя — чтобы не остался в нём ни один из них»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+
+        <hr style="margin: 15px 0; border: none; border-top: 1px solid #ddd;">
+
+        <p><strong>Этап 3 — Снятие сглаза с помещения:</strong></p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي هُوَ نُورُ السَّمَاوَاتِ وَالْأَرْضِ أَرْقِي بَيْتِي مِنَ الْعَيْنِ وَالْحَسَدِ لِتَخْرُجَ عَيْنُ الْحَاسِدِ وَيَعُودَ الْبَرَكَةُ</div>
+        <div class="translation">«С именем Аллаха, Который является Светом небес и земли, заклинаю свой дом от сглаза и зависти — чтобы вышел сглаз завистника и вернулась благодать»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 5 — ШАГ 3 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">3</span> Чистка заряженной водой</div>
+        <p>Возьми чистую воду. Прочитай на неё:</p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي هَذَا الْمَاءَ لِتَطْهِيرِ بَيْتِي مِنْ كُلِّ سِحْرٍ وَعَيْنٍ وَأَثَرِ جِنٍّ فَيَطْهُرُ بِإِذْنِ اللهِ</div>
+        <div class="translit">Бисмилляхи-ллязи йа'лямуль-гайба ваш-шахада, аркий хазаль-маа ли-тат'хири байтий мин кулли сихрин ва 'айнин ва асари джинн фа-йат'хуру би-изниллях</div>
+        <div class="translation">«С именем Аллаха, Который знает сокровенное и явное, заклинаю эту воду для очищения моего дома от всякого колдовства, сглаза и следов джиннов — чтобы очистился с дозволения Аллаха»</div>
+        <div class="instruction"><strong>7 раз.</strong> Затем обрызгай этой водой углы, пороги, стены, окна. Особое внимание — ванная, туалет и кухня.</div>
+    </div>
+
+    <!-- ДЕНЬ 5 — ШАГ 4 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">4</span> Закрытие дверей дома</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَهُ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ أَرْقِي لِإِغْلَاقِ بَيْتِي وَقَفْلِ كُلِّ مَدْخَلٍ وَمَنْفَذٍ وَشَقٍّ فِيهِ عَلَى كُلِّ جِنِّيٍّ فَلَا يَدْخُلُ وَلَا يَسْكُنُ وَلَا يَمُرُّ</div>
+        <div class="translit">Бисмилляхи-ллязи ляху мульку-с-самавати валь-ард, аркий ли-иглаки байтий ва кафли кулли мадхалин ва манфазин ва шаккин фихи 'аля кулли джинниййин фаля йадхулю ва ля йаскуну ва ля йамурр</div>
+        <div class="translation">«С именем Аллаха, Которому принадлежит власть над небесами и землёй, заклинаю для закрытия моего дома и запирания каждого входа, прохода и щели в нём от каждого джинна — чтобы не входил, не поселялся и не проходил»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+
+        <p style="margin-top: 12px;"><strong>Закрытие конкретных зон:</strong></p>
+
+        <p><em>Двери и окна:</em></p>
+        <div class="arabic-small">بِسْمِ اللهِ الَّذِي جَعَلَ مِنْ بَيْنِ أَيْدِيهِمْ سَدًّا فَأَغْشَاهُمْ أَرْقِي لِإِغْلَاقِ أَبْوَابِ بَيْتِي وَنَوَافِذِهِ أَمَامَ الْجِنِّ وَإِغْشَائِهِمْ عَنْهَا</div>
+        <div class="translation">«С именем Аллаха, Который воздвиг преграду и ослепил их, заклинаю для закрытия дверей и окон моего дома перед джиннами и ослепления их от них»</div>
+        <div class="instruction"><strong>3 раза.</strong></div>
+
+        <p><em>Стоки и трубы:</em></p>
+        <div class="arabic-small">بِسْمِ اللهِ الَّذِي جَعَلَ مِنْ بَيْنِ أَيْدِيهِمْ سَدًّا فَأَغْشَاهُمْ أَرْقِي لِإِغْلَاقِ كُلِّ مَجْرَى وَبَالُوعَةٍ فِي بَيْتِي أَمَامَ الْجِنِّ وَإِغْشَائِهِمْ عَنْهَا</div>
+        <div class="translation">«С именем Аллаха, Который воздвиг преграду и ослепил их, заклинаю для закрытия каждого стока и слива в моём доме перед джиннами и ослепления их от них»</div>
+        <div class="instruction"><strong>3 раза.</strong></div>
+
+        <p><em>Углы и тёмные места:</em></p>
+        <div class="arabic-small">بِسْمِ اللهِ الَّذِي هُوَ نُورُ السَّمَاوَاتِ وَالْأَرْضِ أَرْقِي لِإِغْلَاقِ كُلِّ زَاوِيَةٍ وَمَكَانٍ مُظْلِمٍ فِي بَيْتِي أَمَامَ الْجِنِّ وَإِنَارَتِهَا بِنُورِ اللهِ</div>
+        <div class="translation">«С именем Аллаха, Который является Светом небес и земли, заклинаю для закрытия каждого угла и тёмного места в моём доме перед джиннами и освещения их светом Аллаха»</div>
+        <div class="instruction"><strong>3 раза.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 5 — ШАГ 5 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">5</span> Мольба, закрепление</div>
+        <div class="instruction">Как в предыдущие дни.</div>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ==================== ДЕНЬ 6 ==================== -->
+    <div class="day-heading" id="day6">
+        ДЕНЬ 6 — УСТАНОВКА МНОГОСЛОЙНОЙ ЗАЩИТЫ
+        <span class="day-num">Четырёхслойная защита тела и дома</span>
+    </div>
+
+    <!-- ДЕНЬ 6 — ШАГ 1 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">1</span> Зарядка аятами Корана</div>
+        <p>Те же аяты + добавь <strong>Суру аль-Фалякь (113) и Суру ан-Нас (114):</strong></p>
+
+        <div class="arabic">قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۞ مِن شَرِّ مَا خَلَقَ ۞ وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ ۞ وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۞ وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ</div>
+        <div class="translit">Куль а'узу би-раббиль-фалак, мин шарри ма халяк, ва мин шарри гасикин иза вакаб, ва мин шаррин-наффасати филь-'укад, ва мин шарри хасидин иза хасад.</div>
+
+        <div class="arabic">قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۞ مَلِكِ النَّاسِ ۞ إِلَٰهِ النَّاسِ ۞ مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۞ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۞ مِنَ الْجِنَّةِ وَالنَّاسِ</div>
+        <div class="translit">Куль а'узу би-раббин-нас, маликин-нас, иляхин-нас, мин шарриль-васвасиль-ханнас, аллязи йувасвису фи судурин-нас, миналь-джиннати ван-нас.</div>
+
+        <div class="instruction"><strong>По 3 раза в сердце, 3 раза вслух.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 6 — ШАГ 2 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">2</span> Четырёхслойная защита тела от сихра и масса</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي هُوَ خَيْرٌ حَافِظًا أَرْقِي لِحِفْظِ جَسَدِي وَسَدٍّ حَوْلَهُ وَحِجَابٍ عَلَيْهِ وَحِصْنٍ يُحِيطُ بِهِ مِنْ سِحْرِ الْقَتْلِ وَمَسِّ الْجِنِّ وَالْعَيْنِ وَالْحَسَدِ</div>
+        <div class="translit">Бисмилляхи-ллязи хува хайрун хафизан, аркий ли-хифзи джасадий ва саддин хауляху ва хиджабин 'аляйхи ва хиснин йухиту бихи мин сихриль-катли ва массиль-джинни валь-'айни валь-хасад</div>
+        <div class="translation">«С именем Аллаха, Который является лучшим Хранителем, заклинаю для охраны моего тела, и преграды вокруг него, и завесы над ним, и крепости, окружающей его, от колдовства на уничтожение, касания джинна, сглаза и зависти»</div>
+        <div class="instruction"><strong>7 раз.</strong> ВИДЬ: четыре слоя света формируются вокруг тела — охрана, стена, завеса, крепость. Один внутри другого. Непроходимая защита.</div>
+    </div>
+
+    <!-- ДЕНЬ 6 — ШАГ 3 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">3</span> Защита живота (главная поражённая область)</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي هُوَ خَيْرٌ حَافِظًا أَرْقِي لِحِفْظِ بَطْنِي وَسَدٍّ حَوْلَهُ وَحِجَابٍ عَلَيْهِ مِنْ سِحْرِ الْقَتْلِ وَمَسِّ الْجِنِّ</div>
+        <div class="translit">Бисмилляхи-ллязи хува хайрун хафизан, аркий ли-хифзи батний ва саддин хауляху ва хиджабин 'аляйхи мин сихриль-катли ва массиль-джинн</div>
+        <div class="translation">«С именем Аллаха, Который является лучшим Хранителем, заклинаю для охраны моего живота, и преграды вокруг него, и завесы над ним, от колдовства на уничтожение и касания джинна»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 6 — ШАГ 4 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">4</span> Защита нижней части живота</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَا شِفَاءَ إِلَّا شِفَاؤُهُ أَرْقِي لِحِفْظِ أَسْفَلِ بَطْنِي وَسَدٍّ حَوْلَهُ وَحِجَابٍ عَلَيْهِ مِنَ السِّحْرِ وَأَثَرِهِ</div>
+        <div class="translit">Бисмилляхи-ллязи ля шифаа илля шифаух, аркий ли-хифзи асфали батний ва саддин хауляху ва хиджабин 'аляйхи минас-сихри ва асарих</div>
+        <div class="translation">«С именем Аллаха, [при Котором] нет исцеления кроме Его исцеления, заклинаю для охраны нижней части моего живота, и преграды вокруг неё, и завесы над ней, от колдовства и его следов»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 6 — ШАГ 5 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">5</span> Недосягаемость от всех врагов</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَهُ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ أَرْقِي لِأَنْ أَكُونَ بَعِيدَ الْمَنَالِ عَنِ الْجِنِّ وَالسِّحْرِ وَالْعَيْنِ وَالْحَسَدِ</div>
+        <div class="translit">Бисмилляхи-ллязи ляху мульку-с-самавати валь-ард, аркий ли-ан акуна ба'идаль-манали 'аниль-джинни вас-сихри валь-'айни валь-хасад</div>
+        <div class="translation">«С именем Аллаха, Которому принадлежит власть над небесами и землёй, заклинаю чтобы быть недосягаемой для джиннов, колдовства, сглаза и зависти»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 6 — ШАГ 6 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">6</span> Четырёхслойная защита дома</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي هُوَ خَيْرٌ حَافِظًا أَرْقِي لِحِفْظِ بَيْتِي وَسَدٍّ حَوْلَهُ وَحِجَابٍ عَلَيْهِ وَحِصْنٍ يُحِيطُ بِهِ مِنَ السِّحْرِ وَالْجِنِّ وَالْعَيْنِ وَالْحَسَدِ</div>
+        <div class="translit">Бисмилляхи-ллязи хува хайрун хафизан, аркий ли-хифзи байтий ва саддин хауляху ва хиджабин 'аляйхи ва хиснин йухиту бихи минас-сихри валь-джинни валь-'айни валь-хасад</div>
+        <div class="translation">«С именем Аллаха, Который является лучшим Хранителем, заклинаю для охраны моего дома, и преграды вокруг него, и завесы над ним, и крепости, окружающей его, от колдовства, джиннов, сглаза и зависти»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 6 — ШАГ 7 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">7</span> Превращение дома в запретную зону</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَهُ جُنُودُ السَّمَاوَاتِ وَالْأَرْضِ أَرْقِي لِجَعْلِ بَيْتِي حَرَامًا عَلَى كُلِّ جِنِّيٍّ ظَالِمٍ وَكُلِّ شَيْطَانٍ رَجِيمٍ وَكُلِّ سِحْرٍ وَعَيْنٍ وَحَسَدٍ</div>
+        <div class="translit">Бисмилляхи-ллязи ляху джунудус-самавати валь-ард, аркий ли-джа'ли байтий харамян 'аля кулли джинниййин залимин ва кулли шайтанин раджим ва кулли сихрин ва 'айнин ва хасад</div>
+        <div class="translation">«С именем Аллаха, Которому принадлежат воинства небес и земли, заклинаю для превращения моего дома в запретную зону для каждого джинна-притеснителя, каждого шайтана проклятого, всякого колдовства, сглаза и зависти»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 6 — ШАГ 8 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">8</span> Мольба, закрепление</div>
+        <div class="instruction">Как в предыдущие дни.</div>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ==================== ДЕНЬ 7 ==================== -->
+    <div class="day-heading" id="day7">
+        ДЕНЬ 7 — ФИНАЛЬНОЕ ЗАПЕЧАТЫВАНИЕ + ВОЗВРАЩЕНИЕ ЗЛА + ЗАРЯЖАНИЕ ВОДЫ И МАСЛА
+        <span class="day-num">Завершение курса и подготовка поддерживающих средств</span>
+    </div>
+
+    <!-- ДЕНЬ 7 — ШАГ 1 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">1</span> Зарядка аятами Корана</div>
+        <div class="instruction">Все аяты из предыдущих дней. По 3 раза в сердце, 3 раза вслух.</div>
+    </div>
+
+    <!-- ДЕНЬ 7 — ШАГ 2 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">2</span> Комбинированное закрытие тела и дома</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ أَرْقِي لِإِغْلَاقِ كُلِّ بَابٍ وَسَدِّ كُلِّ طَرِيقٍ وَقَفْلِ كُلِّ مَنْفَذٍ لِلْجِنِّ فِي جَسَدِي وَبَيْتِي فَلَا يَدْخُلُونَ وَلَا يَنْفُذُونَ وَلَا يَقْتَرِبُونَ</div>
+        <div class="translation">«С именем Аллаха, Который — Живой, Вечносущий, не овладевает Им ни дремота, ни сон, заклинаю для закрытия каждой двери, заграждения каждого пути и запирания каждого прохода для джиннов в моём теле и моём доме — чтобы не входили, не проникали и не приближались»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 7 — ШАГ 3 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">3</span> Возвращение зла к отправителю</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي رَدَّ الْكَافِرِينَ بِغَيْظِهِمْ أَرْقِي لِرَدِّ كُلِّ سِحْرٍ وَعَيْنٍ وَحَسَدٍ إِلَى صَاحِبِهِ فَيَرْجِعُ إِلَيْهِ بِإِذْنِ اللهِ</div>
+        <div class="translit">Бисмилляхи-ллязи раддаль-кафирина би-гайзихим, аркий ли-радди кулли сихрин ва 'айнин ва хасадин иля сахибихи фа-йарджи'у иляйхи би-изниллях</div>
+        <div class="translation">«С именем Аллаха, Который вернул неверующих с их яростью, заклинаю для возвращения всякого колдовства, сглаза и зависти к их отправителю — чтобы вернулось к нему с дозволения Аллаха»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 7 — ШАГ 4 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">4</span> Заряжание воды для питья (чистка)</div>
+        <p>Возьми чистую воду (лучше всего — воду Замзам, если есть, или обычную чистую воду). Прочитай на неё:</p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي يَعْلَمُ الْغَيْبَ وَالشَّهَادَةَ أَرْقِي هَذَا الْمَاءَ مِنْ سِحْرِ الْقَتْلِ وَالْمَنْعِ لِيَبْطُلَ وَيَتَلَاشَى فِي جَسَدِ مَنْ شَرِبَهُ</div>
+        <div class="translit">Бисмилляхи-ллязи йа'лямуль-гайба ваш-шахада, аркий хазаль-маа мин сихриль-катли валь-ман'и ли-йабтуля ва йаталяша фи джасади ман шарибах</div>
+        <div class="translation">«С именем Аллаха, Который знает сокровенное и явное, заклинаю эту воду от колдовства на уничтожение и преграду — чтобы стало недействительным и исчезло в теле того, кто её выпьет»</div>
+        <div class="instruction"><strong>7 раз.</strong> Пить утром натощак и перед сном — ежедневно после курса.</div>
+    </div>
+
+    <!-- ДЕНЬ 7 — ШАГ 5 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">5</span> Заряжание воды для защиты</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي هُوَ خَيْرٌ حَافِظًا أَرْقِي هَذَا الْمَاءَ لِحِفْظِ مَنْ شَرِبَهُ وَسَدٍّ حَوْلَهُ وَحِجَابٍ عَلَيْهِ مِنْ سِحْرِ الْقَتْلِ وَمَسِّ الْجِنِّ وَالْعَيْنِ</div>
+        <div class="translit">Бисмилляхи-ллязи хува хайрун хафизан, аркий хазаль-маа ли-хифзи ман шарибаху ва саддин хауляху ва хиджабин 'аляйхи мин сихриль-катли ва массиль-джинни валь-'айн</div>
+        <div class="translation">«С именем Аллаха, Который является лучшим Хранителем, заклинаю эту воду для защиты того, кто её выпьет, и преграды вокруг него, и завесы над ним, от колдовства на уничтожение, касания джинна и сглаза»</div>
+        <div class="instruction"><strong>7 раз.</strong> Пить днём — ежедневно после курса.</div>
+    </div>
+
+    <!-- ДЕНЬ 7 — ШАГ 6 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">6</span> Заряжание масла для чистки</div>
+        <p>Возьми оливковое масло (или масло чёрного тмина). Прочитай на него:</p>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي لَهُ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ أَرْقِي هَذَا الزَّيْتَ مِنْ مَسِّ الْجِنِّ وَأَثَرِ السِّحْرِ لِيَخْرُجَ مِنْ جِلْدِ مَنْ دَهَنَهُ وَلَا يَعُودَ</div>
+        <div class="translit">Бисмилляхи-ллязи ляху мульку-с-самавати валь-ард, аркий хазаз-зайта мин массиль-джинни ва асарис-сихри ли-йахруджа мин джильди ман даханаху ва ля йа'уд</div>
+        <div class="translation">«С именем Аллаха, Которому принадлежит власть над небесами и землёй, заклинаю это масло от касания джинна и следа колдовства — чтобы вышло из кожи того, кто им намажется, и не возвращалось»</div>
+        <div class="instruction"><strong>7 раз.</strong> Мазать область живота перед сном — ежедневно после курса.</div>
+    </div>
+
+    <!-- ДЕНЬ 7 — ШАГ 7 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">7</span> Заряжание масла для защиты</div>
+        <div class="arabic">بِسْمِ اللهِ الَّذِي جَعَلَ سَدًّا أَرْقِي هَذَا الزَّيْتَ لِسَدٍّ عَلَى جِلْدِ مَنْ دَهَنَهُ وَحِجَابٍ عَلَيْهِ مِنَ السِّحْرِ وَمَسِّ الْجِنِّ</div>
+        <div class="translit">Бисмилляхи-ллязи джа'аля саддан, аркий хазаз-зайта ли-саддин 'аля джильди ман даханаху ва хиджабин 'аляйхи минас-сихри ва массиль-джинн</div>
+        <div class="translation">«С именем Аллаха, Который воздвиг преграду, заклинаю это масло для преграды на коже того, кто им намажется, и завесы над ним, от колдовства и касания джинна»</div>
+        <div class="instruction"><strong>7 раз.</strong> Мазать всё тело утром — ежедневно после курса.</div>
+    </div>
+
+    <!-- ДЕНЬ 7 — ШАГ 8 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">8</span> Мольба</div>
+        <div class="arabic">اللَّهُمَّ احْفَظْنِي مِنْ كُلِّ سِحْرٍ وَمَسٍّ وَعَيْنٍ وَحَسَدٍ وَاجْعَلْنِي فِي حِصْنِكَ وَأَمَانِكَ</div>
+        <div class="translit">Аллахумма-хфазний мин кулли сихрин ва массин ва 'айнин ва хасадин вадж'альний фи хисника ва аманик</div>
+        <div class="translation">«О Аллах, защити меня от всякого колдовства, касания джинна, сглаза и зависти, и помести меня в Свою крепость и Свою безопасность»</div>
+        <div class="instruction"><strong>7 раз.</strong></div>
+    </div>
+
+    <!-- ДЕНЬ 7 — ШАГ 9 -->
+    <div class="step">
+        <div class="step-title"><span class="step-num">9</span> Закрепление</div>
+        <div class="arabic">بِسْمِ اللهِ أَرْقِينِي اللهُ يَشْفِينِي</div>
+        <div class="translit">Бисмилляхи аркыний Аллаху яшфиний</div>
+        <div class="instruction"><strong>30 раз</strong> (в последний день — 30, не 20).</div>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- ==================== ПОДДЕРЖКА ==================== -->
+    <div class="day-heading" id="maint">
+        ПОДДЕРЖИВАЮЩАЯ ПРОГРАММА ПОСЛЕ КУРСА
+        <span class="day-num">Ежедневная защита — каждое утро и вечер</span>
+    </div>
+
+    <div class="intro">
+        <p>После завершения 7 дней — каждый день, утром и вечером:</p>
+    </div>
+
+    <div class="maintenance">
+        <h3>☀️ Утро (после Фаджра)</h3>
+        <ol>
+            <li>Аятуль-Курси — <strong>1 раз.</strong></li>
+            <li>Суры аль-Фалякь и ан-Нас — <strong>по 3 раза.</strong></li>
+            <li>Четырёхслойная защита тела — <strong>3 раза.</strong></li>
+            <li>Выпить заряженную воду для защиты.</li>
+            <li>Намазать тело заряженным маслом для защиты.</li>
+        </ol>
+    </div>
+
+    <div class="maintenance">
+        <h3>🌙 Вечер (перед сном)</h3>
+        <ol>
+            <li>Аятуль-Курси — <strong>1 раз.</strong></li>
+            <li>Суры аль-Фалякь и ан-Нас — <strong>по 3 раза.</strong></li>
+            <li>Четырёхслойная защита тела — <strong>3 раза.</strong></li>
+            <li>Выпить заряженную воду для чистки.</li>
+            <li>Намазать живот заряженным маслом для чистки.</li>
+        </ol>
+    </div>
+
+    <div class="divider">✦ ✦ ✦</div>
+
+    <!-- CLOSING -->
+    <div class="closing">
+        <p>Сестра, если план получится тяжёлым физически из-за слабости — можешь разбить каждый день на два сеанса (утром и вечером), чтобы не перегружаться. Делай перерывы между шагами. Пей воду. Отдыхай. Твоя сила — в <strong>якыне</strong> (убеждённости), а не в количестве повторений за один присет.</p>
+
+        <div class="alert-danger" style="margin: 15px 0; text-align: left;">
+            <strong>Обязательно держи меня в курсе состояния.</strong> Если начнутся резкие обострения или приступы — сразу пиши. Обострения (тошнота, усиление боли, зевота, слёзы, потоотделение, ощущение выхода чего-то из тела) — это <strong>ХОРОШИЕ</strong> признаки. Это значит, что рукья работает и недуг реагирует. Не останавливайся. Но если что-то вызывает сильное беспокойство — пиши сразу, и мы скорректируем план.
+        </div>
+
+        <div class="dua">
+            Да исцелит тебя Аллах полным исцелением, которое не оставит болезни. Амин.
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Font size control
+    let currentScale = 100;
+
+    function changeFontSize(direction) {
+        currentScale += direction * 10;
+        if (currentScale < 70) currentScale = 70;
+        if (currentScale > 160) currentScale = 160;
+
+        document.documentElement.style.setProperty('--arabic-size', (1.55 * currentScale / 100) + 'em');
+        document.documentElement.style.setProperty('--translit-size', (1.05 * currentScale / 100) + 'em');
+        document.documentElement.style.setProperty('--body-size', (1 * currentScale / 100) + 'em');
+        document.documentElement.style.setProperty('--heading-size', (1.3 * currentScale / 100) + 'em');
+        document.documentElement.style.setProperty('--step-heading', (1.15 * currentScale / 100) + 'em');
+
+        localStorage.setItem('ruqyaFontSize', currentScale);
+    }
+
+    // Restore saved font size
+    window.addEventListener('DOMContentLoaded', function() {
+        const saved = localStorage.getItem('ruqyaFontSize');
+        if (saved) {
+            currentScale = parseInt(saved);
+            document.documentElement.style.setProperty('--arabic-size', (1.55 * currentScale / 100) + 'em');
+            document.documentElement.style.setProperty('--translit-size', (1.05 * currentScale / 100) + 'em');
+            document.documentElement.style.setProperty('--body-size', (1 * currentScale / 100) + 'em');
+            document.documentElement.style.setProperty('--heading-size', (1.3 * currentScale / 100) + 'em');
+            document.documentElement.style.setProperty('--step-heading', (1.15 * currentScale / 100) + 'em');
+        }
+    });
+
+    // Scroll to top button
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+            scrollBtn.style.display = 'flex';
+        } else {
+            scrollBtn.style.display = 'none';
+        }
+    });
+
+    // Smooth scroll for nav buttons
+    document.querySelectorAll('.nav-btn').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const offset = 70;
+                const top = target.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
