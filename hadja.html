@@ -1,47 +1,51 @@
 <!DOCTYPE html>
-<html lang="uz" data-theme="light">
+<html lang="uz" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#f8f9fa">
-    <title>Ruhiy Holat Tahlili va Amaliy Yechimlar</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0f172a">
+    <title>Tezkor Yordam va Amaliyot</title>
     <style>
+        /* =========================================
+           DIZAYN TIZIMI VA O'ZGARUVCHILAR (THEMES)
+           ========================================= */
         :root {
-            --bg-primary: #f8f9fa;
-            --bg-secondary: #ffffff;
-            --text-primary: #1a1a2e;
-            --text-secondary: #4a4a68;
-            --accent: #6c5ce7;
-            --accent-light: #a29bfe;
-            --danger: #e17055;
-            --success: #00b894;
-            --shadow: 0 8px 24px rgba(108, 92, 231, 0.1);
+            /* Yorug' tema (Light) */
+            --bg-primary: #f0f4f8;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent: #6366f1; /* Indigo */
+            --accent-soft: #e0e7ff;
+            --border: rgba(0, 0, 0, 0.06);
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --font-arabic: 'Traditional Arabic', 'Amiri', serif;
             --radius: 16px;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         [data-theme="dark"] {
-            --bg-primary: #0f0f1a;
-            --bg-secondary: #1a1a2e;
-            --text-primary: #f0f0ff;
-            --text-secondary: #b0b0cc;
-            --accent: #a29bfe;
-            --accent-light: #6c5ce7;
+            /* Qorong'u tema (Dark) */
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #818cf8;
+            --accent-soft: rgba(129, 140, 248, 0.15);
+            --border: rgba(255, 255, 255, 0.08);
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        /* =========================================
+           ASOSIY STILLAR (RESET & BASE)
+           ========================================= */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-main);
             background-color: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
@@ -50,32 +54,40 @@
         }
 
         .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 20px 16px;
         }
 
+        h1, h2, h3 { font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+        h1 { font-size: 1.5rem; text-align: center; }
+        h2 { font-size: 1.25rem; color: var(--accent); }
+        p { margin-bottom: 16px; color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* =========================================
+           KOMPONENTLAR
+           ========================================= */
         /* Header */
         .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(var(--bg-card), 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            padding: 16px;
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            margin: -20px -16px 24px -16px;
         }
-
-        .header h1 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
+        [data-theme="dark"] .header { background: rgba(30, 41, 59, 0.85); }
+        [data-theme="light"] .header { background: rgba(255, 255, 255, 0.85); }
 
         .theme-toggle {
-            background: var(--bg-primary);
-            border: 1px solid var(--accent-light);
+            background: var(--accent-soft);
+            border: 1px solid var(--border);
             color: var(--accent);
             width: 44px;
             height: 44px;
@@ -87,321 +99,366 @@
             font-size: 1.2rem;
             transition: var(--transition);
         }
-
-        .theme-toggle:active {
-            transform: scale(0.9);
-        }
+        .theme-toggle:active { transform: scale(0.9); }
 
         /* Cards */
         .card {
-            background: var(--bg-secondary);
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            border-left: 4px solid var(--accent);
-            transition: var(--transition);
-        }
-
-        .card h2 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card p, .card li {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin-bottom: 10px;
-        }
-
-        .card ul {
-            padding-left: 20px;
-        }
-
-        .highlight {
-            background: rgba(108, 92, 231, 0.1);
-            color: var(--accent);
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-
-        /* Practice Section */
-        .practice-section {
-            margin-top: 30px;
-        }
-
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-
-        .step-card {
-            background: var(--bg-secondary);
+            background: var(--bg-card);
             border-radius: var(--radius);
             padding: 20px;
             margin-bottom: 16px;
+            border: 1px solid var(--border);
             box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
+            transition: var(--transition);
         }
 
-        .step-number {
+        .empathy-card {
+            border-left: 4px solid var(--accent);
+            background: var(--accent-soft);
+        }
+        .empathy-card p { color: var(--text-primary); margin-bottom: 0; font-weight: 500; }
+
+        /* Analysis List */
+        .analysis-list { list-style: none; }
+        .analysis-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .analysis-list li::before {
+            content: '•';
             position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 50px;
-            height: 50px;
+            left: 8px;
+            color: var(--accent);
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+        .analysis-list strong { color: var(--text-primary); }
+
+        /* Accordion Steps */
+        .step {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .step-header {
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .step-header:active { background: var(--accent-soft); }
+        .step-icon {
+            width: 32px;
+            height: 32px;
             background: var(--accent);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-            opacity: 0.2;
-        }
-
-        .step-title {
-            font-weight: 600;
-            font-size: 1.05rem;
-            margin-bottom: 12px;
-            color: var(--accent);
-        }
-
-        .step-action {
-            background: var(--bg-primary);
-            padding: 12px;
-            border-radius: 12px;
-            margin: 12px 0;
             font-size: 0.9rem;
-            border: 1px dashed var(--accent-light);
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .step-title-wrap { display: flex; align-items: center; flex: 1; }
+        .chevron {
+            transition: transform 0.3s ease;
+            color: var(--text-secondary);
+        }
+        .step.active .chevron { transform: rotate(180deg); }
+        .step.active { border-color: var(--accent); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15); }
+
+        .step-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 20px;
+        }
+        .step.active .step-content {
+            max-height: 1000px; /* Yetarli katta qiymat */
+            padding: 0 20px 20px 20px;
+        }
+
+        .mini-steps {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+        .mini-steps li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            list-style-type: none;
+            position: relative;
+            padding-left: 20px;
+        }
+        .mini-steps li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
         }
 
         /* Dua Box */
         .dua-box {
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            color: white;
-            padding: 20px;
-            border-radius: var(--radius);
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
             margin: 16px 0;
         }
-
         .dua-arabic {
-            font-family: 'Amiri', serif;
+            font-family: var(--font-arabic);
             font-size: 1.4rem;
-            line-height: 1.8;
-            margin-bottom: 12px;
             direction: rtl;
-        }
-
-        .dua-translit {
-            font-size: 0.9rem;
-            font-style: italic;
-            opacity: 0.9;
+            color: var(--text-primary);
             margin-bottom: 8px;
+            line-height: 1.6;
         }
-
-        .dua-meaning {
+        .dua-translit {
             font-size: 0.85rem;
-            opacity: 0.8;
-        }
-
-        /* Button */
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
+            color: var(--accent);
             font-weight: 600;
-            text-align: center;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: var(--transition);
-            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+            margin-bottom: 4px;
+        }
+        .dua-meaning {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-style: italic;
         }
 
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .warning-box {
-            background: rgba(225, 112, 85, 0.1);
-            border-left: 4px solid var(--danger);
-            padding: 16px;
-            border-radius: 8px;
-            margin-top: 20px;
+        .niyat-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid var(--success);
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
             font-size: 0.9rem;
-            color: var(--danger);
+            color: var(--text-primary);
+            margin-top: 12px;
         }
 
-        /* Animations */
+        /* Warning Box */
+        .warning-card {
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            background: rgba(245, 158, 11, 0.05);
+        }
+        .warning-card h2 { color: var(--warning); font-size: 1.1rem; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .footer strong { color: var(--accent); }
+
+        /* Animation */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .card, .step { animation: fadeIn 0.5s ease forwards; }
+        .step:nth-child(2) { animation-delay: 0.1s; }
+        .step:nth-child(3) { animation-delay: 0.2s; }
+        .step:nth-child(4) { animation-delay: 0.3s; }
+        .step:nth-child(5) { animation-delay: 0.4s; }
 
-        .card, .step-card {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Header -->
     <div class="header">
-        <h1>🌿 Holat Tahlili va Yechim</h1>
-        <button class="theme-toggle" id="themeToggle" aria-label="Mavzuni o'zgartirish">🌙</button>
-    </div>
-
-    <!-- Analysis Section -->
-    <div class="card">
-        <h2>🔍 Sizning holatingiz tahlili</h2>
-        <p>Siz tasvirlagan belgilar klassik <span class="highlight">psixosomatik ziqillash</span> va to'planib qolgan his-tuyg'ularning tana orqali "qichqirig'i"dir. Bu zaiflik emas, bu tanangizning yordam so'rov signalidir.</p>
-        <ul>
-            <li><strong>Tomoqdagi "tosh" va dimlanish:</strong> Bu aytilmagan so'zlar, yutilgan g'azab yoki to'kilolmagan ko'z yoshlarining tana ichida qotib qolgan energiyasi (Globus sensatsiyasi).</li>
-            <li><strong>Bosh va butun tana og'rig'i:</strong> Doimiy ichki kuchlanish mushaklarni qotirib qo'yadi, bu esa migren va toliqishga olib keladi.</li>
-            <li><strong>Hammadan qochish va sindirish xohishi:</strong> Ruhiyatingiz hozirgi muhitda "siqilayotgani" va xavfsiz, erkin makon qidirayotganining belgisi.</li>
-            <li><strong>Yig'lagi kelishi:</strong> Bu eng tabiiy va kuchli tozalanish mexanizmi. Buni to'xtatmang.</li>
-        </ul>
-    </div>
-
-    <!-- Practice Section -->
-    <div class="practice-section">
-        <h2 class="section-title">🤲 Amaliy Tozalash Protokoli</h2>
-        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 20px; font-size: 0.9rem;">
-            Bu mashqlarni ketma-ket, shoshilmasdan bajaring. Har bir qadamdan keyin o'z holatingizni kuzating.
-        </p>
-
-        <!-- Step 1 -->
-        <div class="step-card">
-            <div class="step-number">1</div>
-            <div class="step-title">🌬️ Nafas va Yer bilan bog'lanish (Zazemleniye)</div>
-            <p>Siqilish paytida miyaga kislorod yetishmaydi va vahima kuchayadi. Avval tizimni tinchlantiramiz.</p>
-            <div class="step-action">
-                <strong>Qanday qilinadi:</strong><br>
-                1. Qulay o'tiring yoki yoting.<br>
-                2. Burun orqali sekin <strong>4 soniya</strong> nafas oling.<br>
-                3. Nafasni <strong>2 soniya</strong> ushlab turing.<br>
-                4. Og'iz orqali, shamni o'chirayotgandek sekin <strong>6 soniya</strong> chiqaring.<br>
-                5. Buni 5 marta takrorlang.
-            </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="step-card">
-            <div class="step-number">2</div>
-            <div class="step-title">🗣️ Tomoqdagi "tosh"ni eritish</div>
-            <p>To'planib qolgan energiyaga chiqish yo'li berishimiz kerak. Yig'lashni to'xtatmang, bu davolanish jarayoni.</p>
-            <div class="step-action">
-                <strong>Qanday qilinadi:</strong><br>
-                1. Kaftlaringizni bir-biriga qattiq ishqalab, qizigunchaq isiting.<br>
-                2. Issiq kaftlarni bo'yningiz oldi va tomoq qismiga qo'ying.<br>
-                3. Sekin-asta tomoqni tepadan pastga qarab silang.<br>
-                4. Ichingizdan yoki baland ovozda: <em>"Men bu og'irlikni chiqarib yuboryapman, men o'zimni xavfsiz his qilaman"</em> deb takrorlang.<br>
-                5. Yig'ingiz kelsa, bemalol yig'lang. Bu "tosh"ni eritadi.
-            </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="step-card">
-            <div class="step-number">3</div>
-            <div class="step-title">🛡️ Ruhiy Tozalash (Duo va Niyyat)</div>
-            <p>Jismoniy harakatni ruhiy so'z bilan mustahkamlaymiz. Bu qotib qolgan manfiy energiyani (vasvasa va g'amni) haydash uchundir.</p>
-            
-            <div class="dua-box">
-                <div class="dua-arabic">بِسْمِ اللَّهِ أَرْقِي مِنَ الْهَمِّ وَالْحَزَنِ</div>
-                <div class="dua-translit">Bismillahi arqi min al-hammi val-hazan</div>
-                <div class="dua-meaning">Allohning ismi bilan men g'am-qayg'u va siqilishdan panoh so'rayman</div>
-            </div>
-            
-            <div class="step-action">
-                <strong>Qo'shimcha harakat:</strong> Duoni o'qiyotganda, tomoqdagi va ko'krakdagi og'riq ko'k tutun bo'lib tanangizdan chiqib ketayotganini tasavvur qiling.
-            </div>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="step-card">
-            <div class="step-number">4</div>
-            <div class="step-title">🚶‍♀️ Xavfsiz "Qochish" va Harakat</div>
-            <p>Tanangiz ko'chaga chiqishni so'rayapti. Bunga qarshilik qilmang, lekin buni ongli ravishda qiling.</p>
-            <div class="step-action">
-                <strong>Qanday qilinadi:</strong><br>
-                1. Uyingizdan chiqing, lekin maqsadsiz emas. Yaqin atrofdagi bog'ga yoki tinch joyga boring.<br>
-                2. Yurayotganda qadamlaringizga e'tibor bering. Har bir qadamda "Men ozod bo'lyapman" deb o'ylang.<br>
-                3. Qo'llaringizni erkin siltang, bu yelkadagi va orqadagi kuchlanishni (siqilishni) tushiradi.<br>
-                4. Uyga qaytgach, iliq dush qabul qiling. Suv barcha qolgan og'irliklarni yuvib ketadi.
-            </div>
-        </div>
-
-        <div class="warning-box">
-            ⚠️ <strong>Muhim eslatma:</strong> Agar bu holat 2 haftadan ortiq davom etsa, yoki o'zingizga zarar yetkazish xohishi kuchaysa, bu shunchaki charchoq emas, balki professional psixolog yoki shifokor ko'magini talab qiladigan holat bo'lishi mumkin. Yordam so'rash – bu jasorat belgisidir.
-        </div>
-
-        <button class="btn" onclick="alert('Siz yolg\'iz emassiz. Bu holat vaqtinchalik. O\'zingizga mehribon bo\'ling va amaliyotni boshlang. 🌿')">
-            Men tayyorman, boshladim
+        <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-primary);">Amaliyot</div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Mavzuni o'zgartirish">
+            <span id="themeIcon">☀️</span>
         </button>
     </div>
 
-    <div style="text-align: center; margin-top: 40px; color: var(--text-secondary); font-size: 0.8rem;">
-        <p>Usul: "Osobenniy" psixosomatik va ruhiy tozalash kursi asosida</p>
-        <p>Tabib Abu Muhammad</p>
+    <div class="container">
+        
+        <!-- Hamdardlik xabari -->
+        <div class="card empathy-card">
+            <p>Sizning holatingiz – bu zaiflik emas. Bu sizning tanangiz va ruhingiz "yetdi, endi to'xtash va tozalanish kerak" deb berayotgan tabiiy signalidir. Yig'lagingiz kelsa, yig'lang. Bu ichingizdagi zaharni chiqaradi. Siz yolg'iz emassiz, bu holat o'tib ketadi.</p>
+        </div>
+
+        <!-- Holat tahlili -->
+        <div class="card">
+            <h2>🔍 Holatingizning sababi</h2>
+            <ul class="analysis-list">
+                <li><strong>Tomog'dagi tiqilish:</strong> Aytilmagan so'zlar, yutilgan xafagarchilik va o'z fikrini bildira olmaslik.</li>
+                <li><strong>Ko'krakdagi "tosh":</strong> Chuqur xafagarchilik va yechilmagan gina diafragmada muzlab qolgani.</li>
+                <li><strong>Bosh og'rig'i va jahldorlik:</strong> Bostirilgan g'azab va nazoratni yo'qotish qo'rquvi.</li>
+                <li><strong>Uydan qochish istagi:</strong> Asab tizimi chegaralari buzilganini his qilib, "tinchlik kerak" deb signal bermoqda.</li>
+            </ul>
+        </div>
+
+        <!-- Amaliy qadamlar -->
+        <h2 style="text-align: center; margin: 24px 0 16px;">🤲 4 Qadamli Tezkor Yordam</h2>
+
+        <!-- Qadam 1 -->
+        <div class="step" onclick="toggleStep(this)">
+            <div class="step-header">
+                <div class="step-title-wrap">
+                    <div class="step-icon">1</div>
+                    <span>Zudlik bilan asab tizimini tinchlantirish</span>
+                </div>
+                <span class="chevron">▼</span>
+            </div>
+            <div class="step-content">
+                <p>"Ko'chaga chiqqim kelyapti" degan instinktingiz to'g'ri. Uni to'xtatib qo'ymang, lekin xavfsiz qiling.</p>
+                <ul class="mini-steps">
+                    <li>Iliq kiyim olib, 10-15 daqiqa yolg'iz, tinch joyda (ko'chada yoki deraza oldida) yuring.</li>
+                    <li><strong>4-2-6 Nafas olish:</strong> Burun orqali 4 sekund nafas oling → 2 sekund ushlab turing → Og'iz orqali 6 sekund sekin chiqaring.</li>
+                    <li>Bu yurakdagi "tosh" hissini yumshatadi va asab tizimini "zazemlit" qiladi.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Qadam 2 -->
+        <div class="step" onclick="toggleStep(this)">
+            <div class="step-header">
+                <div class="step-title-wrap">
+                    <div class="step-icon">2</div>
+                    <span>Jismoniy bloklarni ochish (Tomog' va Ko'krak)</span>
+                </div>
+                <span class="chevron">▼</span>
+            </div>
+            <div class="step-content">
+                <p>Uyga qaytgach yoki xonada yolg'iz qolgach, quyidagi harakatlarni bajaring:</p>
+                <ul class="mini-steps">
+                    <li><strong>Tomog' uchun:</strong> Kaftlaringizni bir-biriga ishqalab qizitiring. Tomoqdan bo'yinbog'igacha bo'lgan joyni yengil, lekin ishonch bilan ishqalang. Yutqunayotganda "tiqilgan narsa"ni pastga tushirayotganingizni tasavvur qiling.</li>
+                    <li><strong>Ko'krak uchun:</strong> Kaftlaringiz yoki mushtlaringiz bilan ko'krak qafasining old qismini (to'sh suyagi atrofini) 1-2 daqiqa ritmik qoqib chiqing. Bu o'pkadagi og'irlikni tarqatadi.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Qadam 3 -->
+        <div class="step" onclick="toggleStep(this)">
+            <div class="step-header">
+                <div class="step-title-wrap">
+                    <div class="step-icon">3</div>
+                    <span>Ruhiy tozalash va Duolar</span>
+                </div>
+                <span class="chevron">▼</span>
+            </div>
+            <div class="step-content">
+                <p>Har bir og'riq yoki siqilish paydo bo'lganda, chuqur nafas chiqarayotib quyidagi kalimalarni o'qing:</p>
+                
+                <div class="dua-box">
+                    <div class="dua-arabic">بِسْمِ اللَّهِ أَرْقِي مِنَ الْغَضَبِ</div>
+                    <div class="dua-translit">Bismillahi arqiy minal-g'adab</div>
+                    <div class="dua-meaning">Bosh og'rig'i va jahldorlik uchun: "Alloh nomi bilan g'azabdan shifo so'rayman"</div>
+                </div>
+
+                <div class="dua-box">
+                    <div class="dua-arabic">بِسْمِ اللَّهِ أَرْقِي مِنَ الْحُزْنِ</div>
+                    <div class="dua-translit">Bismillahi arqiy minal-huzn</div>
+                    <div class="dua-meaning">Ko'krakdagi tosh va xafagarchilik uchun: "Alloh nomi bilan qayg'udan shifo so'rayman"</div>
+                </div>
+
+                <div class="dua-box">
+                    <div class="dua-arabic">اللَّهُمَّ أَذْهِبْ عَنِّي مَا أَجِدُ فِي هَذَا الْمَوْضِعِ</div>
+                    <div class="dua-translit">Allohumma azhib 'anniy ma ajidu fi hazal-mavzi'</div>
+                    <div class="dua-meaning">Tomog'dagi tiqilish uchun: "Ey Alloh, shu joyda his qilayotgan narsamni mendan ketqiz"</div>
+                </div>
+
+                <div class="niyat-box">
+                    💡 <strong>Niyat:</strong> "Ey Alloh, bu dardni va uni keltirib chiqargan yomon hissiyotni mendan uzoq qil, menga tinchlik ato et".
+                </div>
+            </div>
+        </div>
+
+        <!-- Qadam 4 -->
+        <div class="step" onclick="toggleStep(this)">
+            <div class="step-header">
+                <div class="step-title-wrap">
+                    <div class="step-icon">4</div>
+                    <span>Chegaralarni himoya qilish (Ruxsat berish)</span>
+                </div>
+                <span class="chevron">▼</span>
+            </div>
+            <div class="step-content">
+                <p>Sizga "uydagilarning gaplari yoqmayapti" degan his – bu ruhingizning hujum ostida ekanligini bildiradi. O'zingizga ruxsat bering:</p>
+                <ul class="mini-steps">
+                    <li>Hozircha hech kim bilan bahslashmang va javob bermang.</li>
+                    <li>Shunchaki: <em>"Hozir gaplashgim kelmayapti, dam olishim kerak"</em> deb, xonangizda yolg'iz qoling.</li>
+                    <li>O'zingizga shunday deying: <em>"Bu meniki emas, men bu og'irlikni o'zimga olmayman"</em> deb, kaftlaringizni tashqariga qarab silkitib qo'ying (straxivanie).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Ogohlantirish -->
+        <div class="card warning-card">
+            <h2>⚠️ Muhim ogohlantirish</h2>
+            <p style="margin-bottom: 0;">Agar ko'krakdagi "o'ynash" o'tkir, sanchib og'riydigan holatga aylansa, nafas qisilishi kuchaysa yoki bosh og'rig'i ko'rish qobiliyatini xira qilsa, darhol shifokorga murojaat qiling. Ushbu metod ruhiy va asab tizimidagi bloklarni ochadi, lekin o'tkir tibbiy muammolarni almashtirmaydi.</p>
+        </div>
+
+        <div class="footer">
+            <p>Hozir faqat o'zingizni va o'z tinchligingizni o'ylang.<br>Boshqa hamma narsa keyin.</p>
+            <p><strong>"O'ziga xos" (Особенный) kursi</strong><br>Leakar Abu Muhammad</p>
+        </div>
+
     </div>
-</div>
 
-<script>
-    // Theme Toggle Logic
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
-    
-    // Check local storage or system preference
-    const currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    html.setAttribute('data-theme', currentTheme);
-    updateIcon(currentTheme);
+    <script>
+        // Mavzuni boshqarish (Theme Toggle)
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const html = document.documentElement;
 
-    themeToggle.addEventListener('click', () => {
-        const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-        html.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateIcon(newTheme);
-    });
+        // Saqlangan mavzuni yuklash
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', savedTheme);
+        updateIcon(savedTheme);
 
-    function updateIcon(theme) {
-        themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'light' ? '#f8f9fa' : '#0f0f1a');
-    }
-
-    // Simple smooth reveal on scroll
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = 1;
-                entry.target.style.transform = 'translateY(0)';
-            }
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
         });
-    });
 
-    document.querySelectorAll('.step-card').forEach((el) => {
-        el.style.opacity = 0;
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'all 0.6s ease-out';
-        observer.observe(el);
-    });
-</script>
+        function updateIcon(theme) {
+            themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            // Meta theme-color ni yangilash
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'dark' ? '#0f172a' : '#f0f4f8');
+        }
 
+        // Akkordeon mantiqi (Step Toggle)
+        function toggleStep(element) {
+            // Boshqa ochiq qadamlarni yopish (ixtiyoriy, hozir faqat bosilganini ochamiz)
+            const isActive = element.classList.contains('active');
+            
+            // Hamma qadamlarni yopish
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Agar bosilgan qadam oldin yopiq bo'lsa, uni ochamiz
+            if (!isActive) {
+                element.classList.add('active');
+            }
+        }
+
+        // Sahifa yuklanganda birinchi qadamni ochib qo'yish (foydalanuvchiga yo'l ko'rsatish uchun)
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.step').classList.add('active');
+        });
+    </script>
 </body>
 </html>
