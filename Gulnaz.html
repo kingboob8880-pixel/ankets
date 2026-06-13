@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>План лечения: Сестра Гульназа | Практик Абу Мухаммад</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --base-font-size: 16px;
+            --primary-color: #0f5132; /* Изумрудный */
+            --accent-color: #c5a028; /* Золотой */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --text-light: #5a6c7d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--base-font-size);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: font-size 0.3s ease;
+        }
+
+        /* Header & Controls */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #146c43 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8em;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 0.95em;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+
+        .btn-control {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            font-size: 0.9em;
+        }
+
+        .btn-control:hover {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            color: var(--primary-color);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Warning Banner */
+        .warning-banner {
+            background-color: #fff3cd;
+            border-left: 5px solid var(--accent-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            color: #856404;
+        }
+
+        .warning-banner h3 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            font-size: 1.3em;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: var(--text-light);
+            margin-bottom: 1.2rem;
+        }
+
+        .btn-open {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-open:hover {
+            background-color: #0a3d25;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 12px;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.4em;
+            margin: 0;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8em;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0 5px;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* Arabic Text Styling */
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: 1.6em;
+            line-height: 2;
+            text-align: right;
+            direction: rtl;
+            color: var(--primary-color);
+            background: #f0fdf4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-right: 4px solid var(--accent-color);
+            margin: 1.5rem 0;
+        }
+
+        .transliteration {
+            font-style: italic;
+            color: #5a6c7d;
+            margin-bottom: 0.5rem;
+            font-size: 0.95em;
+        }
+
+        .translation {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .instruction-block {
+            background: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .instruction-block h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            font-size: 1.1em;
+        }
+
+        .instruction-block ul {
+            padding-left: 1.2rem;
+        }
+
+        .instruction-block li {
+            margin-bottom: 0.6rem;
+            color: var(--text-light);
+        }
+
+        .highlight {
+            color: #d32f2f;
+            font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .arabic-text {
+                font-size: 1.4em;
+            }
+            .modal-body {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>План исцеления (Рукья)</h1>
+    <p>Для сестры Гульназы | Составил: практик Абу Мухаммад</p>
+    <div class="controls">
+        <button class="btn-control" onclick="changeFontSize(-1)">A-</button>
+        <button class="btn-control" onclick="resetFontSize()">A</button>
+        <button class="btn-control" onclick="changeFontSize(1)">A+</button>
+    </div>
+</header>
+
+<div class="container">
+    
+    <div class="warning-banner">
+        <h3>⚠️ Важнейшее наставление перед началом</h3>
+        <p>Сестра моя, прежде чем ты начнешь, знай: ты не борешься с этим мужчиной или той женщиной. Ты ведешь борьбу с шайтаном и колдовством, которые ослепили его сердце. Твоя сила — в твоем якыне (убежденности). Когда ты читаешь эти слова, ты должна внутренним взором видеть, как черные, грязные путы, обвивающие разум и сердце твоего мужа, лопаются, сгорают и рассыпаются в прах. Не читай это со злостью, читай с твердой уверенностью воина, который по приказу своего Господа очищает территорию от скверны.</p>
+    </div>
+
+    <div class="card">
+        <h2>📸 Шаг 1. Заклинание на фотографию мужа</h2>
+        <p>Прицельное воздействие на разум и сердце для разрушения колдовства на разлуку и снятия агрессии.</p>
+        <button class="btn-open" onclick="openModal('modal-1')">Открыть подробную инструкцию →</button>
+    </div>
+
+    <div class="card">
+        <h2>💧 Шаг 2. Заклинание на воду (с погружением)</h2>
+        <p>Создание мощного очищающего агента, который разрушит связь колдовства с физическим носителем.</p>
+        <button class="btn-open" onclick="openModal('modal-2')">Открыть подробную инструкцию →</button>
+    </div>
+
+    <div class="card">
+        <h2>👕 Шаг 3. Заклинание на личные вещи мужа</h2>
+        <p>Разрыв физической и энергетической привязки колдовства к его одежде или предметам.</p>
+        <button class="btn-open" onclick="openModal('modal-3')">Открыть подробную инструкцию →</button>
+    </div>
+
+    <div class="card">
+        <h2>🛡️ Шаг 4. Защита и возвращение вреда</h2>
+        <p>Обязательный этап для защиты Гульназы от возможного ответного удара и возврата зла отправителю.</p>
+        <button class="btn-open" onclick="openModal('modal-4')">Открыть подробную инструкцию →</button>
+    </div>
+
+    <div class="card" style="border-top-color: var(--accent-color);">
+        <h2>📅 Рекомендации по 7-дневному курсу</h2>
+        <p>Порядок проведения процедур для максимальной эффективности и закрепления результата.</p>
+        <button class="btn-open" onclick="openModal('modal-5')">Открыть график →</button>
+    </div>
+
+</div>
+
+<!-- MODALS -->
+
+<!-- Modal 1 -->
+<div id="modal-1" class="modal-overlay" onclick="closeModalOutside(event, 'modal-1')">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Шаг 1. Заклинание на фотографию</h2>
+            <button class="btn-close" onclick="closeModal('modal-1')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p><strong>Подготовка:</strong> Соверши омовение (вуду). Возьми фотографию мужа в руки. Смотри на нее не в одну точку, а мягким, периферическим взглядом, охватывая весь снимок.</p>
+            
+            <div class="arabic-text">
+                بِسْمِ اللهِ الَّذِي هُوَ الْهَادِي الْقَهَّارُ، أَرْقِي مَا يُمَثِّلُ [Имя мужа] مِنْ سِحْرِ التَّفْرِيقِ وَالْعُدْوَانِ وَالْمَسِّ، لِيَنْحَلَّ الْعُقَدُ وَيَزُولَ الْغَضَبُ وَيَعُودَ الْقَلْبُ وَالْعَقْلُ إِلَى الْفِطْرَةِ وَالسَّكِينَةِ بِإِذْنِ اللهِ
+            </div>
+            <div class="transliteration">Бисмилляхи-ллязи хуваль-Хадиюль-Каххар, аркий ма юмассилю [Имя мужа] мин сихрит-тафрики валь-удвани валь-масс, ли-йанхалльаль-'укаду ва йазульльль-гадобу ва йа'удаль-кальбу валь-'аклю ильль-фитрати вас-сакинати би-изниллях.</div>
+            <div class="translation">«С именем Аллаха, Который является Ведущим прямым путем и Сокрушающим, заклинаю то, что представляет [Имя мужа], от колдовства на разлуку, агрессии и касания (джинна) — чтобы развязались узлы, ушел гнев, и чтобы сердце и разум вернулись к первозданной чистоте и спокойствию с дозволения Аллаха».</div>
+
+            <div class="instruction-block">
+                <h4>📋 Порядок действий:</h4>
+                <ul>
+                    <li><strong>Сколько раз:</strong> 21 раз.</li>
+                    <li><strong>Метод чтения:</strong> Первые 7 раз читать <span class="highlight">«в сердце»</span> (губы и язык не двигаются, чтение идет внутри). Следующие 14 раз читать тихим, твердым, властным шепотом, направляя дыхание на фотографию.</li>
+                    <li><strong>Физическое воздействие:</strong> Во время чтения сожми фотографию в ладони, периодически слегка надавливая на нее большим пальцем (в области головы/груди на фото), как бы «вдавливая» силу заклинания.</li>
+                    <li><strong>Внутреннее видение:</strong> Представляй, как от твоих слов с фотографии исходит яркий белый свет, сжигающий черные нити колдовства и прогоняющий темные тени из его разума.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 2 -->
+<div id="modal-2" class="modal-overlay" onclick="closeModalOutside(event, 'modal-2')">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Шаг 2. Заклинание на воду</h2>
+            <button class="btn-close" onclick="closeModal('modal-2')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p><strong>Важное правило:</strong> Сначала вода заряжается <span class="highlight">пустой</span>. Только после завершения чтения в нее кладется фотография мужа или его личная вещь.</p>
+            
+            <div class="arabic-text">
+                بِسْمِ اللهِ الَّذِي هُوَ نُورُ السَّمَاوَاتِ وَالْأَرْضِ، أَرْقِي هَذَا الْمَاءَ مِنْ سِحْرِ التَّفْرِيقِ وَالْأَذَى وَالرِّجْسِ، لِيَكُونَ سَبَبًا فِي إِبْطَالِ السِّحْرِ وَتَطْهِيرِ مَا يُلْمَسُ بِهِ أَوْ يُغْمَسُ فِيهِ مِنْ أَثَرِ الْجِنِّ وَالسِّحْرِ، فَيَذُوبَ الْبَاطِلُ وَيَزُولَ
+            </div>
+            <div class="transliteration">Бисмилляхи-ллязи хува нурус-самавати валь-ард, аркий хазаль-маа мин сихрит-тафрики валь-аза вар-риджс, ли-йакуна сабабан фи ибталис-сихри ва татхири ма юльмасу бихи ау югмасу фихи мин асариль-джинни васс-сихр, фа-йазубаль-батылу ва йазуль.</div>
+            <div class="translation">«С именем Аллаха, Который является Светом небес и земли, заклинаю эту воду от колдовства на разлуку, вреда и скверны — чтобы она стала причиной аннулирования колдовства и очищения всего, к чему прикоснется или что погрузится в нее, чтобы ложь растворилась и исчезла».</div>
+
+            <div class="instruction-block">
+                <h4>📋 Порядок действий:</h4>
+                <ul>
+                    <li><strong>Сколько раз:</strong> 11 раз.</li>
+                    <li><strong>Метод чтения:</strong> Читать вслух, твердо и уверенно, направляя взгляд на поверхность воды. После каждого прочтения делать легкий выдох (нафф) на воду.</li>
+                    <li><strong>Физическое воздействие:</strong> После 11-го прочтения возьми фотографию или вещь мужа и <span class="highlight">погрузи ее в эту воду</span> на 1–2 минуты.</li>
+                    <li><strong>Внутреннее видение:</strong> Видь, как вода наполняется сиянием. Когда вещь погружается, представь, как из нее вырываются черные дымчатые сгустки, которые мгновенно уничтожаются светом воды.</li>
+                    <li><strong>Применение воды:</strong> Обрызгай углы своего дома. Если возможно, добавь несколько капель в еду/напиток для мужа, или вылей на землю в месте, где не ходят люди, с намерением: «О Аллах, пусть с этой водой уйдет вред от моего мужа».</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 3 -->
+<div id="modal-3" class="modal-overlay" onclick="closeModalOutside(event, 'modal-3')">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Шаг 3. Заклинание на личные вещи</h2>
+            <button class="btn-close" onclick="closeModal('modal-3')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p><strong>Подготовка:</strong> Возьми вещь мужа (лучше ту, которую он часто носит: рубашку, носовой платок, головной убор).</p>
+            
+            <div class="arabic-text">
+                بِسْمِ اللهِ الَّذِي فَالِقُ الْإِصْبَاحِ، أَرْقِي هَذِهِ الْأَغْرَاضَ الَّتِي تَخُصُّ [Имя мужа] مِنْ كُلِّ سِحْرٍ مَعْقُودٍ أَوْ مَرْبُوطٍ أَوْ مَدْفُونٍ، لِتَنْفَلِقَ عُقَدُ السِّحْرِ وَتَتَمَزَّقَ أَسْبَابُ الْفِتْنَةِ وَلَا يَبْقَى فِيهَا أَثَرٌ لِلْأَذَى
+            </div>
+            <div class="transliteration">Бисмилляхи-ллязи фаликуль-исбах, аркий хазихиль-аграда лляти тахуссу [Имя мужа] мин кулли сихрин ма'кудин ау марбутин ау мадфун, ли-танфалика 'укадус-сихри ва татамаззака асбабуль-фитнати ва ля йабка фиха асарун лиль-аза.</div>
+            <div class="translation">«С именем Аллаха, Расщепляющего рассвет, заклинаю эти предметы, принадлежащие [Имя мужа], от всякого колдовства — завязанного, привязанного или закопанного — чтобы расщепились узлы колдовства, разорвались причины смуты, и не осталось в них никакого следа вреда».</div>
+
+            <div class="instruction-block">
+                <h4>📋 Порядок действий:</h4>
+                <ul>
+                    <li><strong>Сколько раз:</strong> 7 раз.</li>
+                    <li><strong>Метод чтения:</strong> Читать вслух, властным и уверенным тоном.</li>
+                    <li><strong>Физическое воздействие:</strong> Во время чтения возьми вещь двумя руками и энергично, но не рвя ее, <span class="highlight">встряхивай</span>, как бы «выбивая» из нее невидимую грязь. Можно слегка пройтись пальцами по ткани, счищая налет.</li>
+                    <li><strong>Внутреннее видение:</strong> Видь, как с одежды осыпаются невидимые черные оковы и рвутся нити, связывающие его с колдовством. Вещь становится чистой и защищенной светом.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 4 -->
+<div id="modal-4" class="modal-overlay" onclick="closeModalOutside(event, 'modal-4')">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Шаг 4. Защита и возвращение вреда</h2>
+            <button class="btn-close" onclick="closeModal('modal-4')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Поскольку ты активно воздействуешь на колдовство, ты должна защитить себя от возможного «рикошета» и попросить Аллаха вернуть зло его источнику.</p>
+            
+            <h3 style="color: var(--primary-color); margin-top: 1.5rem;">1. Защита себя (Читать 3 раза утром и вечером)</h3>
+            <div class="arabic-text" style="font-size: 1.4em;">
+                بِسْمِ اللهِ الَّذِي هُوَ خَيْرٌ حَافِظًا، أَرْقِي نَفْسِي وَبَيْتِي لِحِفْظٍ وَسَدٍّ وَحِجَابٍ وَحِصْنٍ مِنْ كُلِّ سِحْرٍ وَعَيْنٍ وَحَسَدٍ وَأَذًى
+            </div>
+            <div class="transliteration">Бисмилляхи-ллязи хува хайрун хафизан, аркий нафси ва байтий ли-хифзин ва саддин ва хиджабин ва хиснин мин кулли сихрин ва 'айнин ва хасадин ва азан.</div>
+            <div class="translation">«С именем Аллаха, Который является лучшим Хранителем, заклинаю себя и свой дом для охраны, преграды, завесы и крепости от всякого колдовства, сглаза, зависти и вреда».</div>
+
+            <h3 style="color: var(--primary-color); margin-top: 1.5rem;">2. Возвращение зла отправителю (Читать 7 раз после основного сеанса)</h3>
+            <div class="arabic-text" style="font-size: 1.4em;">
+                بِسْمِ اللهِ الَّذِي رَدَّ الْكَافِرِينَ بِغَيْظِهِمْ، أَرْقِي لِرَدِّ كُلِّ سِحْرٍ وَعَيْنٍ وَحَسَدٍ وَأَذًى أُرِيدَ بِهِ [Имя Гульназы] أَوْ زَوْجُهَا، إِلَى صَاحِبِهِ فَيَرْجِعُ إِلَيْهِ بِإِذْنِ اللهِ وَلَا يَضُرُّنَا
+            </div>
+            <div class="transliteration">Бисмилляхи-ллязи раддаль-кафирина би-гайзихим, аркий ли-радди кулли сихрин ва 'айнин ва хасадин ва азин урида бихи [Имя Гульназы] ау зауджуха, иля сахибихи фа-йарджи'у иляйхи би-изнилляхи ва ля йадурруна.</div>
+            <div class="translation">«С именем Аллаха, Который вернул неверующих с их яростью, заклинаю для возвращения всякого колдовства, сглаза, зависти и вреда, предназначенного для [Имя Гульназы] или ее мужа, к его отправителю — чтобы оно вернулось к нему с дозволения Аллаха и не причинило нам вреда».</div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 5 -->
+<div id="modal-5" class="modal-overlay" onclick="closeModalOutside(event, 'modal-5')">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>График проведения на 7 дней</h2>
+            <button class="btn-close" onclick="closeModal('modal-5')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="instruction-block" style="background: #e8f5e9; border-left: 4px solid var(--primary-color);">
+                <h4>🌙 Дни 1–3: Интенсивное разрушение</h4>
+                <p>Выполняй все три шага (Фото, Вещь, Вода) каждый день после намаза Фаджр или в последнюю треть ночи. Это время наибольшей духовной силы и принятия мольбы.</p>
+            </div>
+            
+            <div class="instruction-block" style="margin-top: 1rem;">
+                <h4>⚖️ Дни 4–5: Закрепление и очищение</h4>
+                <p>Сделай фокус на воде и вещах. Фотографию можно использовать реже (1 раз в день), чтобы не создавать чрезмерного эмоционального напряжения у самой Гульназы.</p>
+            </div>
+
+            <div class="instruction-block" style="margin-top: 1rem; background: #fff8e1; border-left: 4px solid var(--accent-color);">
+                <h4>🛡️ Дни 6–7: Защита и завершение</h4>
+                <p>Основной упор делается на защитные дуа (Шаг 4). Вещи, на которые читали, можно аккуратно постирать с солью или просто оставить в чистом месте как защищенные.</p>
+            </div>
+
+            <div class="warning-banner" style="margin-top: 1.5rem; margin-bottom: 0;">
+                <h3>⚠️ Важное предостережение</h3>
+                <p>Если в процессе чтения ты почувствуешь резкую головную боль, сильную зевоту, плач или желание бросить чтение — это признак того, что рукья попала в цель и джинн/колдовство сопротивляется. В этот момент <span class="highlight">нельзя останавливаться</span>. Сделай глоток воды, прочитай «А'узу билляхи минаш-шайтанир-раджим» и продолжи чтение с еще большей убежденностью (якыном).</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Text Size Control
+    let currentFontSize = 16;
+    const minFontSize = 14;
+    const maxFontSize = 22;
+
+    function changeFontSize(direction) {
+        currentFontSize += direction;
+        if (currentFontSize < minFontSize) currentFontSize = minFontSize;
+        if (currentFontSize > maxFontSize) currentFontSize = maxFontSize;
+        document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+    }
+
+    function resetFontSize() {
+        currentFontSize = 16;
+        document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+    }
+
+    // Modal Control
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+
+    function closeModalOutside(event, modalId) {
+        if (event.target === document.getElementById(modalId)) {
+            closeModal(modalId);
+        }
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const activeModal = document.querySelector('.modal-overlay.active');
+            if (activeModal) {
+                closeModal(activeModal.id);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
