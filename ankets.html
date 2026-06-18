@@ -922,11 +922,16 @@
     <div class="doctor-modal-backdrop" id="adminListBackdrop" aria-hidden="true"></div>
     <div class="doctor-modal-panel" style="max-width:760px;width:calc(100vw - 32px);">
       <h2 class="doctor-modal-title" id="adminListTitle">📋 Сохранённые анкеты</h2>
-      <div id="adminListCount" style="font-size:13px;color:#777;margin:-6px 0 12px;"></div>
-      <div id="adminListContainer" style="max-height:60vh;overflow:auto;border:1px solid rgba(0,0,0,0.10);border-radius:12px;padding:8px;background:rgba(0,0,0,0.02);"></div>
+      <div id="adminListCount" style="font-size:13px;color:#777;margin:-6px 0 8px;"></div>
+      <div id="adminCloudStatus" style="font-size:12px;color:#888;margin:0 0 12px;padding:8px 10px;border-radius:8px;background:rgba(0,0,0,0.04);"></div>
+      <div id="adminListContainer" style="max-height:55vh;overflow:auto;border:1px solid rgba(0,0,0,0.10);border-radius:12px;padding:8px;background:rgba(0,0,0,0.02);"></div>
       <div class="doctor-modal-actions" style="flex-wrap:wrap;gap:8px;">
         <button type="button" class="tb tb-danger" id="adminListClearAll" title="Удалить все сохранённые анкеты">🗑 Очистить всё</button>
         <button type="button" class="tb" id="adminListExportAll" title="Скачать все анкеты одним JSON-файлом">⬇ Экспорт всех</button>
+        <button type="button" class="tb" id="adminListImport" title="Импортировать одну анкету или bundle (JSON, отправленный пациентом)">⬆ Импорт JSON</button>
+        <input type="file" id="adminListImportFile" accept=".json,application/json" multiple style="display:none;">
+        <button type="button" class="tb" id="adminFetchCloud" title="Скачать анкеты с настроенного облачного эндпоинта">☁ Загрузить из облака</button>
+        <button type="button" class="tb" id="adminConfigCloud" title="Настроить URL Cloudflare Worker / совместимого эндпоинта">⚙ Облако</button>
         <button type="button" class="tb primary" id="adminListClose">Закрыть</button>
       </div>
     </div>
@@ -3042,6 +3047,50 @@
     } catch (e3) {}
   }
 
+  // Автоскачивание JSON: пользователь получает файл анкеты сразу после сохранения.
+  // Это страховка: даже если localStorage недоступен (private mode) или переполнен,
+  // у пользователя на руках будет JSON, который он может отправить админу.
+  function downloadAnketRecord(record) {
+    try {
+      var json = JSON.stringify(record, null, 2);
+      var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+      var fname = sanitizeExportNamePart(record.name || 'anket') || 'anket';
+      var stamp = (record.savedAt || new Date().toISOString()).replace(/[:.]/g, '-');
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = fname + '_' + stamp + '.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { try { URL.revokeObjectURL(url); } catch (e) {} }, 10000);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  // Отправка анкеты в облако (если админ настроил Cloudflare Worker / совместимый эндпоинт).
+  // URL и секрет — в localStorage (qa_questionnaire_upload_url / qa_questionnaire_upload_secret).
+  // Эндпоинт уже описан в исходниках Worker (см. infra/cf-worker/).
+  function uploadAnketToCloud(record) {
+    var url = getQuestionnaireUploadUrl();
+    if (!url) return Promise.resolve({ ok: false, skipped: true });
+    var headers = { 'Content-Type': 'application/json' };
+    var sec = getQuestionnaireUploadSecret();
+    if (sec) headers['X-Upload-Secret'] = sec;
+    return fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(record),
+      credentials: 'omit'
+    }).then(function (res) {
+      return res.text().then(function (txt) {
+        var data = null;
+        try { data = JSON.parse(txt); } catch (e) {}
+        return { ok: res.ok, status: res.status, data: data };
+      });
+    }).catch(function (e) { return { ok: false, error: e && e.message }; });
+  }
+
   function saveAnketHandler() {
     try {
       var nameInput = document.getElementById('f_name');
@@ -3071,13 +3120,12 @@
 
       var result = persistAnketsWithEviction(list);
 
-      // Если не получилось — пробуем освободить вспомогательное хранилище
-      // и ещё раз вытеснить старые.
       if (!result.ok) {
         freeAuxiliaryStorage();
         result = persistAnketsWithEviction(list);
       }
 
+      // 1) Сообщение о записи в localStorage
       if (result.ok) {
         if (result.removedCount > 0) {
           showToast('Анкета «' + rawName + '» сохранена. Освобождено место: удалено ' +
@@ -3086,10 +3134,22 @@
           showToast('Анкета сохранена: ' + rawName);
         }
       } else {
-        // Совсем критическая ситуация: даже одну запись не получается записать
-        var sizeKb = Math.round(JSON.stringify(record).length / 1024);
-        showToast('Хранилище переполнено даже для одной записи (' + sizeKb +
-                  ' КБ). Очистите кэш браузера для этого сайта.');
+        showToast('Локальная память переполнена — анкета будет только скачана файлом.');
+      }
+
+      // 2) Всегда скачиваем JSON — пользователь получает копию для отправки админу
+      downloadAnketRecord(record);
+
+      // 3) Опционально отправляем в облако, если URL настроен
+      var cloudUrl = getQuestionnaireUploadUrl();
+      if (cloudUrl) {
+        uploadAnketToCloud(record).then(function (r) {
+          if (r && r.ok) {
+            showToast('Также сохранено в облако ✓');
+          } else if (r && !r.skipped) {
+            showToast('Облачная отправка не удалась (status ' + (r.status || '—') + ')');
+          }
+        });
       }
     } catch (e) {
       if (typeof techReport !== 'undefined' && techReport.recordError) techReport.recordError(e, 'saveAnketHandler');
@@ -3169,6 +3229,7 @@
   function renderAdminList() {
     var container = document.getElementById('adminListContainer');
     var counter = document.getElementById('adminListCount');
+    var cloudStatus = document.getElementById('adminCloudStatus');
     if (!container) return;
     var list = loadSavedAnkets();
     // новые сверху
@@ -3176,8 +3237,23 @@
       return (b.savedAt || '').localeCompare(a.savedAt || '');
     });
 
+    // Инфо-строка о настроенном облаке
+    if (cloudStatus) {
+      var cloudUrl = getQuestionnaireUploadUrl();
+      if (cloudUrl) {
+        var hostShort = cloudUrl.replace(/^https?:\/\//, '').split('/')[0];
+        cloudStatus.innerHTML = '☁ <b>Облако:</b> ' + escapeHtmlAdmin(hostShort) +
+          (getQuestionnaireUploadSecret() ? ' (с секретом)' : '') +
+          ' — новые анкеты будут отправляться сюда автоматически';
+      } else {
+        cloudStatus.innerHTML = '💾 <b>Локальное хранилище.</b> Анкеты сохраняются на этом устройстве и автоматически скачиваются файлами. ' +
+          'Для централизованного приёма со всех устройств: нажмите «⚙ Облако» и укажите URL вашего сервиса.';
+      }
+    }
+
     if (!list.length) {
-      container.innerHTML = '<div class="admin-empty">Сохранённых анкет пока нет.<br>Заполните анкету и нажмите «Сохранить анкету».</div>';
+      container.innerHTML = '<div class="admin-empty">Сохранённых анкет пока нет.<br>' +
+        'Заполните анкету и нажмите «Сохранить анкету», либо «⬆ Импорт JSON» / «☁ Загрузить из облака».</div>';
       if (counter) counter.textContent = 'Пусто';
       return;
     }
@@ -3306,6 +3382,161 @@
     } catch (e) { showToast('Не удалось экспортировать.'); }
   }
 
+  // ====== ИМПОРТ JSON ======
+  // Понимает три формата:
+  //  1) Одна анкета: {id, name, savedAt, payload}
+  //  2) Bundle: {exportKind: 'rukya_admin_bundle', ankets: [...]}
+  //  3) Сырое payload-содержимое (без id/name/savedAt) — оборачиваем сами
+  function normalizeImportedRecord(obj) {
+    if (!obj || typeof obj !== 'object') return null;
+    // Bundle обрабатывается отдельно
+    if (obj.exportKind === 'rukya_admin_bundle' && Array.isArray(obj.ankets)) return null;
+    // Уже корректная запись
+    if (obj.id && obj.name && obj.payload) return obj;
+    // Похоже на payload — определим по surveyId/patient
+    if (obj.surveyId || obj.patient || obj.checkedItemIds) {
+      var nm = (obj.patient && (obj.patient.fullName || obj.patient.name)) || '';
+      return {
+        id: 'a_imp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        name: String(nm || 'Импортированная анкета').trim(),
+        savedAt: obj.exportedAt || new Date().toISOString(),
+        payload: obj
+      };
+    }
+    return null;
+  }
+
+  function importAnketsFromFiles(files) {
+    if (!files || !files.length) return;
+    var pending = files.length;
+    var added = 0, dup = 0, bad = 0;
+    var list = loadSavedAnkets();
+    var existingIds = {};
+    list.forEach(function (r) { if (r && r.id) existingIds[r.id] = true; });
+
+    function finalize() {
+      var res = persistAnketsWithEviction(list);
+      if (!res.ok) {
+        freeAuxiliaryStorage();
+        res = persistAnketsWithEviction(list);
+      }
+      if (res.ok) {
+        renderAdminList();
+        var msg = 'Импорт: добавлено ' + added;
+        if (dup) msg += ', пропущено дубликатов ' + dup;
+        if (bad) msg += ', с ошибками ' + bad;
+        if (res.removedCount) msg += ' (вытеснено старейших ' + res.removedCount + ')';
+        showToast(msg);
+      } else {
+        showToast('Хранилище переполнено — импорт не выполнен.');
+      }
+    }
+
+    Array.prototype.forEach.call(files, function (file) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var parsed = JSON.parse(String(reader.result || ''));
+          // Bundle
+          if (parsed && parsed.exportKind === 'rukya_admin_bundle' && Array.isArray(parsed.ankets)) {
+            parsed.ankets.forEach(function (raw) {
+              var rec = normalizeImportedRecord(raw) || (raw && raw.id ? raw : null);
+              if (!rec || !rec.id) { bad++; return; }
+              if (existingIds[rec.id]) { dup++; return; }
+              existingIds[rec.id] = true;
+              list.push(rec);
+              added++;
+            });
+          } else {
+            // Single record / payload
+            var rec2 = normalizeImportedRecord(parsed);
+            if (!rec2) { bad++; }
+            else if (existingIds[rec2.id]) { dup++; }
+            else { existingIds[rec2.id] = true; list.push(rec2); added++; }
+          }
+        } catch (e) { bad++; }
+        pending--;
+        if (pending === 0) finalize();
+      };
+      reader.onerror = function () { bad++; pending--; if (pending === 0) finalize(); };
+      reader.readAsText(file, 'utf-8');
+    });
+  }
+
+  function triggerAdminImport() {
+    var inp = document.getElementById('adminListImportFile');
+    if (inp) { inp.value = ''; inp.click(); }
+  }
+
+  // ====== ОБЛАЧНАЯ СИНХРОНИЗАЦИЯ ======
+  function adminFetchFromCloud() {
+    var url = getQuestionnaireUploadUrl();
+    if (!url) {
+      var u = window.prompt('Введите URL вашего Cloudflare Worker (или совместимого endpoint), GET возвращает массив анкет:');
+      if (!u) return;
+      try { localStorage.setItem(LS_QA_UPLOAD_URL, String(u).trim()); } catch (e) {}
+      url = String(u).trim();
+    }
+    var headers = {};
+    var sec = getQuestionnaireUploadSecret();
+    if (sec) headers['X-Upload-Secret'] = sec;
+    showToast('Загрузка из облака…');
+    fetch(url, { method: 'GET', headers: headers, credentials: 'omit' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        var incoming = Array.isArray(data) ? data : (data && Array.isArray(data.ankets) ? data.ankets : null);
+        if (!incoming) { showToast('Облако вернуло не массив анкет.'); return; }
+        var list = loadSavedAnkets();
+        var existingIds = {};
+        list.forEach(function (r) { if (r && r.id) existingIds[r.id] = true; });
+        var added = 0;
+        incoming.forEach(function (raw) {
+          var rec = normalizeImportedRecord(raw) || (raw && raw.id ? raw : null);
+          if (!rec || !rec.id) return;
+          if (existingIds[rec.id]) return;
+          existingIds[rec.id] = true;
+          list.push(rec);
+          added++;
+        });
+        var res2 = persistAnketsWithEviction(list);
+        if (!res2.ok) { freeAuxiliaryStorage(); res2 = persistAnketsWithEviction(list); }
+        if (res2.ok) {
+          renderAdminList();
+          showToast('Из облака получено ' + incoming.length + ' (новых: ' + added + ')');
+        } else {
+          showToast('Хранилище переполнено.');
+        }
+      })
+      .catch(function (err) {
+        showToast('Не удалось загрузить из облака: ' + (err && err.message ? err.message : 'ошибка'));
+      });
+  }
+
+  function adminConfigureCloud() {
+    var current = getQuestionnaireUploadUrl();
+    var u = window.prompt('URL облачного сервиса (пусто — отключить):', current || '');
+    if (u === null) return;
+    u = String(u).trim();
+    try {
+      if (u) localStorage.setItem(LS_QA_UPLOAD_URL, u);
+      else localStorage.removeItem(LS_QA_UPLOAD_URL);
+    } catch (e) {}
+    var sec = window.prompt('Секрет (если эндпоинт его требует, иначе оставьте пусто):',
+                            getQuestionnaireUploadSecret() || '');
+    if (sec !== null) {
+      try {
+        sec = String(sec).trim();
+        if (sec) localStorage.setItem(LS_QA_UPLOAD_SECRET, sec);
+        else localStorage.removeItem(LS_QA_UPLOAD_SECRET);
+      } catch (e) {}
+    }
+    showToast(u ? 'Облако настроено: ' + u : 'Облачная синхронизация отключена');
+    renderAdminList(); // обновим инфо-полосу
+  }
+
   function bootstrapApp() {
     try {
       techReport.breadcrumb('bootstrap:start');
@@ -3343,6 +3574,13 @@
       document.getElementById('adminListClose').addEventListener('click', closeAdminListModal);
       document.getElementById('adminListClearAll').addEventListener('click', adminClearAll);
       document.getElementById('adminListExportAll').addEventListener('click', adminExportAll);
+      document.getElementById('adminListImport').addEventListener('click', triggerAdminImport);
+      document.getElementById('adminListImportFile').addEventListener('change', function (e) {
+        var files = e.target && e.target.files;
+        if (files && files.length) importAnketsFromFiles(files);
+      });
+      document.getElementById('adminFetchCloud').addEventListener('click', adminFetchFromCloud);
+      document.getElementById('adminConfigCloud').addEventListener('click', adminConfigureCloud);
       document.getElementById('launchHintBackdrop').addEventListener('click', closeLaunchHintModal);
       document.getElementById('launchHintOk').addEventListener('click', closeLaunchHintModal);
       document.getElementById('btnSavePng').addEventListener('click', savePng);
