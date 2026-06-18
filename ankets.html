@@ -566,6 +566,41 @@
       min-height: 44px;
       padding: 10px 20px;
     }
+    .tb.tb-danger {
+      background: rgba(192, 57, 43, 0.10) !important;
+      color: #c0392b !important;
+      border-color: rgba(192, 57, 43, 0.30) !important;
+    }
+    .tb.tb-danger:hover { background: rgba(192, 57, 43, 0.18) !important; }
+
+    /* Карточка одной сохранённой анкеты в админ-списке */
+    .admin-anket {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      padding: 10px 12px; margin-bottom: 8px;
+      border-radius: 12px; background: #fff;
+      border: 1px solid rgba(0,0,0,0.10);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .admin-anket:last-child { margin-bottom: 0; }
+    .admin-anket__info { flex: 1 1 220px; min-width: 0; }
+    .admin-anket__name {
+      font-weight: 700; font-size: 14px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .admin-anket__meta { font-size: 12px; color: #777; margin-top: 2px; }
+    .admin-anket__actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .admin-anket__actions .tb {
+      padding: 8px 10px; min-height: 36px; font-size: 12px;
+    }
+    .admin-empty {
+      padding: 20px; text-align: center; color: #999; font-size: 14px;
+    }
+    [data-theme="dark"] .admin-anket {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.10);
+      color: #f1e5c6;
+    }
+    [data-theme="dark"] .admin-anket__meta { color: #c0b285; }
     .report-actions {
       display: flex;
       flex-wrap: wrap;
@@ -723,12 +758,20 @@
       </button>
     </div>
     <div class="sep" aria-hidden="true"></div>
-    <div class="tb-group" role="group" aria-label="Отправка лекарю">
-      <button type="button" class="tb tb-doctor" id="btnSendDoctor"
-        title="Скачать JSON и открыть бота в Telegram"
-        aria-label="Скачать JSON и открыть бота в Telegram">
-        <i class="fab fa-telegram" aria-hidden="true"></i>
-        <span class="tb-doctor-caption">Отправить к лекарю</span>
+    <div class="tb-group" role="group" aria-label="Сохранить анкету">
+      <button type="button" class="tb tb-doctor" id="btnSaveAnket"
+        title="Сохранить заполненную анкету по имени из поля ФИО"
+        aria-label="Сохранить заполненную анкету по имени из поля ФИО">
+        <i class="fas fa-save" aria-hidden="true"></i>
+        <span class="tb-doctor-caption">Сохранить анкету</span>
+      </button>
+    </div>
+    <div class="sep" aria-hidden="true"></div>
+    <div class="tb-group" role="group" aria-label="Админ-панель">
+      <button type="button" class="tb tb-icon" id="btnAdminPanel"
+        title="Админ: список сохранённых анкет (требуется пароль)"
+        aria-label="Админ: список сохранённых анкет (требуется пароль)">
+        <i class="fas fa-lock" aria-hidden="true"></i>
       </button>
     </div>
     <div class="sep" aria-hidden="true"></div>
@@ -821,11 +864,11 @@
           <i class="fas fa-file-code" aria-hidden="true"></i>
           <span class="tb-json-caption">Скопировать JSON</span>
         </button>
-        <button type="button" class="tb tb-doctor" id="btnSendDoctorFooter"
-          title="Скачать JSON и открыть бота в Telegram"
-          aria-label="Скачать JSON и открыть бота в Telegram">
-          <i class="fab fa-telegram" aria-hidden="true"></i>
-          <span class="tb-doctor-caption">Отправить к лекарю</span>
+        <button type="button" class="tb tb-doctor" id="btnSaveAnketFooter"
+          title="Сохранить заполненную анкету по имени из поля ФИО"
+          aria-label="Сохранить заполненную анкету по имени из поля ФИО">
+          <i class="fas fa-save" aria-hidden="true"></i>
+          <span class="tb-doctor-caption">Сохранить анкету</span>
         </button>
       </div>
     </div>
@@ -851,6 +894,40 @@
       <p class="doctor-modal-body" id="launchHintBody"></p>
       <div class="doctor-modal-actions">
         <button type="button" class="tb primary" id="launchHintOk"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Админ-модалка: ввод пароля -->
+  <div class="doctor-modal" id="adminPwdModal" role="dialog" aria-modal="true" aria-labelledby="adminPwdTitle">
+    <div class="doctor-modal-backdrop" id="adminPwdBackdrop" aria-hidden="true"></div>
+    <div class="doctor-modal-panel">
+      <h2 class="doctor-modal-title" id="adminPwdTitle">🔒 Вход в админ-панель</h2>
+      <p class="doctor-modal-body">Введите пароль администратора для просмотра списка сохранённых анкет.</p>
+      <div style="margin:14px 0 6px;">
+        <input type="password" id="adminPwdInput" placeholder="Пароль"
+               autocomplete="off" inputmode="numeric"
+               style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(0,0,0,0.18);font-size:16px;letter-spacing:0.1em;text-align:center;">
+        <div id="adminPwdError" style="margin-top:8px;min-height:18px;color:#c0392b;font-size:13px;text-align:center;"></div>
+      </div>
+      <div class="doctor-modal-actions">
+        <button type="button" class="tb" id="adminPwdCancel">Отмена</button>
+        <button type="button" class="tb primary" id="adminPwdOk">Войти</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Админ-модалка: список сохранённых анкет -->
+  <div class="doctor-modal" id="adminListModal" role="dialog" aria-modal="true" aria-labelledby="adminListTitle">
+    <div class="doctor-modal-backdrop" id="adminListBackdrop" aria-hidden="true"></div>
+    <div class="doctor-modal-panel" style="max-width:760px;width:calc(100vw - 32px);">
+      <h2 class="doctor-modal-title" id="adminListTitle">📋 Сохранённые анкеты</h2>
+      <div id="adminListCount" style="font-size:13px;color:#777;margin:-6px 0 12px;"></div>
+      <div id="adminListContainer" style="max-height:60vh;overflow:auto;border:1px solid rgba(0,0,0,0.10);border-radius:12px;padding:8px;background:rgba(0,0,0,0.02);"></div>
+      <div class="doctor-modal-actions" style="flex-wrap:wrap;gap:8px;">
+        <button type="button" class="tb tb-danger" id="adminListClearAll" title="Удалить все сохранённые анкеты">🗑 Очистить всё</button>
+        <button type="button" class="tb" id="adminListExportAll" title="Скачать все анкеты одним JSON-файлом">⬇ Экспорт всех</button>
+        <button type="button" class="tb primary" id="adminListClose">Закрыть</button>
       </div>
     </div>
   </div>
@@ -1367,19 +1444,33 @@
       var capJson = tb.querySelector('.tb-json-caption');
       if (capJson) capJson.textContent = t('btn_copy_json');
     }
-    tb = document.getElementById('btnSendDoctor');
+    // Кнопки сохранения анкеты (на месте бывших «Отправить к лекарю»)
+    var saveLbl = currentLang === 'uz' ? 'Anketani saqlash' : 'Сохранить анкету';
+    var saveTitle = currentLang === 'uz'
+      ? "FIO maydonidagi ism bo'yicha to'ldirilgan anketani saqlash"
+      : 'Сохранить заполненную анкету по имени из поля ФИО';
+    tb = document.getElementById('btnSaveAnket');
     if (tb) {
-      tb.title = t('btn_doctor_t');
-      tb.setAttribute('aria-label', t('btn_doctor_t'));
+      tb.title = saveTitle;
+      tb.setAttribute('aria-label', saveTitle);
       var cap = tb.querySelector('.tb-doctor-caption');
-      if (cap) cap.textContent = t('btn_doctor_label');
+      if (cap) cap.textContent = saveLbl;
     }
-    tb = document.getElementById('btnSendDoctorFooter');
+    tb = document.getElementById('btnSaveAnketFooter');
     if (tb) {
-      tb.title = t('btn_doctor_t');
-      tb.setAttribute('aria-label', t('btn_doctor_t'));
+      tb.title = saveTitle;
+      tb.setAttribute('aria-label', saveTitle);
       cap = tb.querySelector('.tb-doctor-caption');
-      if (cap) cap.textContent = t('btn_doctor_label');
+      if (cap) cap.textContent = saveLbl;
+    }
+    // Кнопка админ-панели
+    tb = document.getElementById('btnAdminPanel');
+    if (tb) {
+      var adminTitle = currentLang === 'uz'
+        ? 'Admin: saqlangan anketalar (parol talab qilinadi)'
+        : 'Админ: список сохранённых анкет (требуется пароль)';
+      tb.title = adminTitle;
+      tb.setAttribute('aria-label', adminTitle);
     }
     tb = document.getElementById('btnTechReport');
     if (tb) { tb.title = t('btn_tech_t'); tb.setAttribute('aria-label', t('btn_tech_t')); }
@@ -2867,6 +2958,354 @@
     }
   }
 
+  // ============================================================
+  //  СОХРАНЕНИЕ АНКЕТЫ ПО ИМЕНИ + АДМИН-ПАНЕЛЬ (пароль 4851)
+  // ============================================================
+
+  var SAVED_ANKETS_KEY = 'qa_saved_ankets_v1';
+  var ADMIN_PASSWORD = '4851';
+
+  function loadSavedAnkets() {
+    try {
+      var raw = localStorage.getItem(SAVED_ANKETS_KEY);
+      if (!raw) return [];
+      var arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) { return []; }
+  }
+
+  // Убираем из payload самые тяжёлые поля (reportPlainText, deepseek.userMessage,
+  // длинный summaryText). Для админ-просмотра и экспорта оставшихся данных
+  // достаточно: все ответы, чекбоксы, distribution, topCategories, краткое summary.
+  function slimifyForStorage(payload) {
+    if (!payload || typeof payload !== 'object') return payload;
+    var p = {};
+    var keep = [
+      'schemaVersion','exportKind','exportedAt','lang','brand','surveyId',
+      'patient','answers','clinical','complaints','questionnaire','checkedItems',
+      'practiceSlider','checkedItemIds','scoresRaw','distribution','topCategories',
+      'confidence'
+    ];
+    keep.forEach(function (k) { if (payload[k] !== undefined) p[k] = payload[k]; });
+    // Усекаем длинный summary до 800 символов
+    if (typeof payload.summaryText === 'string') {
+      p.summaryText = payload.summaryText.length > 800
+        ? payload.summaryText.slice(0, 800) + '…'
+        : payload.summaryText;
+    }
+    // reportPlainText и deepseek.userMessage НЕ сохраняем — они дублируют данные
+    // и весят 5–20 КБ каждое поле.
+    return p;
+  }
+
+  function tryWriteAnkets(list) {
+    try {
+      localStorage.setItem(SAVED_ANKETS_KEY, JSON.stringify(list));
+      return { ok: true };
+    } catch (e) {
+      return { ok: false, error: e };
+    }
+  }
+
+  // Сохраняем с автовытеснением старейших записей при переполнении.
+  // Возвращает {ok, removedCount, finalList}.
+  function persistAnketsWithEviction(newList) {
+    var attempt = tryWriteAnkets(newList);
+    if (attempt.ok) return { ok: true, removedCount: 0, finalList: newList };
+
+    // Не получилось — пробуем выкидывать самые старые до тех пор,
+    // пока не уместится или не останется одна запись.
+    var working = newList.slice();
+    // Сортируем по savedAt ASC — самые старые первыми
+    working.sort(function (a, b) { return (a.savedAt || '').localeCompare(b.savedAt || ''); });
+    var removed = 0;
+    while (working.length > 1) {
+      working.shift(); // удаляем самую старую
+      removed++;
+      var r = tryWriteAnkets(working);
+      if (r.ok) return { ok: true, removedCount: removed, finalList: working };
+    }
+    // Даже одну запись не удалось сохранить — другая часть localStorage переполнена.
+    return { ok: false, removedCount: removed, finalList: working };
+  }
+
+  // Очищаем хранилище от вспомогательных данных, которые могут «съесть» место.
+  function freeAuxiliaryStorage() {
+    try { sessionStorage.removeItem(TECH_LOG_STORAGE_KEY); } catch (e) {}
+    try {
+      // Удаляем технический лог, если он лежит в localStorage
+      Object.keys(localStorage).forEach(function (k) {
+        if (k && k.indexOf('qa_tech_log') === 0) {
+          try { localStorage.removeItem(k); } catch (e2) {}
+        }
+      });
+    } catch (e3) {}
+  }
+
+  function saveAnketHandler() {
+    try {
+      var nameInput = document.getElementById('f_name');
+      var rawName = (nameInput && nameInput.value || '').trim();
+      if (!rawName) {
+        var asked = window.prompt('Введите имя пациента, под которым сохранить анкету:');
+        if (!asked) return;
+        rawName = String(asked).trim();
+        if (!rawName) return;
+        if (nameInput) {
+          nameInput.value = rawName;
+          if (typeof onAnyChange === 'function') onAnyChange();
+        }
+      }
+
+      var fullPayload = buildAnalysisPayload();
+      var slimPayload = slimifyForStorage(fullPayload);
+      var list = loadSavedAnkets();
+      var nowISO = new Date().toISOString();
+      var record = {
+        id: 'a_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        name: rawName,
+        savedAt: nowISO,
+        payload: slimPayload
+      };
+      list.push(record);
+
+      var result = persistAnketsWithEviction(list);
+
+      // Если не получилось — пробуем освободить вспомогательное хранилище
+      // и ещё раз вытеснить старые.
+      if (!result.ok) {
+        freeAuxiliaryStorage();
+        result = persistAnketsWithEviction(list);
+      }
+
+      if (result.ok) {
+        if (result.removedCount > 0) {
+          showToast('Анкета «' + rawName + '» сохранена. Освобождено место: удалено ' +
+                    result.removedCount + ' старейших.');
+        } else {
+          showToast('Анкета сохранена: ' + rawName);
+        }
+      } else {
+        // Совсем критическая ситуация: даже одну запись не получается записать
+        var sizeKb = Math.round(JSON.stringify(record).length / 1024);
+        showToast('Хранилище переполнено даже для одной записи (' + sizeKb +
+                  ' КБ). Очистите кэш браузера для этого сайта.');
+      }
+    } catch (e) {
+      if (typeof techReport !== 'undefined' && techReport.recordError) techReport.recordError(e, 'saveAnketHandler');
+      showToast('Не удалось сохранить анкету: ' + (e && e.message ? e.message : 'неизвестная ошибка'));
+    }
+  }
+
+  // --- модалка ввода пароля ---
+  function openAdminPasswordModal() {
+    var modal = document.getElementById('adminPwdModal');
+    var input = document.getElementById('adminPwdInput');
+    var err = document.getElementById('adminPwdError');
+    if (input) input.value = '';
+    if (err) err.textContent = '';
+    if (modal) {
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+    setTimeout(function () { if (input) input.focus(); }, 60);
+  }
+
+  function closeAdminPasswordModal() {
+    var modal = document.getElementById('adminPwdModal');
+    if (modal) {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function tryAdminLogin() {
+    var input = document.getElementById('adminPwdInput');
+    var err = document.getElementById('adminPwdError');
+    var val = (input && input.value || '').trim();
+    if (val === ADMIN_PASSWORD) {
+      closeAdminPasswordModal();
+      openAdminListModal();
+    } else {
+      if (err) err.textContent = 'Неверный пароль';
+      if (input) { input.focus(); input.select && input.select(); }
+    }
+  }
+
+  // --- модалка списка анкет ---
+  function openAdminListModal() {
+    renderAdminList();
+    var modal = document.getElementById('adminListModal');
+    if (modal) {
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  function closeAdminListModal() {
+    var modal = document.getElementById('adminListModal');
+    if (modal) {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  function escapeHtmlAdmin(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function formatSavedAt(iso) {
+    try {
+      var d = new Date(iso);
+      return d.toLocaleString('ru-RU');
+    } catch (e) { return iso || ''; }
+  }
+
+  function renderAdminList() {
+    var container = document.getElementById('adminListContainer');
+    var counter = document.getElementById('adminListCount');
+    if (!container) return;
+    var list = loadSavedAnkets();
+    // новые сверху
+    list.sort(function (a, b) {
+      return (b.savedAt || '').localeCompare(a.savedAt || '');
+    });
+
+    if (!list.length) {
+      container.innerHTML = '<div class="admin-empty">Сохранённых анкет пока нет.<br>Заполните анкету и нажмите «Сохранить анкету».</div>';
+      if (counter) counter.textContent = 'Пусто';
+      return;
+    }
+    if (counter) counter.textContent = 'Всего: ' + list.length;
+
+    var html = list.map(function (r) {
+      var nm = escapeHtmlAdmin(r.name || 'Без имени');
+      var dt = escapeHtmlAdmin(formatSavedAt(r.savedAt));
+      var id = escapeHtmlAdmin(r.id);
+      return (
+        '<div class="admin-anket" data-id="' + id + '">' +
+          '<div class="admin-anket__info">' +
+            '<div class="admin-anket__name">' + nm + '</div>' +
+            '<div class="admin-anket__meta">Сохранено: ' + dt + '</div>' +
+          '</div>' +
+          '<div class="admin-anket__actions">' +
+            '<button type="button" class="tb tb-icon" data-act="view" title="Открыть JSON в новой вкладке">👁 JSON</button>' +
+            '<button type="button" class="tb tb-icon" data-act="dl" title="Скачать JSON файлом">⬇</button>' +
+            '<button type="button" class="tb tb-icon" data-act="copy" title="Скопировать JSON в буфер">📋</button>' +
+            '<button type="button" class="tb tb-icon tb-danger" data-act="del" title="Удалить эту анкету">🗑</button>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+    container.innerHTML = html;
+
+    // Привязываем обработчики
+    Array.prototype.forEach.call(container.querySelectorAll('.admin-anket'), function (row) {
+      var rid = row.getAttribute('data-id');
+      Array.prototype.forEach.call(row.querySelectorAll('[data-act]'), function (btn) {
+        btn.addEventListener('click', function () {
+          var act = btn.getAttribute('data-act');
+          adminRowAction(rid, act);
+        });
+      });
+    });
+  }
+
+  function adminRowAction(id, act) {
+    var list = loadSavedAnkets();
+    var idx = -1;
+    for (var i = 0; i < list.length; i++) { if (list[i].id === id) { idx = i; break; } }
+    if (idx < 0) return;
+    var rec = list[idx];
+    var json = JSON.stringify(rec.payload, null, 2);
+
+    if (act === 'view') {
+      try {
+        var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        setTimeout(function () { try { URL.revokeObjectURL(url); } catch (e) {} }, 60000);
+      } catch (e) { showToast('Не удалось открыть JSON.'); }
+    } else if (act === 'dl') {
+      try {
+        var fname = sanitizeExportNamePart(rec.name || 'anket') || 'anket';
+        var stamp = (rec.savedAt || '').replace(/[:.]/g, '-');
+        var blob2 = new Blob([json], { type: 'application/json;charset=utf-8' });
+        var url2 = URL.createObjectURL(blob2);
+        var a = document.createElement('a');
+        a.href = url2;
+        a.download = fname + '_' + stamp + '.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function () { try { URL.revokeObjectURL(url2); } catch (e) {} }, 10000);
+      } catch (e) { showToast('Не удалось скачать.'); }
+    } else if (act === 'copy') {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(json).then(function () {
+            showToast('JSON скопирован в буфер');
+          }, function () { showToast('Не удалось скопировать.'); });
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = json;
+          ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select(); document.execCommand('copy');
+          document.body.removeChild(ta);
+          showToast('JSON скопирован в буфер');
+        }
+      } catch (e) { showToast('Не удалось скопировать.'); }
+    } else if (act === 'del') {
+      if (!window.confirm('Удалить анкету «' + (rec.name || '') + '»?')) return;
+      list.splice(idx, 1);
+      if (persistSavedAnkets(list)) {
+        renderAdminList();
+        showToast('Анкета удалена.');
+      }
+    }
+  }
+
+  function adminClearAll() {
+    var list = loadSavedAnkets();
+    if (!list.length) { showToast('Список уже пуст.'); return; }
+    if (!window.confirm('Удалить ВСЕ сохранённые анкеты (' + list.length + ')? Это необратимо.')) return;
+    if (persistSavedAnkets([])) {
+      renderAdminList();
+      showToast('Все анкеты удалены.');
+    }
+  }
+
+  function adminExportAll() {
+    try {
+      var list = loadSavedAnkets();
+      if (!list.length) { showToast('Список пуст — нечего экспортировать.'); return; }
+      var bundle = {
+        exportKind: 'rukya_admin_bundle',
+        exportedAt: new Date().toISOString(),
+        count: list.length,
+        ankets: list
+      };
+      var json = JSON.stringify(bundle, null, 2);
+      var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      var stamp = new Date().toISOString().replace(/[:.]/g, '-');
+      a.href = url;
+      a.download = 'rukya_ankets_bundle_' + stamp + '.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(function () { try { URL.revokeObjectURL(url); } catch (e) {} }, 10000);
+      showToast('Все анкеты экспортированы (' + list.length + ').');
+    } catch (e) { showToast('Не удалось экспортировать.'); }
+  }
+
   function bootstrapApp() {
     try {
       techReport.breadcrumb('bootstrap:start');
@@ -2884,13 +3323,26 @@
       document.getElementById('btnRun').addEventListener('click', onAnyChange);
       document.getElementById('btnCopyText').addEventListener('click', copyText);
       document.getElementById('btnPrint').addEventListener('click', function () { window.print(); });
-      document.getElementById('btnSendDoctor').addEventListener('click', sendToDoctor);
-      document.getElementById('btnSendDoctorFooter').addEventListener('click', sendToDoctor);
+      document.getElementById('btnSaveAnket').addEventListener('click', saveAnketHandler);
+      document.getElementById('btnSaveAnketFooter').addEventListener('click', saveAnketHandler);
+      document.getElementById('btnAdminPanel').addEventListener('click', openAdminPasswordModal);
       document.getElementById('doctorModalBackdrop').addEventListener('click', closeDoctorModal);
       document.getElementById('doctorModalOk').addEventListener('click', function () {
         performDoctorSend();
         closeDoctorModal();
       });
+      // Админ-модалка: ввод пароля
+      document.getElementById('adminPwdBackdrop').addEventListener('click', closeAdminPasswordModal);
+      document.getElementById('adminPwdCancel').addEventListener('click', closeAdminPasswordModal);
+      document.getElementById('adminPwdOk').addEventListener('click', tryAdminLogin);
+      document.getElementById('adminPwdInput').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); tryAdminLogin(); }
+      });
+      // Админ-модалка: список анкет
+      document.getElementById('adminListBackdrop').addEventListener('click', closeAdminListModal);
+      document.getElementById('adminListClose').addEventListener('click', closeAdminListModal);
+      document.getElementById('adminListClearAll').addEventListener('click', adminClearAll);
+      document.getElementById('adminListExportAll').addEventListener('click', adminExportAll);
       document.getElementById('launchHintBackdrop').addEventListener('click', closeLaunchHintModal);
       document.getElementById('launchHintOk').addEventListener('click', closeLaunchHintModal);
       document.getElementById('btnSavePng').addEventListener('click', savePng);
