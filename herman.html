@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализ - Лекарь Абу Мухаммад</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 25px 20px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .analysis-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .analysis-item h3 {
+            font-size: 15px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .analysis-item p {
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .severity-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .severity-high {
+            background: #fee;
+            color: #c33;
+        }
+        
+        .severity-medium {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+        
+        .evaluation {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .evaluation h3 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        
+        .evaluation p {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 10px;
+        }
+        
+        .pricing-section {
+            background: #f8f9fa;
+            padding: 25px 20px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .pricing-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        .pricing-card.premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .pricing-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .pricing-card .price {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 15px 0;
+        }
+        
+        .pricing-card .price span {
+            font-size: 16px;
+            font-weight: 400;
+        }
+        
+        .pricing-card ul {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        .pricing-card ul li {
+            padding: 6px 0;
+            font-size: 14px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .pricing-card ul li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .pricing-card.premium ul li:before {
+            color: #fff;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: scale(1.02);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            font-size: 13px;
+        }
+        
+        .bismillah {
+            text-align: center;
+            font-size: 20px;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🕌 Лекарь Абу Мухаммад</h1>
+            <p>Исламский экзорцист и целитель рукией</p>
+        </div>
+        
+        <div class="content">
+            <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+            
+            <div class="section">
+                <h2 class="section-title">📋 Анализ вашего состояния</h2>
+                
+                <div class="analysis-item">
+                    <h3>🎯 Момент заражения</h3>
+                    <p>Заражение произошло после принятия Ислама во время чтения тафсира Корана. Это классический признак - джинны не выносят чтения Корана и пытаются помешать верующему. Смех в ухе - это прямое проявление присутствия невидимого существа.</p>
+                    <span class="severity-badge severity-high">Высокая степень воздействия</span>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>🦵 Физические симптомы</h3>
+                    <p>Онемение правой ноги и невозможность двигать ею указывает на то, что джинн закрепился в нижней части тела. Боли в разных частях тела (бока, колени, ребра) свидетельствуют о перемещении джинна по организму. Это типично для мас (одержимости).</p>
+                    <span class="severity-badge severity-high">Множественные точки закрепления</span>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>🧠 Голоса в голове</h3>
+                    <p>Слышимые голоса - это прямое воздействие на сознание. Джинн может говорить через мысли или даже audible. Это указывает на глубокое проникновение в нервную систему и духовную сферу.</p>
+                    <span class="severity-badge severity-high">Критический симптом</span>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>😴 Кошмары и видения</h3>
+                    <p>Сны о преследовании, полетах, кошках - классические признаки ночных кошмаров от джиннов. Видение джинна под скатертью с перевернутым крестом, читающего заклинания - это очень серьезный знак. Перевернутый крест указывает на связь с шайтанскими практиками. Визуальные появления джинна наяву (перед лицом, за столом) подтверждают сильное присутствие.</p>
+                    <span class="severity-badge severity-high">Сильное духовное воздействие</span>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>🤢 Проблемы с горлом и желудком</h3>
+                    <p>Комок в горле, который "провалился" в желудок, тошнота по понедельникам и четвергам (дни, когда поднимаются деяния), ощущение чего-то в желудке - это признаки того, что джинн воздействует на пищеварительную систему. Боль под ребрами с обеих сторон указывает на то, что воздействие распространилось на внутренние органы.</p>
+                    <span class="severity-badge severity-medium">Средняя степень</span>
+                </div>
+                
+                <div class="analysis-item">
+                    <h3>🧠 Напряжение в затылке</h3>
+                    <p>Напряжение в затылочной части головы - это признак того, что один из джиннов закрепился в голове. Это может вызывать головные боли, проблемы с концентрацией и духовное давление.</p>
+                    <span class="severity-badge severity-medium">Требует внимания</span>
+                </div>
+            </div>
+            
+            <div class="evaluation">
+                <h3>⚖️ Общая оценка состояния</h3>
+                <p><strong>Диагноз:</strong> Множественная одержимость джиннами (мас) с воздействием на физическое тело, сознание и духовную сферу.</p>
+                <p><strong>Степень тяжести:</strong> Высокая. Присутствуют все классические признаки серьезного воздействия: физические симптомы, голоса, видения, кошмары, воздействие на внутренние органы.</p>
+                <p><strong>Количество джиннов:</strong> Судя по симптомам, минимум 2-3 джинна воздействуют одновременно (один в голове, один в нижней части тела, возможно еще один в области желудка/ребер).</p>
+                <p><strong>Прогноз:</strong> При правильном лечении рукией и соблюдении всех предписаний - полное исцеление возможно, но потребуется время и терпение.</p>
+            </div>
+        </div>
+        
+        <div class="pricing-section">
+            <h2 class="pricing-title">💫 Предложение лечения</h2>
+            
+            <div class="pricing-card premium">
+                <h3>🌟 Полное лечение</h3>
+                <div class="price">18 000 <span>рублей</span></div>
+                <ul>
+                    <li>Комплексная диагностика духовного состояния</li>
+                    <li>Индивидуальная программа рукии</li>
+                    <li>Многократные сеансы чтения Корана</li>
+                    <li>Работа со всеми точками закрепления джиннов</li>
+                    <li>Духовная защита и укрепление веры</li>
+                    <li>Поддержка на протяжении всего лечения</li>
+                    <li>Рекомендации по профилактике</li>
+                    <li>Полное сопровождение до исцеления</li>
+                </ul>
+                <a href="https://t.me/Ruqoq" class="btn btn-secondary">Связаться с лекарем</a>
+            </div>
+            
+            <div class="pricing-card">
+                <h3>📿 Одноразовое лечение</h3>
+                <div class="price">3 000 <span>рублей</span></div>
+                <ul>
+                    <li>Первичная диагностика</li>
+                    <li>Один сеанс рукии</li>
+                    <li>Чтение защитных аятов</li>
+                    <li>Базовые рекомендации</li>
+                    <li>Начальная духовная защита</li>
+                </ul>
+                <a href="https://t.me/Ruqoq" class="btn btn-primary">Связаться с лекарем</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🤲 Да исцелит вас Аллах</p>
+            <p style="margin-top: 8px; opacity: 0.8;">Лекарь Абу Мухаммад</p>
+        </div>
+    </div>
+</body>
+</html>
