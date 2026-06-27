@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ruqiya — Biznes Reja | Abu Muhammad</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  :root {
+    --primary: #0f766e;
+    --primary-dark: #134e4a;
+    --accent: #d4a24c;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --success: #16a34a;
+    --shadow: 0 4px 20px rgba(15, 118, 110, 0.08);
+    --shadow-lg: 0 10px 40px rgba(15, 118, 110, 0.12);
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  .hero {
+    background: linear-gradient(135deg, #134e4a 0%, #0f766e 50%, #14b8a6 100%);
+    color: white;
+    padding: 50px 24px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -30%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(212,162,76,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40%; left: -20%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  
+  .hero-content { position: relative; z-index: 2; }
+  
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+  
+  .hero p {
+    font-size: 15px;
+    opacity: 0.92;
+    max-width: 420px;
+  }
+  
+  .container {
+    padding: 24px 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .section {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+  
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #0f766e, #14b8a6);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  
+  .text-block {
+    color: var(--text);
+    font-size: 14.5px;
+    line-height: 1.75;
+  }
+  
+  .text-block strong {
+    color: var(--primary-dark);
+    font-weight: 600;
+  }
+  
+  .investor-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #ccfbf1;
+  }
+  
+  .investor-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  
+  .investor-info h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-dark);
+  }
+  
+  .investor-info p {
+    font-size: 12.5px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+  
+  .tool-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 14px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .tool-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--primary), var(--accent));
+  }
+  
+  .tool-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  
+  .tool-emoji {
+    font-size: 24px;
+  }
+  
+  .tool-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+  
+  .tool-desc {
+    font-size: 13.5px;
+    color: var(--text-light);
+    margin-bottom: 14px;
+    line-height: 1.65;
+  }
+  
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  
+  .price-label {
+    color: var(--text-light);
+    font-weight: 500;
+  }
+  
+  .price-uzs {
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+  
+  .price-usd {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  
+  .highlight-price {
+    background: linear-gradient(135deg, #0f766e, #14b8a6);
+    color: white;
+  }
+  
+  .highlight-price .price-label,
+  .highlight-price .price-uzs,
+  .highlight-price .price-usd {
+    color: white;
+  }
+  
+  .summary-box {
+    background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
+    color: white;
+    padding: 22px;
+    border-radius: 18px;
+    margin-top: 8px;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .summary-title {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  
+  .summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    font-size: 14px;
+  }
+  
+  .summary-item:last-child {
+    border-bottom: none;
+  }
+  
+  .summary-total {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 2px solid rgba(255,255,255,0.25);
+    display: flex;
+    justify-content: space-between;
+    font-size: 17px;
+    font-weight: 700;
+  }
+  
+  .info-banner {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-left: 4px solid var(--accent);
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin: 14px 0;
+    font-size: 13.5px;
+    color: #78350f;
+  }
+  
+  .info-banner strong { color: #92400e; }
+  
+  .duaa-box {
+    text-align: center;
+    padding: 26px 20px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-radius: 18px;
+    margin-top: 10px;
+    border: 1px solid #bbf7d0;
+  }
+  
+  .duaa-arabic {
+    font-size: 22px;
+    color: var(--primary-dark);
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-family: 'Amiri', 'Traditional Arabic', serif;
+    direction: rtl;
+  }
+  
+  .duaa-text {
+    font-size: 14px;
+    color: var(--text);
+    font-style: italic;
+  }
+  
+  .step-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .step-list li {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: 14px;
+  }
+  
+  .step-list li:last-child { border-bottom: none; }
+  
+  .step-num {
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-light);
+    font-size: 12px;
+  }
+  
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 16px 0;
+  }
+  
+  .tag {
+    display: inline-block;
+    background: #ecfeff;
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
+    margin-right: 4px;
+    margin-top: 6px;
+  }
+  
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 24px; }
+    .container { padding: 18px 14px; }
+    .section { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <span class="badge">✦ BISMILLAHIR RAHMONIR RAHIYM ✦</span>
+    <h1>Ruqiya Biznes Rejasi</h1>
+    <p>Abu Muhammad — Shifokor va Roqiy tomonidan tayyorlangan investitsiya va rivojlanish rejasi</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- KIRISH -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">📖</div>
+      <span>Loyiha haqida</span>
+    </div>
+    <div class="text-block">
+      Assalomu alaykum. Men — <strong>Abu Muhammad</strong>, ruqiya (shariatga muvofiq dam solish) yo'nalishida faoliyat yurituvchi shifokorman (roqiy). Ushbu biznes reja orqali sizga o'z loyihamning maqsadi, kerakli vositalar va kutilayotgan natijalarni to'liq va shaffof tarzda tushuntirib beraman.
+    </div>
+  </div>
+
+  <!-- INVESTITORLAR -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">🤝</div>
+      <span>Investorlar (Homiylar)</span>
+    </div>
+    <div class="text-block" style="margin-bottom: 14px;">
+      Ushbu loyihaga quyidagi ikki opa-singillarimiz mablag' kiritmoqdalar — Alloh ularning rizqini barkatli qilsin:
+    </div>
+    <div class="investor-card">
+      <div class="investor-avatar">H</div>
+      <div class="investor-info">
+        <h4>Hadija opa</h4>
+        <p>Birinchi investor</p>
+      </div>
+    </div>
+    <div class="investor-card">
+      <div class="investor-avatar">N</div>
+      <div class="investor-info">
+        <h4>Nigora opa</h4>
+        <p>Ikkinchi investor</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEGA FOIDALI -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">💡</div>
+      <span>Nima uchun bu yo'nalish foydali?</span>
+    </div>
+    <div class="text-block">
+      <p style="margin-bottom: 10px;"><strong>Shifo berish ishi</strong> — insoniyat tarixidagi eng qadimiy va har doim talab yuqori bo'lgan sohalardan biri. Ruqiya yo'nalishi ham bundan mustasno emas, chunki:</p>
+      <ul class="step-list">
+        <li><span class="step-num">1</span><div><strong>Savdo yo'q</strong> — men hech qanday mahsulot sotmayman, faqat <em>dam solingan (o'qilgan)</em> buyumlar va <strong>xizmat ko'rsatish</strong> bilan shug'ullanaman.</div></li>
+        <li><span class="step-num">2</span><div><strong>Turli kasalliklar</strong> — sihr, ko'z tegishi (ayn), jin urishi, ruhiy va jismoniy kasalliklar bo'yicha xizmat.</div></li>
+        <li><span class="step-num">3</span><div><strong>Alloh yo'lida</strong> — bu ish jamiyatga foyda keltirish va savob topish maqsadida qilinadi.</div></li>
+        <li><span class="step-num">4</span><div><strong>Barqaror daromad</strong> — odamlar doimo shifoga muhtoj, shu bois talab hech qachon kamaymaydi.</div></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- NIMA KERAK -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">🛠️</div>
+      <span>Kerakli vositalar</span>
+    </div>
+    <div class="text-block" style="margin-bottom: 14px;">
+      Loyihani to'liq amalga oshirish uchun menga quyidagi <strong>3 ta asosiy vosita</strong> zarur:
+    </div>
+
+    <!-- 1. KOMPYUTER -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-emoji">💻</span>
+        <span class="tool-name">Kuchli Kompyuter</span>
+      </div>
+      <div class="tool-desc">
+        Men shifokor sifatida faqat xizmat ko'rsatmayman, balki <strong>yangi usullarni tadqiq qilaman va ishlab chiqaman</strong>. Shu bois menga og'ir vazifalarni bajara oladigan kuchli kompyuter kerak. Bu — loyihaning <strong>asosiy ustuni</strong>.
+      </div>
+      
+      <div class="price-row">
+        <span class="price-label">🔹 Eng arzon variant</span>
+        <span><span class="price-uzs">11 mln so'm</span><span class="price-usd">(~$859)</span></span>
+      </div>
+      <div class="price-row">
+        <span class="price-label">🔸 O'rta variant</span>
+        <span><span class="price-uzs">20 mln so'm</span><span class="price-usd">(~$1,562)</span></span>
+      </div>
+      <div class="price-row highlight-price">
+        <span class="price-label">⭐ Byudjetli kerakli</span>
+        <span><span class="price-uzs">32–43 mln</span><span class="price-usd">(~$2,500–$3,360)</span></span>
+      </div>
+      <div class="price-row highlight-price">
+        <span class="price-label">👑 Eng zo'r (top)</span>
+        <span><span class="price-uzs">100 mln so'm</span><span class="price-usd">(~$7,812)</span></span>
+      </div>
+
+      <div class="info-banner">
+        <strong>💡 Eslatma:</strong> Kompyuter narxi qanchalik yuqori bo'lsa, tadqiqot va avtomatlashtirish imkoniyati shunchalik kengayadi.
+      </div>
+    </div>
+
+    <!-- 2. SYOMKA -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-emoji">🎥</span>
+        <span class="tool-name">Syomka uskunalari</span>
+      </div>
+      <div class="tool-desc">
+        Video darslar, ruqiya usullari, shifo guvohnomalarini yozib olish va odamlarga yetkazish uchun zarur.
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px;">
+        <span class="tag">🎤 Mikrofon</span>
+        <span class="tag">👔 Forma</span>
+        <span class="tag">💡 Yoritgich</span>
+        <span class="tag">✂️ Montaj dasturi</span>
+      </div>
+      <div class="price-row highlight-price">
+        <span class="price-label">Umumiy xarajat</span>
+        <span><span class="price-uzs">2.5 mln so'm</span><span class="price-usd">(~$195)</span></span>
+      </div>
+      <div class="info-banner" style="margin-top: 10px;">
+        <strong>✅ Bonus:</strong> Montaj dasturlari kompyuter sotib olinganda <em>avtomatik</em> o'rnatiladi — alohida xarajat talab qilmaydi.
+      </div>
+    </div>
+
+    <!-- 3. NEYROSET -->
+    <div class="tool-card">
+      <div class="tool-header">
+        <span class="tool-emoji">🤖</span>
+        <span class="tool-name">Neyrotarmoqlarga obuna</span>
+      </div>
+      <div class="tool-desc">
+        Sun'iy intellekt yordamida <strong>kundalik ishlarni avtomatlashtirish</strong> va <strong>100 → 1,000 → 10,000</strong> kishiga bir vaqtda xizmat ko'rsatish imkoniyati.
+      </div>
+      <div class="price-row highlight-price">
+        <span class="price-label">Oylik obuna</span>
+        <span><span class="price-uzs">~2.56 mln so'm</span><span class="price-usd">($200)</span></span>
+      </div>
+      <div class="info-banner" style="margin-top: 10px;">
+        <strong>🚀 Natija:</strong> Bitta odamning ish hajmini 100 barobarga oshirish imkoniyati.
+      </div>
+    </div>
+  </div>
+
+  <!-- UMUMIY HISOB -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">📊</div>
+      <span>Umumiy xarajatlar hisobi</span>
+    </div>
+    <div class="text-block" style="margin-bottom: 10px; font-size: 13px; color: var(--text-light);">
+      * Hisoblash kursi: <strong>1 AQSh dollari ≈ 12,800 so'm</strong>
+    </div>
+    
+    <div class="summary-box">
+      <div class="summary-title">✦ Byudjet varianti (minimal boshlash)</div>
+      <div class="summary-item">
+        <span>💻 Kompyuter (o'rta)</span>
+        <span>20 mln <small style="opacity:0.8">(~$1,562)</small></span>
+      </div>
+      <div class="summary-item">
+        <span>🎥 Syomka uskunalari</span>
+        <span>2.5 mln <small style="opacity:0.8">(~$195)</small></span>
+      </div>
+      <div class="summary-item">
+        <span>🤖 Neyrotarmoq</span>
+        <span>~2.56 mln <small style="opacity:0.8">($200)</small></span>
+      </div>
+      <div class="summary-total">
+        <span>JAMI:</span>
+        <span>~25.06 mln <small style="opacity:0.9">(~$1,957)</small></span>
+      </div>
+    </div>
+
+    <div class="summary-box" style="margin-top: 14px; background: linear-gradient(135deg, #78350f 0%, #d4a24c 100%);">
+      <div class="summary-title">✦ Tavsiya etiladigan variant (optimal)</div>
+      <div class="summary-item">
+        <span>💻 Kompyuter (byudjetli kerakli)</span>
+        <span>37.5 mln <small style="opacity:0.8">(~$2,930)</small></span>
+      </div>
+      <div class="summary-item">
+        <span>🎥 Syomka uskunalari</span>
+        <span>2.5 mln <small style="opacity:0.8">(~$195)</small></span>
+      </div>
+      <div class="summary-item">
+        <span>🤖 Neyrotarmoq</span>
+        <span>~2.56 mln <small style="opacity:0.8">($200)</small></span>
+      </div>
+      <div class="summary-total">
+        <span>JAMI:</span>
+        <span>~42.56 mln <small style="opacity:0.9">(~$3,325)</small></span>
+      </div>
+    </div>
+
+    <div class="summary-box" style="margin-top: 14px; background: linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 100%);">
+      <div class="summary-title">✦ Maksimal (to'liq quvvat)</div>
+      <div class="summary-item">
+        <span>💻 Kompyuter (top)</span>
+        <span>100 mln <small style="opacity:0.8">(~$7,812)</small></span>
+      </div>
+      <div class="summary-item">
+        <span>🎥 Syomka uskunalari</span>
+        <span>2.5 mln <small style="opacity:0.8">(~$195)</small></span>
+      </div>
+      <div class="summary-item">
+        <span>🤖 Neyrotarmoq</span>
+        <span>~2.56 mln <small style="opacity:0.8">($200)</small></span>
+      </div>
+      <div class="summary-total">
+        <span>JAMI:</span>
+        <span>~105.06 mln <small style="opacity:0.9">(~$8,207)</small></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- QAYTARISH -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">💰</div>
+      <span>Mablag'ni qaytarish muddati</span>
+    </div>
+    <div class="text-block">
+      <p style="margin-bottom: 12px;">Siz kiritgan mablag'ning qaytarilish muddati <strong>2 ta omilga</strong> bog'liq:</p>
+      <ul class="step-list">
+        <li><span class="step-num">1</span><div><strong>Kiritilgan summa miqdori</strong> — qancha ko'p bo'lsa, qaytarish shuncha uzoqroq vaqt oladi.</div></li>
+        <li><span class="step-num">2</span><div><strong>Ishga tushirilgan loyihalar soni</strong> — qancha ko'p loyiha muvaffaqiyatli ishga tushsa, daromad shunchalik tez o'sadi.</div></li>
+      </ul>
+      <div class="info-banner">
+        <strong>⚖️ Shaffoflik:</strong> Har oylik daromad va xarajatlar hisoboti sizga muntazam taqdim etiladi — Allohning izni bilan.
+      </div>
+    </div>
+  </div>
+
+  <!-- FOYDALI JIHATLAR -->
+  <div class="section">
+    <div class="section-title">
+      <div class="section-icon">✨</div>
+      <span>Loyihaning afzalliklari</span>
+    </div>
+    <ul class="step-list">
+      <li><span class="step-num">✓</span><div><strong>Halol daromad</strong> — faqat shariatga muvofiq xizmatlar.</div></li>
+      <li><span class="step-num">✓</span><div><strong>Katta talab</strong> — dunyo bo'ylab musulmonlar ruqiyaga muhtoj.</div></li>
+      <li><span class="step-num">✓</span><div><strong>Raqamlashtirish</strong> — onlayn xizmat orqali 10,000 kishigacha yetish.</div></li>
+      <li><span class="step-num">✓</span><div><strong>Baraka</strong> — Alloh yo'lida qilingan ishda baraka bo'ladi.</div></li>
+      <li><span class="step-num">✓</span><div><strong>Ilmiy yondashuv</strong> — tadqiqot va yangi usullar yaratish.</div></li>
+    </ul>
+  </div>
+
+  <!-- DUO -->
+  <div class="duaa-box">
+    <div class="duaa-arabic">اللَّهُمَّ بَارِكْ لَنَا وَارْزُقْنَا</div>
+    <div class="duaa-text">
+      "Allohim, bizga baraka ber va bizga rizq ato et."<br>
+      <strong style="color: var(--primary-dark);">Alloh bizga yordamchi bo'lsin. Omin! 🤲</strong>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© Abu Muhammad — Roqiy</p>
+    <p style="margin-top: 6px;">Barcha ishlar Allohning rizoligi uchun</p>
+  </div>
+
+</div>
+
+</body>
+</html>
