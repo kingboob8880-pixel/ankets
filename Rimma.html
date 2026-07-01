@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Рукья · Диагноз лекаря Абу Мухаммад · Римма</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f2eee8 0%, #e4dbcf 100%);
+      font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Noto Sans', 'Helvetica Neue', sans-serif;
+      padding: 24px 16px 48px;
+      color: #2a231b;
+    }
+
+    .container {
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(255, 253, 250, 0.97);
+      border-radius: 36px;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+      padding: 1.6rem;
+      margin-bottom: 1.8rem;
+      border: 1px solid #ede0d0;
+      transition: all 0.2s;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #d6c8b4;
+      color: #1f2e1c;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.3rem 0.9rem;
+      border-radius: 60px;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.9rem;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #2b5d37, #ac7846);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 1rem 0 0.75rem 0;
+      color: #3e2c1c;
+      border-left: 5px solid #b88654;
+      padding-left: 14px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 1.2rem 0 0.6rem 0;
+      color: #5b3f25;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .subhead {
+      font-size: 0.85rem;
+      color: #9b7a58;
+      border-bottom: 1px solid #eedfcb;
+      padding-bottom: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .patient-badge {
+      background: #f9f3ea;
+      border-radius: 60px;
+      padding: 0.5rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin: 0.6rem 0 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #5c452e;
+    }
+    .patient-badge span {
+      background: white;
+      padding: 0.25rem 0.9rem;
+      border-radius: 30px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    .analysis-text {
+      line-height: 1.6;
+      font-size: 0.98rem;
+      color: #2f281f;
+      text-align: justify;
+    }
+
+    .hadith-box {
+      background: #eaf0e6;
+      padding: 1rem 1.2rem;
+      border-radius: 28px;
+      margin: 1rem 0;
+      border-right: 4px solid #b88654;
+      font-style: normal;
+      font-size: 0.92rem;
+      color: #2c4b2f;
+    }
+    .hadith-box strong {
+      color: #8b5a2e;
+      font-weight: 700;
+    }
+
+    .symptom-grid {
+      list-style: none;
+      margin: 0.8rem 0;
+    }
+    .symptom-grid li {
+      padding: 0.6rem 0 0.6rem 1.8rem;
+      position: relative;
+      border-bottom: 1px solid #f2e4d4;
+      font-size: 0.94rem;
+    }
+    .symptom-grid li::before {
+      content: "🔹";
+      position: absolute;
+      left: 0;
+      top: 0.6rem;
+      font-size: 0.8rem;
+    }
+
+    .verdict-box {
+      background: #e5d9cb;
+      border-radius: 28px;
+      padding: 1.2rem;
+      text-align: center;
+      font-weight: 700;
+      margin: 1.2rem 0;
+      color: #2a5436;
+      font-size: 1rem;
+    }
+
+    .pricing-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.8rem 0 0.5rem;
+    }
+
+    .offer-card {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 32px;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+      border: 1px solid #e2d2c0;
+      transition: 0.2s;
+    }
+    .offer-card.full {
+      background: linear-gradient(145deg, #fffaf2, #fff3e6);
+      border: 1px solid #d8ba93;
+    }
+
+    .price-tag {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #b9622a;
+      margin: 0.4rem 0;
+    }
+    .price-tag small {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #7f6446;
+    }
+    .offer-title {
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+    .offer-desc {
+      font-size: 0.8rem;
+      color: #6b533b;
+      margin: 0.6rem 0 1rem;
+      line-height: 1.35;
+    }
+
+    .btn-telegram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #2a6e3f;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 10px 16px;
+      border-radius: 100px;
+      width: 100%;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-telegram:hover {
+      background: #1e5631;
+    }
+
+    .signature {
+      text-align: right;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      color: #9a7b58;
+      font-style: italic;
+      border-top: 1px dashed #e6d6c4;
+      padding-top: 0.8rem;
+    }
+
+    .footer-note {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #a58d71;
+      margin-top: 2rem;
+      border-top: 1px solid #e1d2c0;
+      padding-top: 1rem;
+    }
+    hr {
+      margin: 0.8rem 0;
+      border: none;
+      height: 1px;
+      background: #ebddcf;
+    }
+    @media (max-width: 500px) {
+      body { padding: 18px 12px 32px; }
+      .card { padding: 1.3rem; }
+      .price-tag { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Основная карточка с анализом -->
+  <div class="card">
+    <span class="badge">📿 Лекарь Абу Мухаммад · Исламская рукья</span>
+    <h1>Духовный диагноз<br>для Риммы</h1>
+    <div class="subhead">Подробнейший разбор на основе Корана и достоверных хадисов</div>
+    <div class="patient-badge">
+      <span>👤 Римма</span>
+      <span>💔 3 неудачных брака</span>
+      <span>😢 Постоянные слёзы, апатия</span>
+      <span>🔒 Чувство закрытой дороги</span>
+    </div>
+    <div class="analysis-text">
+      <p><strong>Бисмиллахир Рахманир Рахим.</strong> Я, Абу Мухаммад, внимательно изучил ваше описание. Ваши слова — «лень даже на намаз», «ни одного счастливого дня», «только слезы», «три брака — три расставания», «подруга завидовала и закрывала дорогу», «мужья били без причины», «ощущение никому не нужна» — рисуют картину тяжёлого духовного поражения. Я опираюсь только на сахих-хадисы (Бухари, Муслим) и аяты Корана.</p>
+
+      <h3>🧩 Разбор симптомов</h3>
+      <ul class="symptom-grid">
+        <li><strong>Постоянная лень, отсутствие желания совершать намаз</strong> — это один из главных признаков влияния шайтана или сихра на волю. Пророк ﷺ сказал: <em>«Шайтан завязывает три узла на затылке человека... и говорит: “Ночь длинна, спи”»</em> (Бухари 3287, Муслим 776). Если узлы не развязаны зикром, возникает апатия и лень к поклонению.</li>
+        <li><strong>Три брака, заканчивающиеся разводом, и избиения без причины</strong> — это явный признак <strong>сихр ат-тафрик (магии разлучения)</strong> и сихра на закрытие брака. Передаётся, что Пророк ﷺ говорил о магии, которая разлучает супругов (ан-Насаи, Абу Давуд, достоверный хадис). Также здесь виден сильный сглаз (‘айн) от завистницы.</li>
+        <li><strong>Подруга, которая “завидовала и закрывала дорогу”</strong> — это типичный случай ‘айна (дурного глаза). Пророк ﷺ сказал: <em>«Сглаз — это истина»</em> (Бухари 5740, Муслим 2187). Завистливый взгляд может перекрыть пути ризка, брака и счастья.</li>
+        <li><strong>Постоянные слёзы, чувство ненужности, отсутствие счастливых дней</strong> — это результат подавления бараката и эмоционального истощения от магии и сглаза. Джинны и шайтаны питаются негативом, усиливая депрессию.</li>
+        <li><strong>Ощущение, что “дорога закрыта”</strong> — прямой признак сихра на преграду (сахр аль-ма’уна). В хадисе от Аиши (Бухари 5768) рассказывается, как Пророка ﷺ околдовали, и он чувствовал, что делает то, чего не делал.</li>
+      </ul>
+
+      <div class="hadith-box">
+        <strong>📖 Достоверный хадис (Муслим, 2865):</strong> «Шайтан бежит от места, где читается Коран, но если человек пренебрегает, то джинн может проявиться». Ваша лень к намазу — это шайтан, который отдаляет вас от защиты.
+      </div>
+
+      <h3>📋 Диагноз (Ташхис)</h3>
+      <p><strong>Основной диагноз:</strong> <strong>комплексное поражение</strong> — сильный сглаз (‘айн) от завистницы, сихр на разлучение и закрытие брака, а также активное влияние шайтана, вызывающее лень и апатию. Вероятно, присутствует и джинн-карин, который усиливает негативные мысли.</p>
+      <div class="verdict-box">
+        🧬 Вердикт: Сглаз + магия разлучения + сихр на закрытие дорог. Требуется немедленное лечение: снятие сглаза, разрушение сихра и очищение дома.
+      </div>
+      <p>Ваше состояние — одно из самых тяжёлых, но, как сказал Пророк ﷺ: <em>«Для каждой болезни есть лекарство»</em> (Бухари 5678). Я рекомендую <strong>полный курс (20 000 ₽)</strong>, который включает снятие всех видов порчи, очищение дома и восстановление энергетики. Одноразовый сеанс (3 000 ₽) даст временное облегчение, но не уберёт корень.</p>
+      <div class="signature">
+        ✍️ Ваш лекарь, Абу Мухаммад (специалист по рукье шар’ия)
+      </div>
+    </div>
+  </div>
+
+  <!-- Оффер лечения -->
+  <div class="card">
+    <span class="badge">💊 Лечебный оффер · Шариатское врачевание</span>
+    <h2 style="margin-top: 0;">Путь к исцелению</h2>
+    <p style="font-size: 0.9rem;">Учитывая глубину поражения и многолетние страдания, <strong>настоятельно рекомендую полный курс</strong>. Выбор за вами, но помните: чем дольше вы терпите, тем глубже укореняется недуг.</p>
+
+    <div class="pricing-row">
+      <!-- Полное лечение 20 000 ₽ -->
+      <div class="offer-card full">
+        <div class="offer-title">🌿 Полное лечение (курс рукья)</div>
+        <div class="price-tag">20 000 ₽</div>
+        <div class="offer-desc">
+          ✔ Диагностика всех видов сихра и сглаза<br>
+          ✔ 7–10 сеансов интенсивной рукьи (снятие магии, изгнание джинна)<br>
+          ✔ Снятие порчи на брак, закрытие дорог, депрессию<br>
+          ✔ Очищение дома и личных вещей от подкладов<br>
+          ✔ Индивидуальные дуа и зикры для защиты<br>
+          ✔ Полное восстановление воли и возвращение радости<br>
+          ✔ Поддержка на протяжении всего курса
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram">
+          📩 Связаться с лекарем (полный курс)
+        </a>
+      </div>
+
+      <!-- Одноразовое лечение 3 000 ₽ -->
+      <div class="offer-card">
+        <div class="offer-title">⚡ Одноразовое лечение (сеанс)</div>
+        <div class="price-tag">3 000 ₽</div>
+        <div class="offer-desc">
+          ✔ Сеанс рукьи (1–1,5 часа)<br>
+          ✔ Снятие острого сглаза и временное облегчение<br>
+          ✔ Уменьшение лени, улучшение настроения<br>
+          ✔ Чтение аятов аль-Бакара, аль-Фатиха, аль-Муаввизатан<br>
+          ✔ Рекомендации по защите до следующего шага<br>
+          ✔ Облегчение душевного состояния
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram" style="background:#8a6d4b;">
+          💬 Связаться с лекарем (разовый сеанс)
+        </a>
+      </div>
+    </div>
+    <p style="font-size: 0.7rem; text-align: center; margin-top: 0.8rem; background: #f5ede4; padding: 6px; border-radius: 20px;">Цены указаны в российских рублях (₽).</p>
+  </div>
+
+  <!-- Прогноз и наставление -->
+  <div class="card">
+    <h2>🕊 Прогноз и наставление</h2>
+    <div class="analysis-text">
+      <p>Ваш случай — классический пример сочетания сглаза, магии и шайтанского наущения. Полный курс (20 000 ₽) позволит:</p>
+      <ul style="list-style: disc; padding-left: 1.5rem; margin: 0.5rem 0;">
+        <li>Снять завистливый взгляд подруги, который перекрыл ваши пути.</li>
+        <li>Разрушить магические узлы разлучения, чтобы будущие отношения были благословенными.</li>
+        <li>Вернуть вкус к жизни, намазу и радости.</li>
+        <li>Очистить дом и себя от негативных энергий.</li>
+      </ul>
+      <p>Одноразовый сеанс (3 000 ₽) — это как скорую помощь: он снимет самые острые симптомы, но без последующей работы болезнь вернётся. Многие пациенты начинают с сеанса, чтобы убедиться в эффективности, а затем переходят на полный курс.</p>
+      <div class="hadith-box">
+        <strong>📜 Хадис (Бухари, 5748):</strong> «Рукья (чтение Корана) — это исцеление». Я провожу только разрешённую шариатом рукъю, без всяких нововведений, опираясь на сахих-хадисы.
+      </div>
+      <p>Помните: ваше состояние — не приговор. Аллах говорит: <em>«…а те, которые уверовали, да не отчаиваются в милости Аллаха»</em> (сура «Юсуф», 87). Обращайтесь ко мне, и с позволения Всевышнего вы обретёте счастье и покой.</p>
+    </div>
+    <hr>
+    <div style="text-align: center;">
+      <a href="https://t.me/Ruqoq" target="_blank" style="display: inline-block; background: none; border: 2px solid #b67b42; padding: 8px 24px; border-radius: 60px; text-decoration: none; color: #b67b42; font-weight: 600;">📲 Написать лекарю в Telegram</a>
+    </div>
+  </div>
+
+  <!-- Резюме жалоб -->
+  <div class="card" style="background: #fdf8f0;">
+    <h3>📌 Ваши жалобы (краткое резюме)</h3>
+    <div style="font-size: 0.85rem; display: grid; gap: 6px;">
+      <div>• Постоянная лень, отсутствие желания на намаз</div>
+      <div>• Три неудачных брака, побои от мужей без причины</div>
+      <div>• Ни одного счастливого дня, только слёзы</div>
+      <div>• Подруга завидовала и «закрывала дорогу»</div>
+      <div>• Ощущение никому не нужна, апатия</div>
+      <div>• Безнадёжность, потеря сил</div>
+    </div>
+    <div class="hadith-box" style="margin-top: 12px; background: #e8ddcf;">
+      🕌 Пророк ﷺ сказал: «Сглаз — это истина, и если бы что-то могло опередить предопределение, то это был бы сглаз» (Муслим 2188). Ваша ситуация — классическое проявление сглаза и магии.
+    </div>
+  </div>
+
+  <div class="footer-note">
+    ⚠️ Лечение проводится строго по Корану и Сунне, без использования слабых хадисов. Все сеансы конфиденциальны. Связь с лекарем: <strong>https://t.me/Ruqoq</strong>
+  </div>
+</div>
+</body>
+</html>
