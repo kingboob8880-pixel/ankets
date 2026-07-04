@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Рукья · Диагноз лекаря Абу Мухаммад · Анастасия</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f2eee8 0%, #e4dbcf 100%);
+      font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Noto Sans', 'Helvetica Neue', sans-serif;
+      padding: 24px 16px 48px;
+      color: #2a231b;
+    }
+
+    .container {
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: rgba(255, 253, 250, 0.97);
+      border-radius: 36px;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.02);
+      padding: 1.6rem;
+      margin-bottom: 1.8rem;
+      border: 1px solid #ede0d0;
+      transition: all 0.2s;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #d6c8b4;
+      color: #1f2e1c;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.3rem 0.9rem;
+      border-radius: 60px;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.9rem;
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #2b5d37, #ac7846);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 1rem 0 0.75rem 0;
+      color: #3e2c1c;
+      border-left: 5px solid #b88654;
+      padding-left: 14px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 1.2rem 0 0.6rem 0;
+      color: #5b3f25;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .subhead {
+      font-size: 0.85rem;
+      color: #9b7a58;
+      border-bottom: 1px solid #eedfcb;
+      padding-bottom: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .patient-badge {
+      background: #f9f3ea;
+      border-radius: 60px;
+      padding: 0.5rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin: 0.6rem 0 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #5c452e;
+    }
+    .patient-badge span {
+      background: white;
+      padding: 0.25rem 0.9rem;
+      border-radius: 30px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+
+    .analysis-text {
+      line-height: 1.6;
+      font-size: 0.98rem;
+      color: #2f281f;
+      text-align: justify;
+    }
+
+    .hadith-box {
+      background: #eaf0e6;
+      padding: 1rem 1.2rem;
+      border-radius: 28px;
+      margin: 1rem 0;
+      border-right: 4px solid #b88654;
+      font-style: normal;
+      font-size: 0.92rem;
+      color: #2c4b2f;
+    }
+    .hadith-box strong {
+      color: #8b5a2e;
+      font-weight: 700;
+    }
+
+    .symptom-grid {
+      list-style: none;
+      margin: 0.8rem 0;
+    }
+    .symptom-grid li {
+      padding: 0.6rem 0 0.6rem 1.8rem;
+      position: relative;
+      border-bottom: 1px solid #f2e4d4;
+      font-size: 0.94rem;
+    }
+    .symptom-grid li::before {
+      content: "🔹";
+      position: absolute;
+      left: 0;
+      top: 0.6rem;
+      font-size: 0.8rem;
+    }
+
+    .verdict-box {
+      background: #e5d9cb;
+      border-radius: 28px;
+      padding: 1.2rem;
+      text-align: center;
+      font-weight: 700;
+      margin: 1.2rem 0;
+      color: #2a5436;
+      font-size: 1rem;
+    }
+
+    .pricing-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1.8rem 0 0.5rem;
+    }
+
+    .offer-card {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 32px;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+      border: 1px solid #e2d2c0;
+      transition: 0.2s;
+    }
+    .offer-card.full {
+      background: linear-gradient(145deg, #fffaf2, #fff3e6);
+      border: 1px solid #d8ba93;
+    }
+
+    .price-tag {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #b9622a;
+      margin: 0.4rem 0;
+    }
+    .price-tag small {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #7f6446;
+    }
+    .offer-title {
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+    .offer-desc {
+      font-size: 0.8rem;
+      color: #6b533b;
+      margin: 0.6rem 0 1rem;
+      line-height: 1.35;
+    }
+
+    .btn-telegram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #2a6e3f;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 10px 16px;
+      border-radius: 100px;
+      width: 100%;
+      transition: background 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-telegram:hover {
+      background: #1e5631;
+    }
+
+    .signature {
+      text-align: right;
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      color: #9a7b58;
+      font-style: italic;
+      border-top: 1px dashed #e6d6c4;
+      padding-top: 0.8rem;
+    }
+
+    .footer-note {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #a58d71;
+      margin-top: 2rem;
+      border-top: 1px solid #e1d2c0;
+      padding-top: 1rem;
+    }
+    hr {
+      margin: 0.8rem 0;
+      border: none;
+      height: 1px;
+      background: #ebddcf;
+    }
+    @media (max-width: 500px) {
+      body { padding: 18px 12px 32px; }
+      .card { padding: 1.3rem; }
+      .price-tag { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Карточка с анализом -->
+  <div class="card">
+    <span class="badge">📿 Лекарь Абу Мухаммад · Исламская рукья</span>
+    <h1>Духовный разбор<br>случая Анастасии</h1>
+    <div class="subhead">Подробнейшее заключение на основе Корана и сахих-хадисов</div>
+    <div class="patient-badge">
+      <span>👤 Анастасия</span>
+      <span>⏳ 10 лет невезения</span>
+      <span>💰 Долги, кредиты</span>
+      <span>🏠 Рушащийся дом</span>
+      <span>🤕 Головные боли</span>
+    </div>
+    <div class="analysis-text">
+      <p><strong>Бисмиллахир Рахманир Рахим.</strong> Я, Абу Мухаммад, изучив ваше состояние, провожу глубокий шариатский диагноз, опираясь исключительно на аяты Корана и достоверные хадисы (сахих аль-Бухари, Муслим). Ваша история — яркий пример того, как сихр (колдовство), сглаз и зависть могут перевернуть жизнь человека, лишив его бараката, здоровья и поддержки окружающих.</p>
+
+      <h3>🧩 Хронология и ключевые симптомы</h3>
+      <ul class="symptom-grid">
+        <li><strong>Полоса невезения, долги, кредиты (начало 10 лет назад)</strong> — внезапное ухудшение финансового положения, особенно если вы всегда были противницей долгов, указывает на <strong>сихр на закрытие ризка (порча на деньги и достаток)</strong>. Пророк ﷺ сказал: «Поистине, шайтан обещает вам бедность и повелевает вам мерзость» (Коран, 2:268), но здесь видно внешнее воздействие.</li>
+        <li><strong>Замирание беременности на большом сроке (дважды)</strong> — это один из самых тяжёлых признаков сихра, направленного на разрушение семьи и потомства. В хадисе от Ибн Аббаса (Бухари) упоминается, что колдовство может влиять на деторождение.</li>
+        <li><strong>Скандалы, ругань в доме, дом рушится</strong> — классический сихр тафрика (разлучение), который сеет вражду между супругами и разрушает уют. Передаётся от Аиши (Бухари 5768): «Пророка ﷺ околдовали, и он думал, что делает то, чего не делал» – колдовство влияет на отношения и восприятие.</li>
+        <li><strong>Отвернулись люди, сплетни родственников мужа</strong> — это следствие сихра на социальный статус и репутацию. Зависть со стороны тех, у кого сейчас всё хорошо, также указывает на «айн» (дурной глаз), который перевернул ситуацию.</li>
+        <li><strong>Страшные головные боли, ухудшение мышления</strong> — джинн или сихр часто поражают голову, вызывая мигрени, «туман» в сознании. Ибн аль-Кайим в «Зад аль-Ма’ад» пишет: если боль в голове сопровождается ухудшением памяти и сообразительности, это один из признаков духовного поражения.</li>
+        <li><strong>Сильная слабость, упадок сил</strong> — результат длительного воздействия, истощающего организм. Все эти симптомы взаимосвязаны и указывают на комплексную проблему.</li>
+      </ul>
+
+      <div class="hadith-box">
+        <strong>📖 Сахих аль-Бухари (5748) и Муслим (2202):</strong> «Нет болезни, которую Аллах не ниспослал бы без её лечения». А в другом хадисе (Бухари 5678) сказано: «Каждое заболевание имеет лечение». Ваше состояние — не приговор, оно излечимо с помощью рукьи и очищения.
+      </div>
+
+      <h3>📋 Диагноз (Ташхис)</h3>
+      <p><strong>Первичный диагноз:</strong> <strong>Сихр (колдовство) комплексного типа</strong> – на финансы, на семейные отношения, на деторождение, а также сильный <strong>‘айн (завистливый глаз)</strong> со стороны тех, кто вам завидовал. Присутствует также <strong>джинн-карин</strong>, который поддерживает это состояние, вызывая головные боли и помутнение сознания. Ваша жизнь пошла под откос именно после того, как завистники начали «преуспевать» – это классический признак переноса негатива.</p>
+      <div class="verdict-box">
+        🧬 Вердикт: Сихр на ризк, семью и здоровье + сглаз + воздействие джинна. Степень тяжёлая, но излечимая. Требуется комплексный подход: очищение дома, снятие порчи, изгнание джинна и восстановление бараката.
+      </div>
+      <p>Ваше состояние усугубляется тем, что проблемы длятся уже 10 лет – за это время негатив укоренился и «обрастает» новыми слоями. Однако, как сказал Пророк ﷺ: <em>«Уповайте на Аллаха, но привязывайте верблюда»</em> – необходимо принять меры, и я готов вам помочь.</p>
+      <div class="signature">
+        ✍️ Ваш лекарь, Абу Мухаммад (специалист по рукье шар’ия)
+      </div>
+    </div>
+  </div>
+
+  <!-- Оффер лечения -->
+  <div class="card">
+    <span class="badge">💊 Лечебный оффер · Шариатское врачевание</span>
+    <h2 style="margin-top: 0;">Путь к исцелению</h2>
+    <p style="font-size: 0.9rem;">Учитывая длительность и тяжесть поражения, <strong>настоятельно рекомендую полный курс</strong>. Одноразовый сеанс даст временное облегчение, но для полного выздоровления необходимо устранить корень.</p>
+
+    <div class="pricing-row">
+      <!-- Полное лечение 20 000 руб -->
+      <div class="offer-card full">
+        <div class="offer-title">🌿 Полное лечение (курс рукья)</div>
+        <div class="price-tag">20 000 ₽</div>
+        <div class="offer-desc">
+          ✔ Полная диагностика с выявлением всех видов сихра и сглаза<br>
+          ✔ 8–12 сеансов интенсивной рукьи (батн, изгнание джинна)<br>
+          ✔ Снятие порчи на деньги, семейные отношения и здоровье<br>
+          ✔ Очищение дома и личных вещей от магии и подкладов<br>
+          ✔ Лечение головных болей и восстановление ясности ума<br>
+          ✔ Защита от повторного сглаза и зависти (хирза, зикры)<br>
+          ✔ Полное восстановление бараката в делах и финансах<br>
+          ✔ Поддержка на протяжении всего курса
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram">
+          📩 Связаться с лекарем (полный курс)
+        </a>
+      </div>
+
+      <!-- Одноразовое лечение 3000 руб -->
+      <div class="offer-card">
+        <div class="offer-title">⚡ Одноразовое лечение (сеанс)</div>
+        <div class="price-tag">3 000 ₽</div>
+        <div class="offer-desc">
+          ✔ Сеанс рукьи (1–1,5 часа)<br>
+          ✔ Снятие острых симптомов: головная боль, слабость, тревога<br>
+          ✔ Чтение аятов аль-Бакара, аль-Фатиха, аль-Муаввизатан<br>
+          ✔ Временное ослабление сихра и джинна<br>
+          ✔ Вы получите дуа и зикры для ежедневной защиты<br>
+          ✔ Рекомендации по дальнейшему очищению
+        </div>
+        <a href="https://t.me/Ruqoq" target="_blank" class="btn-telegram" style="background:#8a6d4b;">
+          💬 Связаться с лекарем (разовый сеанс)
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Оценка и наставление -->
+  <div class="card">
+    <h2>🕊 Прогноз и наставление</h2>
+    <div class="analysis-text">
+      <p>Ваш случай – один из тех, где <strong>полный курс (20 000 ₽)</strong> является не просто рекомендацией, а необходимостью. Вы перечислили множество проблем, которые взаимосвязаны: финансы, семья, здоровье, отношения с людьми – всё это поразил сихр. Одноразовый сеанс (3 000 ₽) может облегчить ваше состояние на несколько недель, но без устранения первоисточника (подклад, узлы, место в доме) симптомы вернутся с новой силой.</p>
+      <div class="hadith-box">
+        <strong>📜 Хадис от Абу Хурайры (Муслим, 2230):</strong> «Шайтан находится в доме там, где не читается Коран». Я проведу рукъю над вашим домом, чтобы изгнать всё зло и вернуть баракат.
+      </div>
+      <p>В рамках полного курса я также дам вам индивидуальные дуа и зикры для защиты от сглаза и зависти, а также научу, как поддерживать чистоту в доме. Многие мои пациенты с похожими симптомами уже вернули себе благополучие, и, с позволения Аллаха, вы тоже сможете.</p>
+      <p>Не откладывайте лечение – чем дольше негатив остаётся в вашей жизни, тем сложнее его устранить. Я жду вашего решения.</p>
+    </div>
+    <hr>
+    <div style="text-align: center;">
+      <a href="https://t.me/Ruqoq" target="_blank" style="display: inline-block; background: none; border: 2px solid #b67b42; padding: 8px 24px; border-radius: 60px; text-decoration: none; color: #b67b42; font-weight: 600;">📲 Написать лекарю в Telegram</a>
+    </div>
+  </div>
+
+  <!-- Резюме жалоб -->
+  <div class="card" style="background: #fdf8f0;">
+    <h3>📌 Резюме ваших жалоб (для точности диагноза)</h3>
+    <div style="font-size: 0.85rem; display: grid; gap: 6px;">
+      <div>• Полоса невезения, долги, кредиты (начало 10 лет назад)</div>
+      <div>• Два замирания беременности на большом сроке</div>
+      <div>• Скандалы, ругань, дом рушится</div>
+      <div>• Отвернулись люди, сплетни родственников мужа</div>
+      <div>• Зависть со стороны тех, у кого теперь всё хорошо</div>
+      <div>• Страшные головные боли, ухудшение соображения</div>
+      <div>• Сильная слабость, упадок сил</div>
+    </div>
+    <div class="hadith-box" style="margin-top: 12px; background: #e8ddcf;">
+      🕌 Имам Ибн аль-Кайим (رحمه الله) в «Зад аль-Ма’ад» указывает, что сочетание финансовых потерь, семейных разладов и головных болей – явный признак комплексного сихра и сглаза.
+    </div>
+  </div>
+
+  <div class="footer-note">
+    ⚠️ Лечение проводится строго по Сунне, без использования слабых хадисов или нововведений. Все сеансы конфиденциальны. Связь с лекарем: <strong>https://t.me/Ruqoq</strong>
+  </div>
+</div>
+</body>
+</html>
