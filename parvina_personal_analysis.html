@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Персональный анализ • Абу Мухаммад</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:wght@700&amp;display=swap');
+        
+        :root {
+            --primary: #0F4C3A;
+            --gold: #C9A962;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .heading-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .islamic-pattern {
+            background-image: 
+                linear-gradient(rgba(15, 76, 58, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(15, 76, 58, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .section-header {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-header:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(to right, #C9A962, transparent);
+        }
+
+        .analysis-text {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: #374151;
+        }
+
+        .hadith-box {
+            background: linear-gradient(145deg, #F8F5F0 0%, #F1EDE3 100%);
+            border-left: 5px solid #C9A962;
+        }
+
+        .price-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .price-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .nav-scrolled {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        }
+
+        .beautiful-text {
+            font-feature-settings: "kern" "liga" "tnum";
+        }
+
+        .symptom-card {
+            transition: transform 0.2s ease;
+        }
+
+        .gold-accent {
+            color: #C9A962;
+        }
+        
+        .deep-green {
+            color: #0F4C3A;
+        }
+
+        .subtle-divider {
+            background: linear-gradient(to right, transparent, #E5E0D5, transparent);
+        }
+    </style>
+</head>
+<body class="bg-[#FDF8F3] text-[#374151] antialiased">
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-[#E5E0D5] sticky top-0 z-50">
+        <div class="max-w-screen-xl mx-auto px-5 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-11 h-11 bg-[#0F4C3A] rounded-2xl flex items-center justify-center shadow-inner">
+                    <i class="fa-solid fa-mosque text-white text-2xl"></i>
+                </div>
+                <div>
+                    <div class="font-semibold text-[#0F4C3A] text-xl tracking-tight">Абу Мухаммад</div>
+                    <div class="text-[10px] text-[#6B6659] -mt-1">Исламский лекарь-рукийя</div>
+                </div>
+            </div>
+            <a href="https://t.me/Ruqoq" target="_blank"
+               class="px-5 py-2.5 text-sm font-medium bg-[#0F4C3A] hover:bg-[#0A3A2C] transition-colors text-white rounded-3xl flex items-center gap-x-2 shadow-sm">
+                <i class="fa-brands fa-telegram text-lg"></i>
+                <span class="hidden sm:inline">Написать лекарю</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="max-w-screen-xl mx-auto px-5 pt-10 pb-8">
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-x-2 px-4 py-1.5 bg-white rounded-full border border-[#E5E0D5] mb-4 shadow-sm">
+                <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                <span class="text-xs font-medium tracking-[1px] text-[#6B6659]">ПЕРСОНАЛЬНЫЙ АНАЛИЗ</span>
+            </div>
+            
+            <h1 class="heading-serif text-5xl sm:text-6xl leading-none tracking-tighter text-[#0F4C3A] mb-3">
+                Салам алейкум,<br>сестра Парвина
+            </h1>
+            <p class="text-xl text-[#6B6659] max-w-md mx-auto">из Таджикистана • 27 лет</p>
+        </div>
+
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-[#E5E0D5]">
+                <div class="flex items-start gap-4">
+                    <div class="flex-shrink-0 w-12 h-12 bg-[#0F4C3A] rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-user-tie text-white text-2xl"></i>
+                    </div>
+                    <div class="flex-1 pt-1">
+                        <p class="text-[#0F4C3A] font-medium text-lg leading-tight">Я внимательно изучил вашу историю.<br>Вот мой искренний и подробный анализ.</p>
+                        <p class="text-sm text-[#6B6659] mt-3">Без поверхностных слов. Только то, что видно по признакам, которые вы описали.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Section -->
+    <div class="max-w-screen-xl mx-auto px-5 pb-12">
+        <div class="max-w-3xl mx-auto">
+            
+            <!-- Introduction -->
+            <div class="mb-10">
+                <div class="flex items-center gap-x-3 mb-4">
+                    <div class="h-px flex-1 bg-gradient-to-r from-transparent via-[#C9A962] to-transparent"></div>
+                    <span class="text-xs font-semibold tracking-[2px] text-[#C9A962]">БИСМИЛЛЯХИР РАХМАНИР РАХИМ</span>
+                    <div class="h-px flex-1 bg-gradient-to-l from-transparent via-[#C9A962] to-transparent"></div>
+                </div>
+                
+                <p class="analysis-text text-[17px]">
+                    Уважаемая сестра Парвина, я прочитал вашу историю с большим вниманием и состраданием. 
+                    То, что вы описываете, — это не просто набор отдельных симптомов. Это целостная, 
+                    многолетняя картина духовного воздействия, которое затрагивает практически все сферы вашей жизни: 
+                    личную, семейную, физическую и даже вашу связь с Кораном.
+                </p>
+            </div>
+
+            <!-- Main Analysis -->
+            <div class="space-y-10">
+                
+                <!-- Общая картина -->
+                <div>
+                    <h2 class="section-header text-2xl font-semibold tracking-tight text-[#0F4C3A] mb-4">Общая картина состояния</h2>
+                    <div class="analysis-text space-y-5">
+                        <p>Вы уже более <strong>4–5 лет</strong> боретесь с духовными болезнями. При этом всё «налаживается» на какое-то время, а потом возвращается по новой. Это очень характерный признак того, что влияние, которое на вас оказывается, не было устранено до конца или продолжает подпитываться.</p>
+                        
+                        <p>Многочисленные сваты, которые «сами по себе пропадают», или вы сами внезапно теряете желание, или предложения исчезают — это классический признак <strong>блокировки на пути к замужеству</strong>. В рукийя-практике мы часто видим именно такую картину при си хре или сильном айне, направленном на эту сферу жизни.</p>
+                    </div>
+                </div>
+
+                <!-- Физические и эмоциональные проявления -->
+                <div>
+                    <h2 class="section-header text-2xl font-semibold tracking-tight text-[#0F4C3A] mb-4">Физические и эмоциональные проявления</h2>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <div class="symptom-card bg-white border border-[#E5E0D5] rounded-2xl p-5">
+                            <div class="flex items-center gap-x-3 mb-3">
+                                <i class="fa-solid fa-heart text-[#C9A962] text-xl"></i>
+                                <span class="font-medium">Сердце и эмоции</span>
+                            </div>
+                            <p class="text-sm text-[#4B463A]">Острые боли в сердце без медицинских причин, частые плачи без видимой причины, суицидальные мысли — всё это часто является результатом сильного waswasa или давления, которое оказывает на душу внешнее влияние.</p>
+                        </div>
+                        
+                        <div class="symptom-card bg-white border border-[#E5E0D5] rounded-2xl p-5">
+                            <div class="flex items-center gap-x-3 mb-3">
+                                <i class="fa-solid fa-head-side-virus text-[#C9A962] text-xl"></i>
+                                <span class="font-medium">Рот и речь</span>
+                            </div>
+                            <p class="text-sm text-[#4B463A]">Воспаления на языке и во рту, которые лопаются и вызывают такую боль, что даже дышать больно — это очень показательный симптом. Область рта и языка напрямую связана с чтением Корана и дуа. Когда здесь возникает острая боль — часто это реакция на духовное воздействие.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-text">
+                        <p>Вы отмечаете, что <strong>быстро устаёте при чтении Корана</strong>, особенно челюсть и горло. Это тоже важный знак. Когда человек начинает читать Книгу Аллаха и сразу возникает физическая усталость или боль именно в органах речи — это часто указывает на то, что есть «противодействие» со стороны инородного влияния.</p>
+                        
+                        <p class="mt-4">Бессонница последние месяцы, которая не снимается таблетками, — ещё один типичный симптом. Тело не может расслабиться, потому что душа находится в состоянии постоянного внутреннего напряжения.</p>
+                    </div>
+                </div>
+
+                <!-- Реакция на рукъю и сны -->
+                <div>
+                    <h2 class="section-header text-2xl font-semibold tracking-tight text-[#0F4C3A] mb-4">Реакция на рукъю и сны после сеанса</h2>
+                    
+                    <div class="analysis-text space-y-5">
+                        <p>Вы сделали хиджаму и затем прошли сеанс рукъи у рокийи. Во время чтения было <strong>лёгкое прокалывание в правой стороне головы и моргание глазами</strong>, а к концу чтения наступило полное успокоение. Ту ночь вы спали хорошо. Это <strong>классическая положительная реакция</strong>. Такие физические ощущения во время рукъи часто означают, что чтение «достало» до цели и начался процесс выхода или ослабления влияния.</p>
+                        
+                        <div class="hadith-box border border-[#E5E0D5] rounded-2xl p-6 my-6">
+                            <div class="flex gap-3">
+                                <i class="fa-solid fa-book-quran text-[#C9A962] text-2xl mt-1"></i>
+                                <div>
+                                    <p class="italic text-[#4B463A]">"Сглаз — истина, и если бы что-то могло опередить предопределение, то это был бы сглаз."</p>
+                                    <p class="text-xs text-[#6B6659] mt-3">— Сахих Муслим</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <p>Особенно важны сны, которые начали сниться после этого сеанса:</p>
+                        
+                        <ul class="space-y-4 mt-4 pl-1">
+                            <li class="flex gap-3">
+                                <span class="text-[#C9A962] mt-1">•</span>
+                                <span><strong>Сон, где вы своими руками вытаскиваете иглы из щёк девушки</strong> — это очень яркий и символичный сон. В практике рукийя иглы часто ассоциируются с колдовством. То, что вы сами их вытаскиваете — сильный знак того, что процесс очищения уже начался.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="text-[#C9A962] mt-1">•</span>
+                                <span><strong>Повторяющийся сон о двух женщинах и их сыне (или брате)</strong>, которые хотят выдать вас за этого парня. Вы их не знаете наяву, но уже видели раньше во сне. Это очень значимый сигнал. Такие сны часто раскрывают источник влияния — либо конкретных людей, через которых было сделано воздействие, либо образы, которые используются для блокировки вашего замужества.</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <span class="text-[#C9A962] mt-1">•</span>
+                                <span><strong>Сон, где воздух давит на вас</strong> — классическое ощущение масс (давления джинна) или тяжёлого си хра.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Вывод анализа -->
+                <div class="bg-[#0F4C3A] text-white rounded-3xl p-8">
+                    <h3 class="font-semibold text-xl mb-4 flex items-center gap-x-2">
+                        <i class="fa-solid fa-lightbulb text-[#C9A962]"></i>
+                        <span>Мой вывод по вашей ситуации</span>
+                    </h3>
+                    <p class="leading-relaxed opacity-95">
+                        У вас присутствует активное духовное влияние (скорее всего, сочетание си хра и сильного айна), 
+                        которое целенаправленно блокирует путь к замужеству, вызывает физические страдания, 
+                        нарушает сон и мешает полноценной связи с Кораном. 
+                        Временные улучшения после рукъи показывают, что исцеление возможно. 
+                        Но цикличность возвращения симптомов говорит о том, что влияние глубокое и требует 
+                        более системной и последовательной работы.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Evaluation of treatment -->
+    <div class="max-w-screen-xl mx-auto px-5 pb-12">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white border border-[#E5E0D5] rounded-3xl p-8">
+                <h2 class="section-header text-2xl font-semibold tracking-tight text-[#0F4C3A] mb-5">Оценка вашего текущего подхода</h2>
+                
+                <div class="analysis-text space-y-4">
+                    <p>Вы делаете правильные вещи: обращаетесь к специалистам по рукъе, делаете хиджаму, пытаетесь лечиться и медицински. Это уже большой шаг. То, что после последнего сеанса было заметное успокоение и хороший сон — подтверждает, что метод работает.</p>
+                    
+                    <p>Однако <strong>4–5 лет циклов</strong> «улучшение → возврат» показывают, что текущий подход пока не даёт устойчивого результата. Причины могут быть разные: влияние очень сильное, сеансы были разовыми и не системными, или есть повторное воздействие. В таких случаях требуется более глубокая и продолжительная работа под руководством опытного лекаря, который может выявить корень и работать с ним последовательно.</p>
+                    
+                    <p class="text-sm text-[#6B6659] pt-2">Вы уже на правильном пути. Теперь важно сделать следующий шаг — более основательный и профессиональный.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offer Section -->
+    <div class="max-w-screen-xl mx-auto px-5 pb-16">
+        <div class="max-w-3xl mx-auto text-center mb-8">
+            <div class="inline-block px-5 py-1.5 bg-[#0F4C3A] text-white text-xs tracking-[1.5px] rounded-full mb-4">МОЁ ПРЕДЛОЖЕНИЕ ВАМ</div>
+            <h2 class="heading-serif text-4xl text-[#0F4C3A] tracking-tight">Я готов помочь вам,<br>сестра Парвина</h2>
+            <p class="mt-3 text-[#6B6659] max-w-md mx-auto">с глубоким уважением и пониманием вашей ситуации</p>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
+            
+            <!-- One-time -->
+            <div class="price-card bg-white border border-[#E5E0D5] rounded-3xl p-7 flex flex-col">
+                <div class="flex-1">
+                    <div class="uppercase text-xs tracking-[1.5px] text-[#6B6659] font-medium mb-1">ОДНОРАЗОВЫЙ ПРИЁМ</div>
+                    <div class="flex items-baseline gap-x-1 mb-4">
+                        <span class="text-6xl font-semibold text-[#0F4C3A]">3 000</span>
+                        <span class="text-xl text-[#6B6659]">₽</span>
+                    </div>
+                    <p class="text-[#4B463A] mb-6">Диагностический приём с рукъёй. Подходит, чтобы начать работу, почувствовать эффект и понять, как я могу вам помочь.</p>
+                    
+                    <ul class="text-sm space-y-2 text-[#4B463A]">
+                        <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-emerald-600 w-4"></i> Полноценная рукъя</li>
+                        <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-emerald-600 w-4"></i> Разбор вашей ситуации</li>
+                        <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-emerald-600 w-4"></i> Рекомендации на ближайшее время</li>
+                    </ul>
+                </div>
+                
+                <a href="https://t.me/Ruqoq" target="_blank"
+                   class="mt-8 w-full inline-flex items-center justify-center gap-x-2 bg-white hover:bg-[#F8F5F0] border-2 border-[#0F4C3A] text-[#0F4C3A] font-semibold py-4 rounded-3xl transition-all active:scale-[0.985]">
+                    <span>Связаться с лекарем</span>
+                    <i class="fa-brands fa-telegram text-xl"></i>
+                </a>
+            </div>
+
+            <!-- Full course -->
+            <div class="price-card bg-[#0F4C3A] text-white rounded-3xl p-7 flex flex-col relative overflow-hidden">
+                <div class="absolute top-6 right-6 bg-[#C9A962] text-[#0F4C3A] text-[10px] font-bold px-3.5 py-1 rounded-full tracking-wider">РЕКОМЕНДУЮ</div>
+                
+                <div class="flex-1">
+                    <div class="uppercase text-xs tracking-[1.5px] text-[#C9A962] font-medium mb-1">ПОЛНЫЙ КУРС ЛЕЧЕНИЯ</div>
+                    <div class="flex items-baseline gap-x-1 mb-4">
+                        <span class="text-6xl font-semibold">20 000</span>
+                        <span class="text-xl opacity-75">₽</span>
+                    </div>
+                    <p class="opacity-90 mb-6">Глубокая системная работа для устойчивого результата. Несколько сеансов + сопровождение до улучшения состояния.</p>
+                    
+                    <ul class="text-sm space-y-2.5 opacity-90">
+                        <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-[#C9A962] w-4"></i> Комплексная диагностика</li>
+                        <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-[#C9A962] w-4"></i> Серия сеансов рукъи</li>
+                        <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-[#C9A962] w-4"></i> Работа с корнем проблемы</li>
+                        <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-[#C9A962] w-4"></i> Личное сопровождение</li>
+                        <li class="flex items-center gap-x-2"><i class="fa-solid fa-check text-[#C9A962] w-4"></i> Поддержка до стабильного результата</li>
+                    </ul>
+                </div>
+                
+                <a href="https://t.me/Ruqoq" target="_blank"
+                   class="mt-8 w-full inline-flex items-center justify-center gap-x-2 bg-[#C9A962] hover:bg-[#B89778] text-[#0F4C3A] font-semibold py-4 rounded-3xl transition-all active:scale-[0.985]">
+                    <span>Связаться с лекарем</span>
+                    <i class="fa-brands fa-telegram text-xl"></i>
+                </a>
+            </div>
+        </div>
+
+        <p class="text-center text-xs text-[#6B6659] mt-6 max-w-xs mx-auto">Оба варианта включают конфиденциальность и полное внимание к вашей ситуации. Выбор за вами.</p>
+    </div>
+
+    <!-- Final message -->
+    <div class="max-w-screen-xl mx-auto px-5 pb-14">
+        <div class="max-w-2xl mx-auto text-center">
+            <div class="text-[#0F4C3A] text-lg font-light leading-relaxed">
+                Я не обещаю мгновенного чуда. Но я обещаю честную, глубокую и профессиональную работу по Сунне Пророка ﷺ.<br>
+                Если вы готовы сделать шаг к настоящему исцелению — я здесь.
+            </div>
+            
+            <div class="mt-8">
+                <a href="https://t.me/Ruqoq" target="_blank"
+                   class="inline-flex items-center justify-center gap-x-3 px-8 py-4 bg-[#0F4C3A] hover:bg-[#0A3A2C] transition-colors text-white font-medium rounded-3xl text-lg shadow-sm">
+                    <span>Написать Абу Мухаммаду</span>
+                    <i class="fa-brands fa-telegram text-2xl"></i>
+                </a>
+            </div>
+            
+            <p class="mt-8 text-xs text-[#6B6659]">Да облегчит Аллах ваше положение и дарует вам исцеление и благо в этой жизни и в будущей.</p>
+        </div>
+    </div>
+
+    <footer class="border-t border-[#E5E0D5] py-6">
+        <div class="max-w-screen-xl mx-auto px-5 text-center text-xs text-[#6B6659]">
+            © Абу Мухаммад • Исламский лекарь-рукийя • 2026
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind script for any dynamic if needed
+        function initializeTailwind() {
+            // Already using CDN, styles are inline
+        }
+        
+        // Simple scroll behavior for nav
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        });
+        
+        // Keyboard accessibility for buttons
+        console.log('%c[HTML] Персональный анализ для Парвины готов. Мобильная версия оптимизирована.', 'color:#6B6659');
+    </script>
+</body>
+</html>
