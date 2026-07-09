@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Абу Мухаммад • Анализ состояния • Брат Баха</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:wght@700&amp;display=swap');
+        
+        :root {
+            --primary: #0a3d2f;
+            --accent: #d4af37;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .heading-serif {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .islamic-bg {
+            background-image: 
+                linear-gradient(rgba(10, 61, 47, 0.95), rgba(10, 61, 47, 0.97)),
+                url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill-rule=%22evenodd%22%3E%3Cpath fill=%22%231a5c4a%22 fill-opacity=%22008%22 d=%22M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-10V8h-2v16h-4v2h4v4h2v-4h4v-2h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 6v-4H4v4H0v2h4v4h2V8h4V6H6z%22/%3E%3C/g%3E%3C/svg%27');
+            background-size: 60px 60px;
+        }
+
+        .section-header {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-header:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60%;
+            height: 2px;
+            background: linear-gradient(to right, #d4af37, transparent);
+        }
+
+        .analysis-card {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .analysis-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .gold-accent {
+            color: #d4af37;
+        }
+
+        .navy-green {
+            color: #0a3d2f;
+        }
+
+        .beautiful-text {
+            line-height: 1.75;
+            font-size: 15.5px;
+        }
+
+        .quran-quote {
+            font-style: italic;
+            border-left: 4px solid #d4af37;
+            padding-left: 1.25rem;
+        }
+
+        .price-card {
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .price-card.recommended {
+            border-color: #d4af37;
+            box-shadow: 0 0 0 1px #d4af37;
+        }
+
+        .modern-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .modern-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.2);
+        }
+
+        .modern-btn:active {
+            transform: translateY(0);
+        }
+
+        .symptom-item {
+            transition: all 0.2s ease;
+        }
+
+        .symptom-item:hover {
+            background-color: #112d25;
+        }
+
+        .subtle-divider {
+            background: linear-gradient(to right, transparent, #1a5c4a, transparent);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200">
+    <!-- Header -->
+    <header class="border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-lg sticky top-0 z-50">
+        <div class="max-w-screen-xl mx-auto px-5 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-x-3">
+                <div class="w-11 h-11 bg-gradient-to-br from-[#0a3d2f] to-[#1a5c4a] rounded-2xl flex items-center justify-center shadow-inner border border-[#d4af37]/30">
+                    <i class="fa-solid fa-mosque text-[#d4af37] text-2xl"></i>
+                </div>
+                <div>
+                    <div class="font-semibold text-2xl tracking-tighter">Абу Мухаммад</div>
+                    <div class="text-[10px] text-emerald-400/80 -mt-1 tracking-[1.5px]">ИСЛАМСКИЙ ЛЕКАРЬ-РУКИЙЯ</div>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-2 text-sm">
+                <div class="px-3 py-1.5 bg-zinc-900 rounded-3xl border border-zinc-800 flex items-center gap-x-2">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span class="text-emerald-400 text-xs font-medium">Онлайн-приём</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero / Greeting -->
+    <div class="max-w-screen-xl mx-auto px-5 pt-8 pb-6">
+        <div class="max-w-2xl">
+            <div class="inline-flex items-center gap-x-2 px-4 py-1.5 bg-zinc-900 border border-zinc-800 rounded-3xl mb-6">
+                <i class="fa-solid fa-user text-emerald-400"></i>
+                <span class="text-sm font-medium text-emerald-400">Персональный анализ</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl leading-none tracking-tighter font-semibold mb-3">
+                Ассаламу алейкум,<br>
+                <span class="text-white">брат Баха</span>
+            </h1>
+            <p class="text-xl text-zinc-400 max-w-md">
+                Я внимательно изучил вашу историю и симптомы. 
+                Вот мой глубокий анализ вашего состояния.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-screen-xl mx-auto px-5 pb-12">
+        
+        <!-- Analysis Section -->
+        <div class="mb-12">
+            <div class="flex items-center gap-x-3 mb-6">
+                <div class="w-8 h-px bg-gradient-to-r from-[#d4af37] to-transparent"></div>
+                <h2 class="section-header text-2xl font-semibold tracking-tight">Анализ вашего состояния</h2>
+            </div>
+            
+            <div class="space-y-6">
+                
+                <!-- Waswas Block -->
+                <div class="analysis-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-7">
+                    <div class="flex items-start gap-x-4">
+                        <div class="w-10 h-10 bg-emerald-950 text-emerald-400 rounded-2xl flex-shrink-0 flex items-center justify-center mt-1">
+                            <i class="fa-solid fa-brain text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-xl mb-3 flex items-center gap-x-2">
+                                Сильные васвасы — прошлое и настоящее
+                            </h3>
+                            <div class="beautiful-text text-zinc-300 space-y-4">
+                                <p>
+                                    Алхамдулиллах, брат, вы уже проделали большую и важную работу. 
+                                    Сильные васвасы, которые мешали вам в мирских делах, повторять действия и оставлять начатое — 
+                                    это классическое проявление влияния шайтана через васвас.
+                                </p>
+                                <div class="quran-quote bg-zinc-950/60 p-4 rounded-2xl border-l-4 border-[#d4af37]">
+                                    <p class="text-sm">
+                                        Пророк ﷺ сказал: «Некоторые сподвижники пришли ко мне и сказали: „Мы находим в себе такие мысли, 
+                                        что нам лучше сгореть, чем говорить о них“. Он ответил: <span class="font-medium">„Это ясный признак веры“</span>».
+                                    </p>
+                                    <p class="text-xs text-emerald-400 mt-2">— Сахих Муслим</p>
+                                </div>
+                                <p>
+                                    То, что вы начали глубоко изучать <span class="font-medium text-emerald-400">таухид</span> и васвасы в значительной степени ушли — 
+                                    это самое правильное и сильное лекарство. Знание Единобожия разрушает основы васваса. 
+                                    Сейчас они иногда появляются, но вы не обращаете внимания — это правильная позиция верующего.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Family & Rizq Block -->
+                <div class="analysis-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-7">
+                    <div class="flex items-start gap-x-4">
+                        <div class="w-10 h-10 bg-amber-950 text-amber-400 rounded-2xl flex-shrink-0 flex items-center justify-center mt-1">
+                            <i class="fa-solid fa-home text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-xl mb-3">Раздоры в семье и отсутствие барakah в делах</h3>
+                            <div class="beautiful-text text-zinc-300 space-y-4">
+                                <p>
+                                    Несмотря на то, что вы, Алхамдулиллах, живёте хорошо и не нуждаетесь материально, 
+                                    в семье постоянные раздоры и отсутствие взаимопонимания между родными. 
+                                    А самое важное — <span class="font-medium">дела не идут от слова совсем</span>. 
+                                    Как только начинаете что-то делать — всё встаёт.
+                                </p>
+                                <p>
+                                    Это классическая картина <span class="text-amber-400 font-medium">тафрик</span> (разделения) 
+                                    и блокировки ризка (провизии) через духовное влияние. 
+                                    Когда диагностика Абу Захаби в декабре 2024 года совпала с вашими симптомами, 
+                                    вы сами почувствовали правильность — это важный знак.
+                                </p>
+                                <p class="text-sm bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
+                                    Семья в «банкротстве» в прямом смысле при внешнем достатке — 
+                                    это почти всегда указывает на отсутствие барakah из-за духовного препятствия 
+                                    (джинн, сиһр или комбинация). Деньги есть, а успеха и согласия нет.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dreams & Recent Ruqyah -->
+                <div class="analysis-card bg-zinc-900 border border-zinc-800 rounded-3xl p-6 md:p-7">
+                    <div class="flex items-start gap-x-4">
+                        <div class="w-10 h-10 bg-sky-950 text-sky-400 rounded-2xl flex-shrink-0 flex items-center justify-center mt-1">
+                            <i class="fa-solid fa-cloud-moon text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold text-xl mb-3">Сны после рукьи и реакция на лечение</h3>
+                            <div class="beautiful-text text-zinc-300 space-y-4">
+                                <p>
+                                    Вы прошли хиджаму, а затем к вам пришла рокийя и читала рукью больше часа. 
+                                    В начале — лёгкое покалывание в правой стороне головы и моргание глазами, 
+                                    потом полное успокоение и хороший сон той ночью. 
+                                    <span class="font-medium text-emerald-400">Это очень важный и положительный признак.</span>
+                                </p>
+                                
+                                <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-5">
+                                    <p class="text-sm mb-3 font-medium text-emerald-400">Что произошло во время рукьи:</p>
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex gap-x-3"><span class="text-emerald-400">•</span> Покалывание и моргание — типичная реакция джинна на чтение Корана</li>
+                                        <li class="flex gap-x-3"><span class="text-emerald-400">•</span> Полное успокоение к концу — Коран оказал своё действие</li>
+                                        <li class="flex gap-x-3"><span class="text-emerald-400">•</span> Хороший сон той ночью — облегчение пришло</li>
+                                    </ul>
+                                </div>
+
+                                <p>
+                                    Однако после этого вы начали видеть новые сны:
+                                </p>
+                                <ul class="space-y-3 text-sm pl-1">
+                                    <li class="symptom-item flex gap-x-3 bg-zinc-950 p-3 rounded-2xl border border-zinc-800">
+                                        <span class="mt-1 text-sky-400"><i class="fa-solid fa-hand-paper w-4"></i></span>
+                                        <span>Вы своими руками вытаскиваете иглы из щёк девушки (лица не видно). Это может быть символическим отображением извлечения вреда или сиһра.</span>
+                                    </li>
+                                    <li class="symptom-item flex gap-x-3 bg-zinc-950 p-3 rounded-2xl border border-zinc-800">
+                                        <span class="mt-1 text-sky-400"><i class="fa-solid fa-users w-4"></i></span>
+                                        <span>Две незнакомые женщины с сыном/братом, которые хотят выдать вас за этого парня. Странная сцена, которая повторяется.</span>
+                                    </li>
+                                    <li class="symptom-item flex gap-x-3 bg-zinc-950 p-3 rounded-2xl border border-zinc-800">
+                                        <span class="mt-1 text-sky-400"><i class="fa-solid fa-wind w-4"></i></span>
+                                        <span>Воздух надавливает на вас во сне — классический признак давления джинна во время сна.</span>
+                                    </li>
+                                </ul>
+                                
+                                <div class="quran-quote bg-zinc-950/60 p-4 rounded-2xl border-l-4 border-[#d4af37] text-sm">
+                                    <p>
+                                        Пророк ﷺ сказал: «Хороший сон — от Аллаха, а плохой сон — от шайтана. 
+                                        Если кто-то из вас увидит плохой сон, пусть обратится к Аллаху за защитой от его зла 
+                                        и не рассказывает его никому — тогда он не причинит вреда».
+                                    </p>
+                                    <p class="text-xs text-emerald-400 mt-2">— Сахих аль-Бухари</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Evaluation of Treatment -->
+        <div class="mb-12">
+            <div class="flex items-center gap-x-3 mb-6">
+                <div class="w-8 h-px bg-gradient-to-r from-[#d4af37] to-transparent"></div>
+                <h2 class="section-header text-2xl font-semibold tracking-tight">Оценка недавнего лечения</h2>
+            </div>
+            
+            <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-7">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="flex items-center gap-x-2 mb-4">
+                            <i class="fa-solid fa-check-circle text-emerald-400 text-xl"></i>
+                            <span class="font-semibold text-lg">Положительные стороны</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-zinc-300">
+                            <li class="flex gap-x-3"><span class="text-emerald-400 font-bold">✓</span> Явная реакция организма на чтение Корана (покалывание, моргание)</li>
+                            <li class="flex gap-x-3"><span class="text-emerald-400 font-bold">✓</span> Полное успокоение во время и после сеанса</li>
+                            <li class="flex gap-x-3"><span class="text-emerald-400 font-bold">✓</span> Хороший, спокойный сон той же ночью</li>
+                            <li class="flex gap-x-3"><span class="text-emerald-400 font-bold">✓</span> Вы искренне покаялись в грехе микрозаймов — это важный шаг</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-x-2 mb-4">
+                            <i class="fa-solid fa-exclamation-triangle text-amber-400 text-xl"></i>
+                            <span class="font-semibold text-lg">Что требует внимания</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-zinc-300">
+                            <li class="flex gap-x-3"><span class="text-amber-400 font-bold">•</span> Появление специфических снов сразу после рукьи</li>
+                            <li class="flex gap-x-3"><span class="text-amber-400 font-bold">•</span> Симптомы давления и странных сцен (иглы, замужество, две женщины)</li>
+                            <li class="flex gap-x-3"><span class="text-amber-400 font-bold">•</span> Диагностика «джин ашик + тафрик» пока не устранена полностью</li>
+                            <li class="flex gap-x-3"><span class="text-amber-400 font-bold">•</span> Раздоры в семье и блокировка дел продолжаются</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-6 pt-6 border-t border-zinc-800 text-sm text-zinc-400">
+                    <strong class="text-emerald-400">Вывод:</strong> Недавнее лечение (хиджама + рукья) дало заметное облегчение и показало, 
+                    что Коран действует на вашу проблему. Однако это был скорее первый, диагностический этап. 
+                    Полное очищение при таком типе влияния (ашик + тафрик) обычно требует системной, 
+                    последовательной работы с опытным рукийя.
+                </div>
+            </div>
+        </div>
+
+        <!-- Offer from Abu Muhammad -->
+        <div class="mb-10">
+            <div class="flex items-center gap-x-3 mb-6">
+                <div class="w-8 h-px bg-gradient-to-r from-[#d4af37] to-transparent"></div>
+                <h2 class="section-header text-2xl font-semibold tracking-tight">Моё предложение вам, брат Баха</h2>
+            </div>
+            
+            <div class="bg-gradient-to-br from-zinc-900 to-zinc-950 border border-[#d4af37]/30 rounded-3xl p-8 md:p-9">
+                <div class="max-w-2xl">
+                    <p class="text-lg leading-relaxed mb-6">
+                        Брат, я вижу вашу ситуацию очень ясно. 
+                        Вы уже сделали главное — покаялись, начали изучать таухид и почти избавились от васвасов. 
+                        Осталось очистить то, что мешает барakah в семье и делах.
+                    </p>
+                    
+                    <p class="mb-6 text-zinc-300">
+                        С помощью Аллаха я готов провести с вами полное исцеление по Корану и Сунне. 
+                        Без магии, без сомнительных методов — только то, что пришло от Пророка ﷺ.
+                    </p>
+                    
+                    <div class="flex items-center gap-x-2 text-sm text-emerald-400 mb-2">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span class="font-medium">Работаю только по Шариату</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pricing -->
+        <div>
+            <h3 class="text-center text-xl font-semibold mb-6 tracking-tight">Выберите удобный для вас формат работы</h3>
+            
+            <div class="grid md:grid-cols-2 gap-5 max-w-3xl mx-auto">
+                
+                <!-- One-time -->
+                <div class="price-card bg-zinc-900 border border-zinc-700 rounded-3xl p-6 flex flex-col">
+                    <div class="mb-auto">
+                        <div class="text-sm uppercase tracking-[1px] text-zinc-500 mb-1">Одноразовый приём</div>
+                        <div class="flex items-baseline gap-x-1 mb-4">
+                            <span class="text-5xl font-semibold tabular-nums">3 000</span>
+                            <span class="text-xl text-zinc-400">₽</span>
+                        </div>
+                        <p class="text-sm text-zinc-400 mb-6">
+                            Полноценная диагностика + одна мощная сессия рукьи. 
+                            Подходит, если хотите сначала попробовать и почувствовать эффект.
+                        </p>
+                    </div>
+                    
+                    <a href="https://t.me/Ruqoq" 
+                       target="_blank"
+                       class="modern-btn w-full inline-flex items-center justify-center gap-x-3 bg-white text-zinc-950 hover:bg-zinc-100 font-semibold py-4 rounded-3xl text-base active:scale-[0.985]">
+                        <span>Связаться с лекарем</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Full course - Recommended -->
+                <div class="price-card recommended bg-zinc-900 border-2 border-[#d4af37] rounded-3xl p-6 flex flex-col relative">
+                    <div class="absolute -top-3 right-6 bg-[#d4af37] text-zinc-950 text-xs font-bold px-4 py-1 rounded-3xl tracking-wider">РЕКОМЕНДУЮ</div>
+                    
+                    <div class="mb-auto">
+                        <div class="text-sm uppercase tracking-[1px] text-[#d4af37] mb-1">Полный курс лечения</div>
+                        <div class="flex items-baseline gap-x-1 mb-4">
+                            <span class="text-5xl font-semibold tabular-nums">20 000</span>
+                            <span class="text-xl text-zinc-400">₽</span>
+                        </div>
+                        <p class="text-sm text-zinc-400 mb-6">
+                            Глубокая работа до полного результата. 
+                            Несколько сессий + сопровождение до стабилизации состояния семьи и дел. 
+                            Самый эффективный вариант при вашем типе проблемы.
+                        </p>
+                    </div>
+                    
+                    <a href="https://t.me/Ruqoq" 
+                       target="_blank"
+                       class="modern-btn w-full inline-flex items-center justify-center gap-x-3 bg-[#d4af37] hover:bg-[#c5a46e] text-zinc-950 font-semibold py-4 rounded-3xl text-base active:scale-[0.985]">
+                        <span>Связаться с лекарем</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+            </div>
+            
+            <p class="text-center text-xs text-zinc-500 mt-6 max-w-xs mx-auto">
+                Оплата после первой встречи. Работаю прозрачно и по Шариату.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-800 py-8 text-center text-xs text-zinc-500">
+        <div class="max-w-screen-xl mx-auto px-5">
+            <p>«И Мы ниспосылаем из Корана то, что является исцелением и милостью для верующих»</p>
+            <p class="mt-1">(Сура Аль-Исра, 82)</p>
+            
+            <div class="mt-6 flex justify-center">
+                <a href="https://t.me/Ruqoq" target="_blank" 
+                   class="inline-flex items-center gap-x-2 text-emerald-400 hover:text-emerald-300 transition-colors">
+                    <i class="fa-brands fa-telegram text-lg"></i>
+                    <span class="font-medium">t.me/Ruqoq</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#d4af37');
+        }
+        
+        // Simple animation for cards on scroll
+        function animateOnScroll() {
+            const cards = document.querySelectorAll('.analysis-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                card.style.opacity = '0.95';
+                card.style.transform = 'translateY(10px)';
+                card.style.transition = 'all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)';
+                observer.observe(card);
+            });
+        }
+        
+        window.onload = function() {
+            initializeTailwind();
+            animateOnScroll();
+            
+            // Subtle console message for developer
+            console.log('%c[Абу Мухаммад] HTML-анализ для брата Баха готов. Барakah!', 'color:#4ade80');
+        }
+    </script>
+</body>
+</html>
