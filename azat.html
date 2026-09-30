@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анализ состояния Азата · Лекарь Абу Мухаммад</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  
+  :root {
+    --primary: #0d4f3c;
+    --primary-light: #1a7a5c;
+    --gold: #c9a961;
+    --gold-light: #e6c887;
+    --dark: #0a1f1a;
+    --cream: #f5efe0;
+    --red: #b94a4a;
+    --warning: #d4942a;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(180deg, #0a1f1a 0%, #143028 50%, #0a1f1a 100%);
+    color: var(--cream);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+  }
+
+  .bg-pattern {
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(circle at 20% 10%, rgba(201, 169, 97, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(26, 122, 92, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 20px 16px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 30px 16px;
+    background: linear-gradient(135deg, rgba(13, 79, 60, 0.6), rgba(26, 122, 92, 0.4));
+    border-radius: 24px;
+    border: 1px solid rgba(201, 169, 97, 0.3);
+    backdrop-filter: blur(10px);
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '﷽';
+    position: absolute;
+    top: 8px;
+    left: 0;
+    right: 0;
+    font-size: 20px;
+    color: var(--gold);
+    opacity: 0.8;
+  }
+
+  .header-ornament {
+    font-size: 28px;
+    color: var(--gold);
+    margin: 18px 0 10px;
+    letter-spacing: 8px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .header .subtitle {
+    font-size: 14px;
+    color: rgba(245, 239, 224, 0.75);
+    font-weight: 300;
+  }
+
+  .badge {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 6px 14px;
+    background: rgba(201, 169, 97, 0.15);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+  }
+
+  /* Section */
+  .section {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(201, 169, 97, 0.2);
+    border-radius: 20px;
+    padding: 22px 18px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(8px);
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gold-light);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201, 169, 97, 0.2);
+  }
+
+  .section-title .icon {
+    font-size: 22px;
+  }
+
+  .greeting {
+    font-size: 15px;
+    color: var(--cream);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+
+  .arabic {
+    font-size: 20px;
+    color: var(--gold);
+    text-align: center;
+    margin: 14px 0;
+    font-family: 'Amiri', 'Traditional Arabic', serif;
+    letter-spacing: 1px;
+  }
+
+  /* Symptom cards */
+  .symptom {
+    background: rgba(10, 31, 26, 0.5);
+    border-left: 3px solid var(--gold);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .symptom:last-child { margin-bottom: 0; }
+
+  .symptom-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .symptom-num {
+    width: 28px;
+    height: 28px;
+    background: var(--gold);
+    color: var(--dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .symptom-title {
+    font-weight: 600;
+    color: var(--gold-light);
+    font-size: 15px;
+  }
+
+  .symptom-body {
+    font-size: 14px;
+    color: rgba(245, 239, 224, 0.88);
+    line-height: 1.7;
+    padding-left: 38px;
+  }
+
+  .symptom-body strong {
+    color: var(--gold-light);
+  }
+
+  .tag {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    background: rgba(185, 74, 74, 0.2);
+    border: 1px solid rgba(185, 74, 74, 0.4);
+    color: #e88a8a;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .tag.warn {
+    background: rgba(212, 148, 42, 0.2);
+    border-color: rgba(212, 148, 42, 0.4);
+    color: #e6b56a;
+  }
+
+  .tag.danger {
+    background: rgba(185, 74, 74, 0.25);
+    border-color: rgba(185, 74, 74, 0.5);
+    color: #f09898;
+  }
+
+  /* Diagnosis */
+  .diagnosis {
+    background: linear-gradient(135deg, rgba(185, 74, 74, 0.12), rgba(13, 79, 60, 0.15));
+    border: 1px solid rgba(185, 74, 74, 0.3);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 8px;
+  }
+
+  .diagnosis h3 {
+    color: #e88a8a;
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .diagnosis p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(245, 239, 224, 0.9);
+  }
+
+  /* Offer */
+  .offer-intro {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--cream);
+    margin-bottom: 14px;
+  }
+
+  .offer-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .offer-list li {
+    padding: 10px 0 10px 28px;
+    position: relative;
+    font-size: 14px;
+    color: rgba(245, 239, 224, 0.9);
+    border-bottom: 1px dashed rgba(201, 169, 97, 0.15);
+  }
+
+  .offer-list li:last-child { border-bottom: none; }
+
+  .offer-list li::before {
+    content: '✦';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 16px;
+  }
+
+  /* Hope section */
+  .hope {
+    background: linear-gradient(135deg, rgba(26, 122, 92, 0.15), rgba(201, 169, 97, 0.1));
+    border: 1px solid rgba(201, 169, 97, 0.35);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 8px;
+  }
+
+  .hope h3 {
+    color: var(--gold-light);
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hope p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(245, 239, 224, 0.9);
+  }
+
+  /* Price blocks */
+  .price-card {
+    background: linear-gradient(135deg, rgba(13, 79, 60, 0.8), rgba(10, 31, 26, 0.9));
+    border: 1px solid rgba(201, 169, 97, 0.4);
+    border-radius: 24px;
+    padding: 24px 20px;
+    margin-bottom: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .price-card.featured {
+    background: linear-gradient(135deg, rgba(201, 169, 97, 0.15), rgba(13, 79, 60, 0.6));
+    border: 1.5px solid var(--gold);
+    box-shadow: 0 10px 40px rgba(201, 169, 97, 0.15);
+  }
+
+  .price-card.featured::before {
+    content: 'РЕКОМЕНДУЕТСЯ';
+    position: absolute;
+    top: 14px;
+    right: -30px;
+    background: var(--gold);
+    color: var(--dark);
+    padding: 4px 40px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    transform: rotate(45deg);
+  }
+
+  .price-label {
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .price-title {
+    font-size: 20px;
+    color: var(--cream);
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .price-amount {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .price-amount span {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--gold);
+  }
+
+  .price-desc {
+    font-size: 13px;
+    color: rgba(245, 239, 224, 0.7);
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  .price-features {
+    list-style: none;
+    margin-bottom: 20px;
+  }
+
+  .price-features li {
+    padding: 6px 0 6px 24px;
+    position: relative;
+    font-size: 13.5px;
+    color: rgba(245, 239, 224, 0.88);
+  }
+
+  .price-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--dark);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(201, 169, 97, 0.3);
+  }
+
+  .btn:hover, .btn:active {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201, 169, 97, 0.45);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--gold-light);
+    border: 1.5px solid var(--gold);
+    box-shadow: none;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(201, 169, 97, 0.1);
+  }
+
+  .btn-icon {
+    margin-right: 8px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 30px 16px 10px;
+    font-size: 13px;
+    color: rgba(245, 239, 224, 0.6);
+    line-height: 1.8;
+  }
+
+  .footer .arabic-small {
+    color: var(--gold);
+    font-size: 18px;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 10px 0 18px;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section { animation: fadeIn 0.6s ease-out; }
+</style>
+</head>
+<body>
+<div class="bg-pattern"></div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-ornament">۞ ❋ ۞</div>
+    <h1>Лекарь Абу Мухаммад</h1>
+    <div class="subtitle">Шариатская Рукъя · Духовное исцеление</div>
+    <div class="badge">ТАЙНЫЙ АНАЛИЗ · АЗАТ, 33 года</div>
+  </div>
+
+  <!-- GREETING -->
+  <div class="section">
+    <div class="arabic">السلام عليكم ورحمة الله وبركاته</div>
+    <p class="greeting">
+      Уважаемый <strong>Азат</strong>, брат мой в Исламе! Я, <strong>Абу Мухаммад</strong>, практикующий лекарь Шариатской Рукъи, внимательно изучил ваши жалобы. Я увидел перед собой человека, который <strong>много лет борется</strong>, имеет опыт духовной победы, но сейчас находится в глубоком и тяжёлом духовном состоянии. С дозволения Всевышнего Аллаха, я проведу для вас <strong>глубочайший анализ</strong>, опираясь на аяты Корана, хадисы Посланника ﷺ и многолетний опыт работы с подобными случаями.
+    </p>
+    <p class="greeting" style="font-style: italic; color: rgba(245,239,224,0.7);">
+      «И когда я заболею, Он меня исцеляет» (сура «Аш-Шуара», 26:80).
+    </p>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="section">
+    <div class="section-title">
+      <span class="icon">🔍</span>
+      <span>Глубокий анализ состояния</span>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">1</div>
+        <div class="symptom-title">Бред и галлюцинации</div>
+      </div>
+      <div class="symptom-body">
+        Помутнение перед глазами, преграда, видения, которые невозможно описать — это <strong>аль-масх (искажение восприятия)</strong>, один из самых серьёзных признаков <strong>тяжёлого джинновского поражения (лабс)</strong>. Джинны буквально «закрывают» зрение сердца и физическое зрение, мешая человеку ясно видеть истину. Это то, о чём Аллах говорит: <em>«Мы набросили на их сердца покрывала, чтобы они не понимали его»</em> (сура «Аль-Кахф», 18:57).
+        <br><span class="tag danger">Лабс · Аль-масх</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">2</div>
+        <div class="symptom-title">Раздувание живота и ног</div>
+      </div>
+      <div class="symptom-body">
+        Живот, который «постоянно не даёт покоя», и разбухающие ноги — это классический признак <strong>сихр ма'куль (проглоченное колдовство)</strong> или <strong>сихр машруб (выпитое колдовство)</strong>. Сыхр накапливается в животе — об этом говорил имам Ибн Таймия. Также это признак <strong>аль-ханак (удушения, сжатия)</strong> от джинна, который сидит в чреве человека и отравляет его изнутри. Ноги раздуваются из-за того, что сыхр «оседает» в нижней части тела, блокируя ток баракята.
+        <br><span class="tag danger">Сихр ма'куль</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">3</div>
+        <div class="symptom-title">Колдовство на бумаге с детства</div>
+      </div>
+      <div class="symptom-body">
+        То, что вам в детстве <strong>передали написанную бумагу</strong> на двух листах — это <strong>сихр мактуб (написанное колдовство)</strong>, и это один из <strong>самых старых и глубоко укоренившихся видов сихра</strong>. 15 лет, а последние 8 — ужас, означает, что этот сихр <strong>активизировался и усилился</strong>. Мать сказала правильно — это колдовство. Бумага была носителем, и сыхр вошёл в вас ещё в детстве, когда защита (хисн) была слабой.
+        <br><span class="tag danger">Сихр мактуб (хроническое)</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">4</div>
+        <div class="symptom-title">Пребывание в психиатрической больнице</div>
+      </div>
+      <div class="symptom-body">
+        Брат мой, <strong>медицина часто путает джинновское поражение с психическими болезнями</strong>. Но то, что вы описываете, — не сумасшествие, а <strong>духовная атака</strong>, которая воздействует на психику. Джинны, одержимые человеком, могут давать симптомы шизофрении, паранойи, галлюцинаций. Важно: <strong>сихр не лечится лекарствами</strong>, он лечится Кораном. Ваше пребывание там — это следствие того, что сыхр был не распознан вовремя.
+        <br><span class="tag warn">Не распознанный сыхр</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">5</div>
+        <div class="symptom-title">Поломки техники вокруг вас</div>
+      </div>
+      <div class="symptom-body">
+        Это <strong>очень сильный и редкий признак</strong> — когда вокруг человека постоянно ломается техника, телефоны, бытовая электроника. Это означает, что <strong>джинны, прикреплённые к нему, имеют высокую энергетику</strong> и создают электромагнитные помехи. В духовной практике это называется <strong>«джинн-мушаувиш»</strong> — джинн, создающий хаос в физическом мире. Это говорит о <strong>мощном колдовстве</strong>, с которым вы живёте.
+        <br><span class="tag danger">Джинн-мушаувиш</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">6</div>
+        <div class="symptom-title">Нападение джиннов и ощущение паутины</div>
+      </div>
+      <div class="symptom-body">
+        Ощущение нападения, паутины вокруг себя — это <strong>сеть из джиннов-муваккалей (служителей колдовства)</strong>. Когда на человеке сильный сихр, вокруг него собирается <strong>свита джиннов</strong>, которые создают «духовную паутину» — они блокируют его связь с Аллахом, мешают дуа, намазу, чтению Корана. Именно поэтому раньше у вас работало самостоятельное лечение, а теперь <strong>эта сеть не пропускает силу аятов</strong>.
+        <br><span class="tag danger">Муваккали · Паутина сыхра</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">7</div>
+        <div class="symptom-title">Преграды в жизни</div>
+      </div>
+      <div class="symptom-body">
+        Ощущение преград — это <strong>сихр аль-хумуд (преграды, задержки)</strong>. Такой сихр ставится, чтобы человек <strong>не мог продвинуться ни в делах, ни в семье, ни в духовности</strong>. Каждый раз, когда вы пытаетесь что-то изменить, перед вами будто вырастает стена. Это одна из задач колдунов — <strong>закрыть пути (фатх)</strong> перед верующим.
+        <br><span class="tag warn">Сихр аль-хумуд</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">8</div>
+        <div class="symptom-title">Тяга к вредным привычкам и фильмам</div>
+      </div>
+      <div class="symptom-body">
+        Сихр всегда <strong>тянет человека к хараму</strong> — к тому, что отдаляет от Аллаха. Тяга к фильмам, бесполезному времяпрепровождению, вредным привычкам — это <strong>наущение (васвас) джинна-шайтана</strong>, который подпитывается вашим отвлечением от поклонения. Чем больше вы заняты харамом, тем <strong>сильнее становится сыхр</strong>. Это замкнутый круг.
+        <br><span class="tag warn">Васвас · Отвлечение</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">9</div>
+        <div class="symptom-title">Конфликты и семейная вражда</div>
+      </div>
+      <div class="symptom-body">
+        Семейные конфликты — это <strong>сихр ат-тафрик (разделение)</strong>. Шайтан ставит себе целью разрушить семью мусульманина. Хадис гласит: <em>«Иблис ставит свой трон на воде и отправляет войска; самый приближённый к нему тот, кто сеет наибольшую рознь»</em> (Муслим). В вашем случае это работает годами — сыхр специально направлен на разрушение родственных и супружеских связей.
+        <br><span class="tag danger">Сихр ат-тафрик</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">10</div>
+        <div class="symptom-title">Чувство позора и утяжеления</div>
+      </div>
+      <div class="symptom-body">
+        Ощущение <strong>«позора»</strong> — это аль-хизй, духовное унижение, которое джинны навязывают человеку. А <strong>утяжеление, давление</strong> — это признак того, что джинн буквально <strong>«сидит» на человеке</strong>, давит ему на грудь и плечи, мешая дышать полной грудью и чувствовать свободу. Это физическое проявление духовного гнёта.
+        <br><span class="tag danger">Аль-хизй · Аль-кабд</span>
+      </div>
+    </div>
+
+    <div class="symptom">
+      <div class="symptom-header">
+        <div class="symptom-num">11</div>
+        <div class="symptom-title">Коран перестал работать</div>
+      </div>
+      <div class="symptom-body">
+        Это <strong>самый тревожный симптом</strong>. Когда раньше Коран работал, дуа сбывались, а теперь нет — это признак того, что <strong>муваккали (джинны-хранители сихра) построили духовный барьер</strong> между вами и силой аятов. Это называется <strong>«аль-хаджиз ар-рухани»</strong> — духовная преграда. Без разрушения этой преграды самостоятельное лечение <strong>не сможет сработать в полную силу</strong>.
+        <br><span class="tag danger">Духовная блокировка</span>
+      </div>
+    </div>
+
+    <!-- HOPE SECTION -->
+    <div class="hope">
+      <h3>✨ Светлая сторона — ваш опыт исцеления</h3>
+      <p>
+        Брат мой, в ваших словах я увидел <strong>огромный знак надежды</strong>! Вы уже <strong>исцелялись самостоятельно</strong> несколько лет назад — у вас получалось, дуа сбывались, в семье наладилось. Это означает:
+      </p>
+      <p style="margin-top: 10px;">
+        <strong>1.</strong> У вас <strong>сильная вера и искренность (ихляс)</strong><br>
+        <strong>2.</strong> Аллах <strong>уже даровал вам победу однажды</strong><br>
+        <strong>3.</strong> Вы знаете путь и <strong>способны к духовной борьбе</strong><br>
+        <strong>4.</strong> Ваш случай <strong>излечим</strong> — с дозволения Аллаха
+      </p>
+      <p style="margin-top: 10px;">
+        Сейчас сыхр усилился, преграда выросла, но <strong>та же самая сила, которая работала раньше, может сработать снова</strong> — нужно лишь правильно снять блокировку и уничтожить старый сихр.
+      </p>
+    </div>
+
+    <!-- DIAGNOSIS -->
+    <div class="diagnosis">
+      <h3>⚠ Полный диагноз</h3>
+      <p>
+        Перед нами <strong>сложный многоуровневый случай</strong>, сочетающий:
+        <br>• <strong>Сихр мактуб</strong> — написанное колдовство с детства (на бумаге)
+        <br>• <strong>Сихр ма'куль / машруб</strong> — колдовство в животе и теле
+        <br>• <strong>Сихр ат-тафрик</strong> — на разделение семьи
+        <br>• <strong>Сихр аль-хумуд</strong> — на преграды и закрытие путей
+        <br>• <strong>Свита джиннов-муваккалей</strong> — паутина духовной атаки
+        <br>• <strong>Аль-масх и аль-ханак</strong> — галлюцинации и удушение
+        <br>• <strong>Духовная преграда</strong> — блокировка силы Корана
+        <br><br>
+        Срок поражения — <strong>более 15 лет</strong>, с усилением в последние 8 лет. Случай <strong>серьёзный, но излечимый</strong>. Учитывая ваш прошлый положительный опыт самостоятельной борьбы, <strong>прогноз благоприятный</strong> при правильном профессиональном сопровождении.
+      </p>
+    </div>
+  </div>
+
+  <!-- OFFER -->
+  <div class="section">
+    <div class="section-title">
+      <span class="icon">💎</span>
+      <span>Предложение лечения</span>
+    </div>
+
+    <p class="offer-intro">
+      Уважаемый Азат! После глубокого анализа вашего состояния, я готов <strong>взять вас на сопровождение</strong> и провести полный курс Шариатской Рукъи — строго по Корану и достоверной Сунне, без каких-либо запретных методов, талисманов, обращений к колдунам или шарлатанам.
+    </p>
+
+    <p class="offer-intro"><strong>Что входит в моё лечение:</strong></p>
+
+    <ul class="offer-list">
+      <li>Снятие духовной преграды (аль-хаджиз ар-рухани), чтобы Коран снова работал</li>
+      <li>Разрушение сыхра мактуб — старого колдовства на бумаге</li>
+      <li>Выведение сыхра ма'куль из живота и тела</li>
+      <li>Изгнание джиннов-муваккалей, создающих паутину</li>
+      <li>Снятие сихра ат-тафрик и восстановление семейных связей</li>
+      <li>Открытие путей (фатх) и снятие преград (сихр аль-хумуд)</li>
+      <li>Лечение аль-масх (галлюцинаций) и аль-ханак (утяжеления)</li>
+      <li>Индивидуальная программа аятов для самостоятельной Рукъи</li>
+      <li>Рекомендации по Тибб ан-Набави (оливковое масло, чёрный тмин, мёд)</li>
+      <li>Постоянное сопровождение до полного возвращения силы дуа</li>
+    </ul>
+  </div>
+
+  <div class="divider">۞</div>
+
+  <!-- PRICE 1 -->
+  <div class="price-card">
+    <div class="price-label">БАЗОВЫЙ</div>
+    <div class="price-title">Одноразовое лечение</div>
+    <div class="price-amount">3 000 <span>₽</span></div>
+    <div class="price-desc">Разовый сеанс Шариатской Рукъи с диагностикой и базовыми рекомендациями</div>
+    <ul class="price-features">
+      <li>Полная духовная диагностика</li>
+      <li>Один сеанс Рукъи</li>
+      <li>Снятие первичной преграды</li>
+      <li>Базовые рекомендации</li>
+      <li>Дуа за пациента</li>
+    </ul>
+    <a href="https://t.me/Ruqoq" class="btn btn-secondary">
+      <span class="btn-icon">✉</span>Связаться с лекарем
+    </a>
+  </div>
+
+  <!-- PRICE 2 -->
+  <div class="price-card featured">
+    <div class="price-label">ПОЛНЫЙ КУРС</div>
+    <div class="price-title">Полное лечение</div>
+    <div class="price-amount">20 000 <span>₽</span></div>
+    <div class="price-desc">Комплексный курс Рукъи со снятием 15-летнего сыхра, изгнанием джиннов и сопровождением до полного возвращения силы дуа</div>
+    <ul class="price-features">
+      <li>Глубочайшая диагностика всех слоёв сыхра</li>
+      <li>Разрушение сихра мактуб (старое колдовство)</li>
+      <li>Снятие сихра ма'куль из тела</li>
+      <li>Изгнание всей свиты джиннов-муваккалей</li>
+      <li>Снятие паутины и преград</li>
+      <li>Восстановление силы Корана и дуа</li>
+      <li>Открытие путей (фатх)</li>
+      <li>Индивидуальная программа аятов</li>
+      <li>Рекомендации Пророческой медицины</li>
+      <li>Постоянное сопровождение до исцеления</li>
+    </ul>
+    <a href="https://t.me/Ruqoq" class="btn">
+      <span class="btn-icon">✉</span>Связаться с лекарем
+    </a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span class="arabic-small">اللهم اشفِ و أنت الشافي</span>
+    «О Аллах, исцели, ведь лишь Ты — Исцеляющий»
+    <br><br>
+    Да дарует вам Аллах полное исцеление, возвращение силы Корана, гармонию в семье и баракят во всех делах. То, что вы уже побеждали однажды — знак того, что Аллах хочет дать вам победу снова.
+    <br><br>
+    <strong style="color: var(--gold-light);">Лекарь Абу Мухаммад</strong>
+    <br>
+    <span style="font-size: 12px;">Шариатская Рукъя · Таухид · Сунна</span>
+  </div>
+
+</div>
+</body>
+</html>
