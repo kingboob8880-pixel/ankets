@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Анализ состояния · Мухаммад — Лекарь Абу Мухаммад</title>
+<style>
+  *{box-sizing:border-box} html{scrollbar-color:rgba(201,169,97,.8) rgba(10,31,26,.45);scrollbar-width:thin}
+  body{margin:0;font-family:'Times New Roman',Georgia,serif;color:#f5efe0;min-height:100vh;
+    background:linear-gradient(180deg,#0a1f1a 0%,#143028 50%,#0a1f1a 100%)}
+  ::-webkit-scrollbar{width:11px}::-webkit-scrollbar-track{background:rgba(10,31,26,.45)}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#c9a961,#9f7f3f);border-radius:8px}
+  .doc-wrap{max-width:560px;margin:0 auto;padding:26px 16px 44px}
+  .doc-header{text-align:center;padding:28px 16px;background:rgba(255,255,255,.04);
+    border:1px solid rgba(201,169,97,.2);border-radius:24px;margin-bottom:22px}
+  .dh-orn{font-size:26px;color:#c9a961;letter-spacing:8px}
+  .dh-brand{font-size:24px;color:#e6c887;margin-top:6px;letter-spacing:.5px}
+  .dh-kicker{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#c9a961;margin-top:6px}
+  .badge{display:inline-block;margin-top:14px;padding:6px 14px;background:rgba(201,169,97,.15);
+    border:1px solid #c9a961;border-radius:20px;font-size:12px;color:#e6c887;letter-spacing:1px}
+  .salam{margin-top:14px;font-size:15px;color:#c9a961}
+  .intro{margin-top:12px;font-size:15px;line-height:1.7;text-align:left}
+  .ayah{margin-top:12px;font-style:italic;color:rgba(245,239,224,.82);border-left:2px solid #c9a961;padding-left:12px;text-align:left}
+  .section{background:rgba(255,255,255,.04);border:1px solid rgba(201,169,97,.2);border-radius:20px;padding:20px 18px;margin-bottom:18px}
+  .section-title{display:flex;align-items:center;gap:10px;font-size:18px;color:#e6c887;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(201,169,97,.2)}
+  .crit{border-left:3px solid #c9a961;background:rgba(10,31,26,.5);border-radius:12px;padding:12px 14px;margin:0 0 12px}
+  .crit-head{display:flex;align-items:center;gap:10px}
+  .crit-num{width:28px;height:28px;flex-shrink:0;background:#c9a961;color:#0a1f1a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .crit-title{font-weight:600;color:#e6c887}
+  .crit p{margin:8px 0 0;font-size:14px;line-height:1.65}
+  .farb{font-family:'Amiri','Scheherazade New','Noto Naskh Arabic',serif;font-size:20px;line-height:2;color:#c9a961;text-align:center;margin:10px 0;unicode-bidi:isolate}
+  .fnote{display:inline-block;margin-top:10px;font-size:12px;color:#0a1f1a;background:linear-gradient(135deg,#c9a961,#e6c887);border-radius:8px;padding:2px 10px;letter-spacing:.5px}
+  .offer-list{list-style:none;margin:6px 0 0;padding:0}
+  .offer-list li{padding:8px 0 8px 26px;position:relative;font-size:14px;border-bottom:1px dashed rgba(201,169,97,.15)}
+  .offer-list li:last-child{border-bottom:none}.offer-list li::before{content:'✦';position:absolute;left:0;color:#c9a961}
+  .cards{display:flex;gap:16px;flex-wrap:wrap;align-items:stretch;margin-top:20px;padding-top:10px}
+  .pcard{flex:1 1 240px;position:relative;background:rgba(10,31,26,.55);border:1px solid rgba(201,169,97,.35);border-radius:18px;padding:18px 16px}
+  .pcard.full{background:linear-gradient(160deg,rgba(201,169,97,.16),rgba(10,31,26,.6));border:2px solid #c9a961;box-shadow:0 10px 34px rgba(201,169,97,.22);transform:translateY(-6px)}
+  .pcard .ribbon{position:absolute;top:-12px;right:14px;background:linear-gradient(120deg,#c9a961,#fff3d6,#c9a961);color:#0a1f1a;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 12px;border-radius:20px;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+  .pcard .tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c9a961}
+  .pcard .ptitle{font-size:16px;color:#e6c887;margin-top:6px;font-weight:600}
+  .pcard .price{font-size:30px;color:#fff3d6;margin:10px 0 2px}
+  .pcard.full .price{text-shadow:0 0 18px rgba(201,169,97,.5)}
+  .pcard .pdesc{font-size:12.5px;color:rgba(245,239,224,.78);line-height:1.5;margin:6px 0 4px}
+  .btn{display:inline-block;margin-top:14px;width:100%;text-align:center;text-decoration:none;
+    background:linear-gradient(120deg,#c9a961,#e6c887,#c9a961);color:#0a1f1a;font-weight:700;padding:11px 16px;border-radius:14px;font-size:15px}
+  .note{font-size:12.5px;color:rgba(245,239,224,.72);margin-top:14px;font-style:italic;text-align:center;line-height:1.6}
+  .sign{text-align:center;margin-top:12px;color:#e6c887;font-weight:600}
+  .sign small{display:block;margin-top:4px;color:rgba(245,239,224,.6);font-weight:400;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="doc-wrap">
+
+  <header class="doc-header">
+    <div class="dh-orn">۞ ❋ ۞</div>
+    <div class="dh-brand">Лекарь Абу Мухаммад</div>
+    <div class="dh-kicker">Шариатская рукъя · Духовное исцеление</div>
+    <div class="badge">Анализ · Мухаммад · 4 года недуга</div>
+    <div class="salam">السلام عليكم ورحمة الله وبركاته</div>
+    <div class="intro">Мухаммад, брат мой, мир тебе. Я прочитал твой рассказ внимательно и не один раз. Ты описал всё честно и ясно — уже одно это шаг. Четыре года — долгий срок, и я не буду делать вид, что это легко. Ты потерял вкус к тому, что любил, и это самая тяжёлая часть твоей истории. Разберём по порядку: что с тобой, насколько это серьёзно и из чего складывается работа. Исцеление — только от Аллаха.</div>
+    <div class="ayah">«И Мы наложили на их сердца покровы, чтобы они не понимали его, и в их ушах — глухоту» (Аль-Исра, 17:46)</div>
+  </header>
+
+  <section class="section">
+    <div class="section-title">🔍 Глубокий анализ состояния</div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">1</div><div class="crit-title">Вход через оставление защиты</div></div>
+      <p>Ты сам назвал ключ: не читал азкары, входил в туалет и душ без защиты, раздевался полностью. В духовной модели это не мелочь. Места нечистоты — это места, где собираются джинны, и вход туда без азкаров и без прикрытия — открытая дверь. Пророк ﷺ учил перед входом в отхожее место говорить: «Бисмиллях, о Аллах, я прибегаю к Тебе от скверны и скверных» (Бухари, Муслим). Ты этой защиты не ставил. И вход произошёл именно там — в душе, в момент полной наготы. Это не совпадение.</p>
+      <span class="fnote">Вход · открытая дверь</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">2</div><div class="crit-title">Острая боль в висках и жжение в груди</div></div>
+      <p>Боль в обоих висках, как будто сжало, и жжение в груди — это не «нервы» и не усталость. Это момент, когда вред вошёл и коснулся тела. Виски часто отзываются при лабсе и сихре, грудь — место, где живёт вера и где потом встал блок. Боль была острой и внезапной, ровно в тот момент, когда ты был незащищён. По совокупности это указывает на вход джинна через открытую дверь.</p>
+      <span class="fnote">Лабс · момент входа</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">3</div><div class="crit-title">Васваса куфра и затуманивание разума</div></div>
+      <p>Сразу после этого — васваса атеизма, каждую секунду, каких никогда не было. Разум затуманился. Это не твоя мысль и не твоё сомнение — это наущение извне, направленное прямо в сердце веры. Пророк ﷺ сказал о таких наущениях: «Это — ясная вера» (Муслим). То есть сам факт того, что тебе это внушается и ты этому сопротивляешься, — признак того, что вера в тебе жива и что бьют именно по ней. Но сила и постоянство этих васвас — не обычное явление, а действие джинна, вошедшего и целенаправленно атакующего акыду.</p>
+      <span class="fnote">Лабс · удар по акыде</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">4</div><div class="crit-title">Потеря вкуса к религии и жизни — блок на сердце</div></div>
+      <p>Ты потерял удовольствие от религии и от жизни. Это самое тяжёлое в твоём рассказе. В духовной модели это называется блоком (кафль) на сердце — когда сердце закрывается так, что сладость веры не доходит. Аллах сказал: «И Мы наложили на их сердца покровы, чтобы они не понимали его, и в их ушах — глухоту» (Аль-Исра, 17:46). Ты не стал плохим человеком и не потерял веру — ты потерял вкус к ней. Это разные вещи. Вкус украли, а веру ты сохранил, даже когда еле произносил шахаду.</p>
+      <span class="fnote">Кафль · блок на сердце</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">5</div><div class="crit-title">Отсутствие реакции на рукъю — подтверждение блока</div></div>
+      <p>Чтецы удивлялись: нет реакции, нет проявления. Для обычного лабса это странно — обычно Коран задевает джинна, и тело отзывается. Но в твоём случае отсутствие реакции — не знак того, что «всё чисто», а знак того, что стоит блок: Коран не доходит до того места, где сидит вред. Это отдельная линия, и она объясняет, почему годы чтения не дали облегчения. Блок надо снимать отдельно, иначе рукъя будет бить в закрытую дверь.</p>
+      <span class="fnote">Садд · блокировка рукъи</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">6</div><div class="crit-title">Сны и телесные проявления</div></div>
+      <p>Сны, где ты на пассажирском сиденье, а за рулём другой и вы разбиваетесь, — это образ потери контроля: твоей жизнью и твоим путём управляет кто-то другой. Полёты во сне — из этой же картины. Плюс пульсации, подёргивания, лёгкие острые боли, короткое жжение в груди — всё это телесные следы присутствия вреда. Они редкие и слабые, но они есть, и они совпадают с общей картиной.</p>
+      <span class="fnote">Асар · следы вреда</span>
+    </div>
+
+  </section>
+
+  <section class="section">
+    <div class="section-title">✨ Светлая сторона</div>
+    <ul class="offer-list">
+      <li>Ты сохранил желание верить — даже когда еле держался. Это не пустяк, это твоя опора.</li>
+      <li>Ты искал помощь, ходил к чтецам, слушал рукъю дома — ты не сдался и не бросил.</li>
+      <li>У тебя есть знание Ислама, акыды и фикха — фундамент, на котором можно восстановиться.</li>
+      <li>Случай тяжёлый, но не безнадёжный: с дозволения Аллаха блок снимается, и вкус возвращается.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="section-title">⚠ Полный диагноз</div>
+    <p style="margin:0;font-size:14px;line-height:1.65">У тебя две основные линии, и одна вытекает из другой.<br><br>
+    <strong>Первая, корневая:</strong> лабс — джинн, вошедший в момент, когда ты был в нечистом месте без защиты и азкаров. Его цель — твоя вера, и он бьёт по акыде васвасами и туманом.<br><br>
+    <strong>Вторая:</strong> кафль — блок на сердце, из-за которого ты потерял вкус к религии и жизни и из-за которого рукъя годами не давала реакции.<br><br>
+    Случай тяжёлый: 4 года, несколько безуспешных курсов, блок и отсутствие реакции. Но не безнадёжный — с дозволения Аллаха.</p>
+    <div class="crit-title" style="margin-top:14px">Из чего сложилась стоимость полного курса:</div>
+    <ul class="offer-list">
+      <li>Джинн (лабс) — отдельная линия, требующая прямой работы — +3 000 ₽</li>
+      <li>Вторая линия — блок на сердце (кафль) — +2 000 ₽</li>
+      <li>Длительность 4 года — +3 000 ₽</li>
+      <li>Прошлые безуспешные курсы у нескольких чтецов — +2 000 ₽</li>
+      <li>Протокол снятия замков — +1 000 ₽</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="section-title">💎 Предложение лечения</div>
+    <ul class="offer-list">
+      <li>Полная духовная диагностика и уточнение картины по ходу работы</li>
+      <li>Снятие блока с сердца, чтобы Коран и дуа снова доходили</li>
+      <li>Прямая работа с джинном: выявление, ослабление, изгнание с дозволения Аллаха</li>
+      <li>Работа с последствиями: возвращение вкуса к религии, укрепление акыды</li>
+      <li>Защита на будущее: азкары, правила входа в нечистые места, режим</li>
+      <li>Сопровождение и дуа за тебя на всём пути</li>
+    </ul>
+    <div class="cards">
+      <div class="pcard">
+        <div class="tag">Базовый</div><div class="ptitle">Одноразовое лечение</div>
+        <div class="price">3 000 ₽</div>
+        <div class="pdesc">Разовый сеанс рукъи: полная диагностика, один сеанс, снятие первичной преграды, базовые рекомендации и дуа за тебя. Как точка входа, если пока не готов к полному курсу.</div>
+        <ul class="offer-list"><li>Диагностика</li><li>Один сеанс рукъи</li><li>Базовые рекомендации</li></ul>
+        <a class="btn" href="https://t.me/Ruqoq">✉ Связаться с лекарем</a>
+      </div>
+      <div class="pcard full">
+        <div class="ribbon">★ Рекомендую</div>
+        <div class="tag">Полный курс</div><div class="ptitle">Полное лечение</div>
+        <div class="price">21 000 ₽</div>
+        <div class="pdesc">В твоём случае нужен именно курс: снять блок, ослабить и изгнать джинна, вернуть вкус к религии и поставить защиту. Разовый сеанс здесь не решит — блок и джинн требуют последовательной работы.</div>
+        <ul class="offer-list"><li>Полная диагностика</li><li>Снятие блока (кафль)</li><li>Работа с джинном</li><li>Возвращение вкуса к религии</li><li>Защита и сопровождение</li></ul>
+        <a class="btn" href="https://t.me/Ruqoq">✉ Связаться с лекарем</a>
+      </div>
+    </div>
+    <div class="note">В твоём случае я советую полное лечение. Стоимость — работа и сопровождение лекаря, исцеление только от Аллаха.</div>
+  </section>
+
+  <footer class="section" style="text-align:center">
+    <div class="farb">اللهم اشفِ و أنت الشافي</div>
+    <div style="font-size:14px;color:rgba(245,239,224,.85)">«О Аллах, исцели, ведь лишь Ты — Исцеляющий»</div>
+    <div class="intro" style="text-align:center">Мухаммад, твоя история тяжела, но ты всё ещё держишься — и это уже сила. С дозволения Аллаха блок снимается, и вкус возвращается. Не оставайся с этим один.</div>
+    <div class="sign">Лекарь Абу Мухаммад<small>Шариатская рукъя · Таухид · Сунна</small></div>
+  </footer>
+
+</div>
+</body>
+</html>
