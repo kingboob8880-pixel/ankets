@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Анализ состояния · Galymzhan Khoja — Лекарь Абу Мухаммад</title>
+<style>
+  *{box-sizing:border-box} html{scrollbar-color:rgba(201,169,97,.8) rgba(10,31,26,.45);scrollbar-width:thin}
+  body{margin:0;font-family:'Times New Roman',Georgia,serif;color:#f5efe0;min-height:100vh;
+    background:linear-gradient(180deg,#0a1f1a 0%,#143028 50%,#0a1f1a 100%)}
+  ::-webkit-scrollbar{width:11px}::-webkit-scrollbar-track{background:rgba(10,31,26,.45)}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#c9a961,#9f7f3f);border-radius:8px}
+  .doc-wrap{max-width:560px;margin:0 auto;padding:26px 16px 44px}
+  .doc-header{text-align:center;padding:28px 16px;background:rgba(255,255,255,.04);
+    border:1px solid rgba(201,169,97,.2);border-radius:24px;margin-bottom:22px}
+  .dh-orn{font-size:26px;color:#c9a961;letter-spacing:8px}
+  .dh-brand{font-size:24px;color:#e6c887;margin-top:6px;letter-spacing:.5px}
+  .dh-kicker{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#c9a961;margin-top:6px}
+  .badge{display:inline-block;margin-top:14px;padding:6px 14px;background:rgba(201,169,97,.15);
+    border:1px solid #c9a961;border-radius:20px;font-size:12px;color:#e6c887;letter-spacing:1px}
+  .salam{margin-top:14px;font-size:15px;color:#c9a961}
+  .intro{margin-top:12px;font-size:15px;line-height:1.7;text-align:left}
+  .ayah{margin-top:12px;font-style:italic;color:rgba(245,239,224,.82);border-left:2px solid #c9a961;padding-left:12px;text-align:left}
+  .section{background:rgba(255,255,255,.04);border:1px solid rgba(201,169,97,.2);border-radius:20px;padding:20px 18px;margin-bottom:18px}
+  .section-title{display:flex;align-items:center;gap:10px;font-size:18px;color:#e6c887;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(201,169,97,.2)}
+  .crit{border-left:3px solid #c9a961;background:rgba(10,31,26,.5);border-radius:12px;padding:12px 14px;margin:0 0 12px}
+  .crit-head{display:flex;align-items:center;gap:10px}
+  .crit-num{width:28px;height:28px;flex-shrink:0;background:#c9a961;color:#0a1f1a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .crit-title{font-weight:600;color:#e6c887}
+  .crit p{margin:8px 0 0;font-size:14px;line-height:1.65}
+  .farb{font-family:'Amiri','Scheherazade New','Noto Naskh Arabic',serif;font-size:20px;line-height:2;color:#c9a961;text-align:center;margin:10px 0;unicode-bidi:isolate}
+  .fnote{display:inline-block;margin-top:10px;font-size:12px;color:#0a1f1a;background:linear-gradient(135deg,#c9a961,#e6c887);border-radius:8px;padding:2px 10px;letter-spacing:.5px}
+  .offer-list{list-style:none;margin:6px 0 0;padding:0}
+  .offer-list li{padding:8px 0 8px 26px;position:relative;font-size:14px;border-bottom:1px dashed rgba(201,169,97,.15)}
+  .offer-list li:last-child{border-bottom:none}.offer-list li::before{content:'✦';position:absolute;left:0;color:#c9a961}
+  .cards{display:flex;gap:16px;flex-wrap:wrap;align-items:stretch;margin-top:20px;padding-top:10px}
+  .pcard{flex:1 1 240px;position:relative;background:rgba(10,31,26,.55);border:1px solid rgba(201,169,97,.35);border-radius:18px;padding:18px 16px}
+  .pcard.full{background:linear-gradient(160deg,rgba(201,169,97,.16),rgba(10,31,26,.6));border:2px solid #c9a961;box-shadow:0 10px 34px rgba(201,169,97,.22);transform:translateY(-6px)}
+  .pcard .ribbon{position:absolute;top:-12px;right:14px;background:linear-gradient(120deg,#c9a961,#fff3d6,#c9a961);color:#0a1f1a;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 12px;border-radius:20px;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+  .pcard .tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#c9a961}
+  .pcard .ptitle{font-size:16px;color:#e6c887;margin-top:6px;font-weight:600}
+  .pcard .price{font-size:30px;color:#fff3d6;margin:10px 0 2px}
+  .pcard.full .price{text-shadow:0 0 18px rgba(201,169,97,.5)}
+  .pcard .pdesc{font-size:12.5px;color:rgba(245,239,224,.78);line-height:1.5;margin:6px 0 4px}
+  .btn{display:inline-block;margin-top:14px;width:100%;text-align:center;text-decoration:none;
+    background:linear-gradient(120deg,#c9a961,#e6c887,#c9a961);color:#0a1f1a;font-weight:700;padding:11px 16px;border-radius:14px;font-size:15px}
+  .note{font-size:12.5px;color:rgba(245,239,224,.72);margin-top:14px;font-style:italic;text-align:center;line-height:1.6}
+  .sign{text-align:center;margin-top:12px;color:#e6c887;font-weight:600}
+  .sign small{display:block;margin-top:4px;color:rgba(245,239,224,.6);font-weight:400;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="doc-wrap">
+
+  <header class="doc-header">
+    <div class="dh-orn">۞ ❋ ۞</div>
+    <div class="dh-brand">Лекарь Абу Мухаммад</div>
+    <div class="dh-kicker">Шариатская рукъя · Духовное исцеление</div>
+    <div class="badge">Анализ · Galymzhan Khoja</div>
+    <div class="salam">السلام عليكم ورحمة الله وبركاته</div>
+    <div class="intro">Брат мой Galymzhan, мир тебе и милость Аллаха. Я прочитал твоё письмо. Ты пишешь, что слышишь голоса, что тебе говорят о влюблённости, о сотрудничестве, что ночью тебя кормят и что с рождения ты чувствуешь это на себе. Это не фантазия и не «характер». Это духовная картина, и она разбирается. Не буду тебя пугать и не буду обещать сроков — просто назову то, что вижу, и скажу честно, сколько это стоит по работе.</div>
+    <div class="ayah">«Скажи: прибегаю к защите Господа людей, Царя людей, Бога людей, от зла наущателя (васваса), который наущает в груди людей, от джиннов и людей» (ан-Нас, 114:1–6)</div>
+  </header>
+
+  <section class="section">
+    <div class="section-title">🔍 Глубокий анализ состояния</div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">1</div><div class="crit-title">Голоса и внушения: васваса</div></div>
+      <p>Ты слышишь, как к тебе обращаются, называют себя мусульманами, говорят о влюблённости, о сотрудничестве. Это не твои мысли и не ангелы. Это <strong>васваса</strong> — нашёптывание, которое приходит извне и пытается выдать себя за твоё. Коран учит искать защиты именно от этого: «от зла наущателя (васваса), который наущает в груди людей, от джиннов и людей» (ан-Нас, 114:4–6). Ты не обязан верить их словам и не должен вступать с ними в разговор.</p>
+      <span class="fnote">Джинн · васваса</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">2</div><div class="crit-title">Родовые джинны и притязание на «сотрудничество»</div></div>
+      <p>Родовые джинны, которые хотят «сотрудничества» — это старый приём: они предлагают помощь, знание, силу, а взамен требуют уступок. Это не партнёрство, а притязание. Аллах предупредил: «О сыны Адама! Пусть не соблазнит вас шайтан, как он вывел ваших родителей из Рая» (аль-А'раф, 7:27). Родовое здесь читается потому, что ты сам чувствуешь это с рождения, и мать твоя в том же состоянии.</p>
+      <span class="fnote">Родовое · притязание</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">3</div><div class="crit-title">Ночное кормление</div></div>
+      <p>То, что ночью, во сне, тебя «кормят» — это не сон и не игра воображения. Это воздействие через пищу во сне, один из способов сихра. Оно оставляет след: запах, который не твой, тяжесть, ощущение чужого внутри. «Шайтан обещает вам бедность и велит творить мерзость» (аль-Бакара, 2:268). Здесь нужна отдельная линия работы.</p>
+      <span class="fnote">Сихр · пищевой</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">4</div><div class="crit-title">Запах, который не твой</div></div>
+      <p>Неприятный запах изо рта и от тела, который ты не узнаёшь как свой — это признак присутствия. Когда внутри есть чужое, оно проявляется через тело. Это не приговор и не твоя вина. Если запах держится, стоит проверить и у врача — но духовная линия здесь очевидна.</p>
+      <span class="fnote">Признак присутствия</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">5</div><div class="crit-title">Одержимость с рождения и хронические болезни</div></div>
+      <p>Ты говоришь: «кажется, я с рождения одержим». Если это так, то корень не в одном случае, а в родовой линии. С детства непонятный характер, хронические болезни, одиночество — это не «судьба» и не «характер», это следы того, что шло поколениями. Аллах сказал: «И когда твой Господь вывел из чресл сынов Адама их потомство...» (аль-А'раф, 7:172) — род имеет свою историю, и её можно разбирать.</p>
+      <span class="fnote">Родовое · одержимость</span>
+    </div>
+
+    <div class="crit">
+      <div class="crit-head"><div class="crit-num">6</div><div class="crit-title">Мать и семья</div></div>
+      <p>Ты говоришь, что мать тоже одержима, замкнута, конфликтна, всегда болеет. Когда в семье несколько человек с похожими проявлениями, это называется коллективным поражением. Это не значит, что все виноваты — это значит, что родовая линия требует работы целиком. Опора: «Ведь шайтан для вас — явный враг» (аль-Бакара, 2:168).</p>
+      <span class="fnote">Коллективное · родовое</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">✨ Светлая сторона</div>
+    <ul class="offer-list">
+      <li>Ты сам видишь и называешь вещи, не прячешься и не отрицаешь — это сила и ясность.</li>
+      <li>Ты не сдался, ищешь, думаешь — значит, есть чем работать и за что держаться.</li>
+      <li>Ты понимаешь, что это не твоё — это первый шаг к разделению себя и воздействия.</li>
+      <li>С дозволения Аллаха родовая линия разбирается, если взяться за корень, а не только за верхний слой.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="section-title">⚠ Полный диагноз</div>
+    <p style="margin:0;font-size:14px;line-height:1.65">Линий несколько, и они складываются в одну картину. Корневая — родовое воздействие: ты чувствуешь это с рождения, и мать в том же состоянии. Поверх него — джинн и васваса: голоса, внушения, притязания на сотрудничество. Отдельно идёт пищевой сихр — ночное кормление, которое оставляет запах и тяжесть. Всё это вместе даёт хронические болезни, одиночество и ощущение, что «это не я».</p>
+    <p style="margin:10px 0 0;font-size:14px;line-height:1.65">Степень тяжести — <strong>тяжёлый</strong>: линии множественные, длительность с рождения, затронут род, есть джинн и пищевое воздействие. Это работа не на один сеанс.</p>
+    <div class="crit-title" style="margin-top:14px">Из чего сложилась стоимость полного курса:</div>
+    <ul class="offer-list">
+      <li>Джинн и васваса — отдельная линия с голосами и внушениями.</li>
+      <li>Родовое воздействие — корень идёт с рождения и повторяется у матери.</li>
+      <li>Длительность: с рождения, больше трёх лет — работа с глубоким слоем.</li>
+      <li>Пищевой сихр — ночное кормление требует отдельного протокола.</li>
+      <li>Сопутствующая соматика — хронические болезни, запах, общее состояние.</li>
+      <li>Несколько самостоятельных линий сверх первой — каждая требует времени.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="section-title">💎 Предложение лечения</div>
+    <ul class="offer-list">
+      <li>Полная духовная диагностика и подтверждение каждой линии на живом контакте.</li>
+      <li>Работа с васваса и джинном: прекращение голосов и внушений, возвращение тишины.</li>
+      <li>Разбор родовой линии: притязания, «сотрудничество», связь с матерью.</li>
+      <li>Снятие пищевого воздействия и ночного кормления.</li>
+      <li>Работа с телом: запах, тяжесть, хронические проявления.</li>
+      <li>Защита на завершении, чтобы не вернулось, и связь со мной между сеансами.</li>
+    </ul>
+    <div class="cards">
+      <div class="pcard">
+        <div class="tag">Базовый</div><div class="ptitle">Одноразовое лечение</div>
+        <div class="price">3 000 ₽</div>
+        <div class="pdesc">Один разовый сеанс рукъи: полная диагностика, снятие первичной преграды, базовые рекомендации, дуа за тебя.</div>
+        <ul class="offer-list"><li>Полная духовная диагностика</li><li>Один сеанс рукъи</li><li>Снятие первичной преграды</li><li>Базовые рекомендации</li></ul>
+        <a class="btn" href="https://t.me/Ruqoq">✉ Связаться с лекарем</a>
+      </div>
+      <div class="pcard full">
+        <div class="ribbon">★ Рекомендую</div>
+        <div class="tag">Полный курс</div><div class="ptitle">Полное лечение</div>
+        <div class="price">20 000 ₽</div>
+        <div class="pdesc">Твой случай — несколько линий, родовой корень, джинн и пищевое воздействие. Разовый сеанс снимет только верхний слой, и всё вернётся. Полный курс ведёт каждую линию до конца, по порядку, со снятием родового и защитой на завершении.</div>
+        <ul class="offer-list"><li>Ведение случая полностью</li><li>Работа с васваса и джинном</li><li>Разбор родовой линии</li><li>Снятие пищевого воздействия</li><li>Работа с телом и хроническими проявлениями</li><li>Защита и завершение курса</li><li>Связь со мной между сеансами</li></ul>
+        <a class="btn" href="https://t.me/Ruqoq">✉ Связаться с лекарем</a>
+      </div>
+    </div>
+    <div class="note">В твоём случае я советую полное лечение: линии слишком связаны, чтобы брать их по одной. Стоимость — работа и сопровождение лекаря, исцеление только от Аллаха.</div>
+  </section>
+
+  <footer class="section" style="text-align:center">
+    <div class="farb">اللهم اشفِ و أنت الشافي</div>
+    <div style="font-size:14px;color:rgba(245,239,224,.85)">«О Аллах, исцели, ведь лишь Ты — Исцеляющий»</div>
+    <div class="intro" style="text-align:center">Брат мой, ты не один в этом и не брошен. То, что ты назвал всё своими словами — уже начало. Дальше — работа, и она по силам, с дозволения Аллаха.</div>
+    <div class="sign">Лекарь Абу Мухаммад<small>Шариатская рукъя · Таухид · Сунна</small></div>
+  </footer>
+
+</div>
+</body>
+</html>
